@@ -3,15 +3,21 @@ import axios from 'axios'; // Import Axios
 
 function App() {
   const [clientName, setClientName] = useState('');
+  const [violationDate, setViolationDate] = useState('');
   const [searchResult, setSearchResult] = useState('');
 
   const handleClientNameChange = (e) => {
     setClientName(e.target.value);
   };
 
+  const handleViolationDateChange = (e) => {
+    setViolationDate(e.target.value);
+  };
+
+
   const handleSearch = async () => {
     try {
-      const response = await axios.post('/search', { client_name: clientName });
+      const response = await axios.post('/search', { client_name: clientName, violation_date: violationDate});
 
       if (response.status === 200) {
         setSearchResult('Search completed');
@@ -33,6 +39,14 @@ function App() {
             type="text"
             value={clientName}
             onChange={handleClientNameChange}
+          />
+        </label>
+        <label>
+          Violation Date:
+          <input
+            type="text"
+            value={violationDate}
+            onChange={handleViolationDateChange}
           />
         </label>
         <button type="button" onClick={handleSearch}>

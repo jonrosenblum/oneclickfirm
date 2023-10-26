@@ -15,6 +15,8 @@ def search():
         data = request.json  # Extract data from Axios POST request
 
         client_name = data.get('client_name')
+        violation_date = data.get('violation_date')
+        
 
         if client_name:
             # Set up Firefox options for a headless browser
@@ -42,9 +44,18 @@ def search():
 
             # Find the search input fields by their ID
             client_name_input = driver.find_element(By.ID, 'contentMainbody_usSearchControl11_txtSearchText')
+            violation_date_input = driver.find_element(By.ID, '')
+            
+            ### WE NEED TO TARGET THE DROPDOWN MENU AND SELECT "NJ TRAFFIC" AND THEN CLICK SEARCH, if no results or results does not
+            # match the user input (name and date have to match) THEN -->
+            ### WE NEED TO TARGET THE DROPWN MENU AND SELECT "NJ CRIMINAL (DP)" AND THEN CLICK SEARCH 
+            
+            ### WHEN THE SEARCH CRITERIA MATCHES THE USER REQUEST WE NEED TO CLICK INTO THE CLIENT
+
 
             # Input the client name from the request
             client_name_input.send_keys(client_name)
+            violation_date_input.send_keys(violation_date)
 
             # Close the browser when done
             driver.quit()
