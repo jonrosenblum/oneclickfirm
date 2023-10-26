@@ -1,62 +1,61 @@
 from flask import Flask, request, jsonify
-from werkzeug.utils import secure_filename
-from flask_cors import CORS
-import os
-import psycopg2
-
-
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
 
 app = Flask(__name__)
-CORS(app)
 
-
-
-# Set your PostgreSQL database configuration here
-# DB_HOST = '127.0.0.1'
-# DB_PORT = '5432'
-# DB_NAME = 'lawfirm'
-# DB_USER = 'jonrosenblum'
-# DB_PASSWORD = 'Jnrsnblm1!'
-
-# def connect_to_db():
-#     return psycopg2.connect(
-#         host=DB_HOST,
-#         port=DB_PORT,
-#         dbname=DB_NAME,
-#         user=DB_USER,
-#         password=DB_PASSWORD
-#     )
-    
-@app.get('/')
+@app.route('/')
 def home():
     return "Hello"
 
-@app.route('/upload', methods=['POST'])
-def upload_file():
-    uploaded_file = request.files['file']
+@app.route('/search', methods=['POST'])  # Use the correct decorator and specify the HTTP method
+def search():
+    try:
+        data = request.json  # Extract data from Axios POST request
 
-    if uploaded_file:
-        print("file uploaded")
-        # Secure the filename to prevent malicious attacks
-        filename = secure_filename(uploaded_file.filename)
+        client_name = data.get('client_name')
 
-        # Save the file temporarily (you can specify your own directory)
-        file_path = os.path.join('uploads', filename)
-        uploaded_file.save(file_path)
+        if client_name:
+            # Set up Firefox options for a headless browser
+            options = Options()
+            options.headless = True
 
-        # # Insert the file into the PostgreSQL database
-        # conn = connect_to_db()
-        # cur = conn.cursor()
-        # with open(file_path, 'rb') as f:
-        #     cur.execute("INSERT INTO excel_data (data) VALUES (%s)", (psycopg2.Binary(f.read()),))
-        # conn.commit()
-        # cur.close()
-        # conn.close()
+            # Initialize the web driver with the specified options
+            driver = webdriver.Firefox(executable_path='./geckodriver', options=options)
 
-        # Optional: Perform additional data manipulation here
+            # Open the website
+            driver.get('https://secure.legalplex.com/Login')
 
-        return jsonify({'message': 'File uploaded and stored in the database.'})
-    return jsonify({'error': 'File not found'})
+            # Your login code here...
+            username_input = driver.find_element(By.ID, 'contentMainBody_txtEmailID')
+            password_input = driver.find_element(By.ID, 'contentMainBody_txtPassword')
+
+            login_button = driver.find_element(By.ID, 'contentMainBody_btnSubmit')
+
+            username_input.send_keys('rmpinner@gmail.com')
+            password_input.send_keys('624Shields')
+            login_button.click()
+
+            # Once logged in, we need to navigate to the search cases page
+            driver.get('https://secure.legalplex.com/searchcases')
+
+            # Find the search input fields by their ID
+            client_name_input = driver.find_element(By.ID, 'contentMainbody_usSearchControl11_txtSearchText')
+
+            # Input the client name from the request
+            client_name_input.send_keys(client_name)
+
+            # Close the browser when done
+            driver.quit()
+
+            return jsonify({'message': 'Search completed'})
+
+        else:
+            return jsonify({'error': 'Client name not provided'})
+
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run()
