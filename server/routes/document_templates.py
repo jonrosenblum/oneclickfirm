@@ -1,7 +1,7 @@
 from flask import Blueprint
 
-document_template_bp = Blueprint('document_template', __name__)
+document_templates_bp = Blueprint('document_templates', __name__)
 
-@document_template_bp.route('/documents', methods=['GET'])
-def authenticationTest():
+@document_templates_bp.route('/documents', methods=['GET'])
+def test():
     return "Documents Backend!"
