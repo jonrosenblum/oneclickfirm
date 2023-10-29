@@ -1,10 +1,8 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
+
 from routes import auth_bp, client_scraper_bp, document_templates_bp
 
-app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'postgresql://your_username:your_password@localhost/document_templates'
-db = SQLAlchemy(app)
+app = Flask(__name__, static_folder="templates", static_url_path="/templates")
 
 
 app.register_blueprint(client_scraper_bp)
