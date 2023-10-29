@@ -5,12 +5,15 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Root from './Routes/Root';
 import Login from './Routes/Login';
+import Dashboard from './Routes/Dashboard';
 
 const router = createBrowserRouter([
-  {path: '/', 
+  {path: '', 
   element: <Root />, 
   children: [
-    {path: 'login', element: <Login />},
+    {path: '', element: <Login />},
+    {path: '/dashboard', element: <Dashboard />},
+
   ]}
 ]);
 

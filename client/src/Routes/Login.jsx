@@ -1,5 +1,6 @@
 import React from "react";
 import '../Styles/login.css';
+import { Link } from "react-router-dom";
 
 export default function Login() {
     return(
@@ -25,9 +26,10 @@ export default function Login() {
                 </div>
                 <div class="field">
                     <p class="control">
-                        <button class="button login-button">
+                        
+                        <Link to="/dashboard" class="button login-button">
                         Login
-                        </button>
+                        </Link>
                     </p>
                 </div>
             </div>

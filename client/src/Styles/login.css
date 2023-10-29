@@ -20,6 +20,5 @@
     color: lime;
     font-style: bold;
     letter-spacing: 2px;
-    text-shadow: -1px 0 0 navy, 1px 0 0 navy; /* Adjust the offset, color, and blur as needed */
     
 }
