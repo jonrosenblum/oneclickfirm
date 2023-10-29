@@ -27,9 +27,60 @@
 
 .task-list-container {
     display: flex;
+    flex-direction: column;
     flex-grow: 1;
     padding: 42px;
 
     border-top-right-radius: 8px;
     border-bottom-right-radius: 8px;
+}
+
+.title {
+    color: lime;
+    font-size: 24px;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+
+}
+
+
+.list-menu {
+    display: flex;
+    flex-direction: column;
+    margin-top: 15px;
+    flex-grow: 1;
+
+
+    .list-menu-item {
+        display: flex;
+        align-items: center;
+        text-wrap: nowrap;
+        justify-content: center;
+        padding: 10px 15px;
+        border-radius: 5px;
+        width: 100%;
+        color: lime;
+        margin-bottom: 5px;
+
+        &:hover {
+            background-color: navy;
+            color: white;
+        }
+
+        &.is-active {
+            background-color: navy;
+            color: lime;
+        }
+    }
+}
+
+.task {
+    background: white;
+    padding: 15px 20px;
+    border-radius: 5px;
+    margin-top: 10px;
+
+    &:hover {
+        box-shadow: 0 0 0 5px #eeee;
+    }
 }
