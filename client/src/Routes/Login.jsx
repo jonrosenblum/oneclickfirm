@@ -1,19 +1,18 @@
 import React from "react";
+import '../Styles/login.css';
 
 export default function Login() {
     return(
-        <div class="container">
-            <div class="notification is-success">
-                <h1>LOGIN</h1>
+        <div class="login-content">
+            <div class="login-white-box">
+                <h1 class="login-title title">LOGIN</h1>
                 <div class="field">
-                    <p class="control has-icons-left has-icons-right">
+                    <p class="control has-icons-left">
                         <input class="input" type="email" placeholder="Email"/>
                         <span class="icon is-small is-left">
                             <i class="fas fa-envelope"></i>
                         </span>
-                        <span class="icon is-small is-right">
-                            <i class="fas fa-check"></i>
-                        </span>
+                      
                     </p>
                 </div>
                 <div class="field">
@@ -26,7 +25,7 @@ export default function Login() {
                 </div>
                 <div class="field">
                     <p class="control">
-                        <button class="button is-success">
+                        <button class="button login-button">
                         Login
                         </button>
                     </p>

@@ -1,0 +1,25 @@
+.login-content {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.login-white-box {
+    background-color: white;
+    border-radius: 5px;
+    padding: 52px;
+}
+
+.login-button {
+    background-color: lime;
+    color: navy;
+}
+
+.login-title {
+    color: lime;
+    font-style: bold;
+    letter-spacing: 2px;
+    text-shadow: -1px 0 0 navy, 1px 0 0 navy; /* Adjust the offset, color, and blur as needed */
+    
+}
