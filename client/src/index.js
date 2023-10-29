@@ -5,14 +5,12 @@ import './index.css';
 import reportWebVitals from './reportWebVitals';
 import Root from './Routes/Root';
 import Login from './Routes/Login';
-import SignUp from './Routes/SignUp';
 
 const router = createBrowserRouter([
   {path: '/', 
   element: <Root />, 
   children: [
-    {path: '/login', element: <Login />},
-    {path: '/sign-up', element: <SignUp />},
+    {path: '/', element: <Login />},
   ]}
 ]);
 
