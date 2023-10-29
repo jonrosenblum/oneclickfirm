@@ -1,4 +1,4 @@
-.centered-content {
+.dashboard-content {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -6,7 +6,7 @@
     height: 100vh;
 }
 
-.task-manager-container {
+.main-container {
     display: flex;
     width: 100%;
     height: 70%;
@@ -25,7 +25,7 @@
     border-bottom-left-radius: 8px;
 }
 
-.task-list-container {
+.client-information-container {
     display: flex;
     flex-direction: column;
     flex-grow: 1;
@@ -44,17 +44,16 @@
 }
 
 
-.list-menu {
+.client-menu {
     display: flex;
     flex-direction: column;
     margin-top: 15px;
     flex-grow: 1;
 
 
-    .list-menu-item {
+    .client-menu-item {
         display: flex;
         align-items: center;
-        text-wrap: nowrap;
         justify-content: center;
         padding: 10px 15px;
         border-radius: 5px;
@@ -74,13 +73,25 @@
     }
 }
 
-.task {
+.document {
     background: white;
     padding: 15px 20px;
     border-radius: 5px;
     margin-top: 10px;
 
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+
+    &:active {
+        transform: scale(0.95) ;
+    }
+
     &:hover {
         box-shadow: 0 0 0 5px #eeee;
+        cursor: pointer;
     }
+}
+
+.client-button{
+    background-color: lime;
+    color: navy;
 }
