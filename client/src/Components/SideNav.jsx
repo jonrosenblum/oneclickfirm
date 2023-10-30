@@ -1,10 +1,27 @@
 import { useState } from "react";
-import { BsArrowLeftShort, BsSearch } from "react-icons/bs";
-import { AiFillEnvironment } from "react-icons/ai";
+import { BsArrowLeftShort, BsSearch, BsChevronDown, BsFillImageFill, BsReverseLayoutTextSidebarReverse, BsPerson} from "react-icons/bs";
+import { AiFillEnvironment, AiOutlineBarChart, AiOutlineFileText, AiOutlineLogout, AiOutlineMail, AiOutlineSetting } from "react-icons/ai";
+import { RiDashboardFill } from "react-icons/ri";
 
 export default function SideNav() {
 
     const [open, setOpen] = useState(true)
+    const [submenuOpen, setSubmenuOpen] = useState(false)
+    const Menus = [
+        {title: "Dashboard"},
+        {title: "Pages", icon: <AiOutlineFileText/>},
+        {title: "Media", spacing: true, icon: <BsFillImageFill/>},
+        {title: "Projects", submenu: true, icon: <BsReverseLayoutTextSidebarReverse/>,
+        submenuItems: [
+            {title: "Project 1"}, 
+            {title: "Project 2"}, 
+            {title: "Project 3"}]},
+        {title: "Analytics", icon: <AiOutlineBarChart/>},
+        {title: "Inbox", icon: <AiOutlineMail/>},
+        {title: "Profile", spacing: true, icon: <BsPerson/>},
+        {title: "Settings", icon: <AiOutlineSetting/>},
+        {title: "Logout", icon: <AiOutlineLogout/>}
+    ]
 
     
     return (
@@ -28,7 +45,36 @@ export default function SideNav() {
                 w-full text-white focus:outline-none ${!open && "hidden" }`} />
             </div>
 
-            </div>
+            <ul className="pt-2">
+                {Menus.map((menu, index) => (
+                <>
+                    <li key={index} className={`text-gray-300 text-sm flex items-center 
+                    gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md ${menu.spacing ? "mt-9" : "mt-2"}`}>
+                        <span className="text-2xl block float-left">
+                            {menu.icon ? menu.icon : <RiDashboardFill/>}
+                        </span>
+                        <span className={`text-base font-medium flex-1 duration-200 ${!open && "hidden"}`}>{menu.title}</span>
+                        {menu.submenu && open &&(
+                            <BsChevronDown className={`${submenuOpen && "rotate-180"}`} onClick={()=> 
+                            setSubmenuOpen(!submenuOpen)} />
+                        )}
+                    </li>
+
+                    {menu.submenu && submenuOpen && open && (
+                        <ul>
+                            {menu.submenuItems.map((submenuItem, index) => (
+                                <li key={index} className="text-gray-300 text-sm flex items-center gap-x-4
+                                cursor-pointer p-2 px-5 hover:bg-light-white rounded-md">
+                                    {submenuItem.title}
+                                </li>
+                            ))}
+                        </ul>
+                    )}
+
+                </>
+                ))}
+            </ul>
+        </div>
 
             <div className="p-7">
                 <h1 className="text-2xl font-semibold">Home Page</h1>
