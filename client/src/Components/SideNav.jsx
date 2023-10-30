@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { BsArrowLeftShort, BsSearch, BsChevronDown, BsFillImageFill,BsFillPeopleFill, BsPerson} from "react-icons/bs";
-import { AiOutlineBarChart, AiOutlineFileText, AiOutlineLogout, AiOutlineMail, AiOutlineSetting } from "react-icons/ai";
+import { BsArrowLeftShort, BsSearch, BsChevronDown, BsFillPeopleFill, BsPerson} from "react-icons/bs";
+import { AiOutlineFileText, AiOutlineLogout, AiOutlineSetting } from "react-icons/ai";
 import { RiDashboardFill } from "react-icons/ri";
 import {GiInjustice} from "react-icons/gi";
 
@@ -10,13 +10,18 @@ export default function SideNav() {
     const [submenuOpen, setSubmenuOpen] = useState(false)
     const Menus = [
         {title: "Dashboard"},
-        {title: "Documents", icon: <AiOutlineFileText/>},
-        {title: "Media", spacing: true, icon: <BsFillImageFill/>},
         {title: "Clients", submenu: true, icon: <BsFillPeopleFill/>,
         submenuItems: [
-            {title: "+ New Client"}]},
-        {title: "Analytics", icon: <AiOutlineBarChart/>},
-        {title: "Inbox", icon: <AiOutlineMail/>},
+            {title: "Add New Client"},
+            {title: "View Clients"},
+            ]},
+        {title: "Documents", icon: <AiOutlineFileText/>, submenu:true, submenuItems: [
+            {title: "Credit Card Authorization Forms"},
+            {title: "Representation Letters"},
+            {title: "Discovery Letters"},
+            {title: "Retainer Agreements"},
+]},
+       
         {title: "Profile", spacing: true, icon: <BsPerson/>},
         {title: "Settings", icon: <AiOutlineSetting/>},
         {title: "Logout", icon: <AiOutlineLogout/>}
