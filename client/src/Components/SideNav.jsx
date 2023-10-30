@@ -13,14 +13,9 @@ export default function SideNav() {
         {title: "Clients", submenu: true, icon: <BsFillPeopleFill/>,
         submenuItems: [
             {title: "Add New Client"},
-            {title: "View Clients"},
+            {title: "View All Clients"},
             ]},
-        {title: "Documents", icon: <AiOutlineFileText/>, submenu:true, submenuItems: [
-            {title: "Credit Card Authorization Forms"},
-            {title: "Representation Letters"},
-            {title: "Discovery Letters"},
-            {title: "Retainer Agreements"},
-]},
+        {title: "Documents", icon: <AiOutlineFileText/>},
        
         {title: "Profile", spacing: true, icon: <BsPerson/>},
         {title: "Settings", icon: <AiOutlineSetting/>},
