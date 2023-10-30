@@ -28,7 +28,7 @@ export default function LoginForm() {
                     <button className="hover:bg-white hover:text-black p-2 rounded-xl font-medium text-base text-white">Forgot password?</button>
                 </div>
                 <div className="mt-8 flex flex-col gap-y-4">
-                    <button className="active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-white text-lg font-bold border-2">Sign in</button>
+                    <button className="button active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-white text-lg font-bold border-2">Sign in</button>
                     <button className='flex items-center justify-center gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform py-3 bg-white font-bold text-black  rounded-xl text-lg border-2 '>
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M5.26644 9.76453C6.19903 6.93863 8.85469 4.90909 12.0002 4.90909C13.6912 4.90909 15.2184 5.50909 16.4184 6.49091L19.9093 3C17.7821 1.14545 15.0548 0 12.0002 0C7.27031 0 3.19799 2.6983 1.24023 6.65002L5.26644 9.76453Z" fill="#EA4335"/>
