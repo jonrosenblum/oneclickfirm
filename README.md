@@ -1,8 +1,8 @@
 <p align="center">
-    <a href=""><img src="" /></a>
+<!--     <a href=""><img src="" /></a>
     <a href=""><img src=""/></a>
     <a href=""><img src="" /></a>
-    <a href=""><img src="" /></a>
+    <a href=""><img src="" /></a> -->
     <br>
     <a href=""><img src="https://badgen.net/github/commits/jonrosenblum/StabileLF" /></a>
 </p>
