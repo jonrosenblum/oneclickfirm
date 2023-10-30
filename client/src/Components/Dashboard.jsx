@@ -26,8 +26,8 @@ export default function Dashboard() {
         </div>
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
           <img className="w-20 h-20 object-cover object-center rounded-full" src="https://images.unsplash.com/photo-1547592180-85f173990554?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1170&q=80" alt="cuisine" />
-          <h4 className="text-white text-2xl font-bold capitalize text-center"> VIEW ALL CLIENTS</h4>
-          <p className="text-white/50">55 CLIENTS </p>
+          <h4 className="text-white text-2xl font-bold capitalize text-center"> ALL CLIENTS</h4>
+          <p className="text-white/50">VIEW ALL 55 CLIENTS </p>
         </div>
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
           <img className="w-20 h-20 object-cover object-center rounded-full" src="https://images.unsplash.com/photo-1513364776144-60967b0f800f?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1171&q=80" alt="art" />
@@ -36,19 +36,19 @@ export default function Dashboard() {
         </div>
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
           <img className="w-20 h-20 object-cover object-center rounded-full" src="https://images.unsplash.com/photo-1560419015-7c427e8ae5ba?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80" alt="gaming" />
-          <h4 className="text-white text-2xl font-bold capitalize text-center">Gaming</h4>
-          <p className="text-white/50">207 members</p>
+          <h4 className="text-white text-2xl font-bold capitalize text-center">EDIT CLIENT</h4>
+          <p className="text-white/50">UPDATE CLIENT INFO</p>
         </div>
         <div></div>
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
           <img className="w-20 h-20 object-cover object-center rounded-full" src="https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1159&q=80" alt="cinema" />
-          <h4 className="text-white text-2xl font-bold capitalize text-center">cinema</h4>
-          <p className="text-white/50">105 members</p>
+          <h4 className="text-white text-2xl font-bold capitalize text-center">OPEN CASES</h4>
+          <p className="text-white/50">VIEW PENDING CASES</p>
         </div>
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
           <img className="w-20 h-20 object-cover object-center rounded-full" src="https://images.unsplash.com/photo-1485846234645-a62644f84728?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1159&q=80" alt="cinema" />
-          <h4 className="text-white text-2xl font-bold capitalize text-center">cinema</h4>
-          <p className="text-white/50">105 members</p>
+          <h4 className="text-white text-2xl font-bold capitalize text-center">ARCHIVED CASES</h4>
+          <p className="text-white/50"> VIEW CLOSED CASES</p>
         </div>
 
       </div>
