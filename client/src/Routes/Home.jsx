@@ -3,7 +3,7 @@ import Dashboard from "../Components/Dashboard";
 
 export default function Home() {
     return(
-        <div>
+        <div className="flex">
             <SideNav />
             <Dashboard />
         </div>  
