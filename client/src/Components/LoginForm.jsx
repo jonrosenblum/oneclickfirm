@@ -1,6 +1,6 @@
 export default function LoginForm() {
     return(
-        <div className="bg-gradient-to-tr from-blue-800 to-green-400 px-10 py-20 rounded-3xl border-8 border-gray-200">
+        <div className="font-oswald bg-gradient-to-tr from-blue-800 to-green-400 px-10 py-20 rounded-3xl border-8 border-gray-200">
             <h1 className="text-5xl text-white font-semibold">Stabile Law Firm</h1>
             <p className="font-medium text-lg text-white mt-4">Welcome back! Please enter your credentials.</p>
             <div className="mt-8">
