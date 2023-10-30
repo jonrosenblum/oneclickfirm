@@ -76,9 +76,9 @@ export default function SideNav() {
             </ul>
         </div>
 
-            <div className="p-7">
+            {/* <div className="p-7">
                 <h1 className="text-2xl font-semibold">Home Page</h1>
-            </div>
+            </div> */}
         </div>
     )
 }
