@@ -7,26 +7,44 @@ import PendingPNG from "../assets/shifts-pending-svgrepo-com.png"
 import { useState } from "react"
 import NewClientModal from "./NewClientModal"
 import AllClientsModal from "./AllClientsModal"
+import DocumentsModal from "./DocumentsModal"
+import EditClientModal from "./EditClientModal"
+import OpenCasesModal from "./OpenCaseModal"
+import ArchivedCasesModal from "./ArchivedCases"
 
 
 export default function Dashboard() {
 
   const [isNewClientModalVisible, setIsNewClientModalVisible] = useState(false);
   const [isAllClientsModalVisible, setIsAllClientsModalVisible] = useState(false);
+  const [isDocumentsModalVisible, setIsDocumentsModalVisible] = useState(false);
+  const [isEditClientModalVisible, setIsEditClientModalVisible] = useState(false);
+  const [isOpenCasesModalVisible, setIsOpenCasesModalVisible] = useState(false);
+  const [isArchivedCasesModalVisible, setIsArchivedCasesModalVisible] = useState(false);
 
-  const openAllClientsModal = () => {
-    setIsAllClientsModalVisible(true);
-  };
-  // const closeAllClientsModal = () => {
-  //   setIsAllClientsModalVisible(false);
-  // };
   const openNewClientsModal = () => {
     setIsNewClientModalVisible(true);
   };
 
-  // const modalClose = () => {
-  //   setIsModalVisible(false);
-  // };
+  const openAllClientsModal = () => {
+    setIsAllClientsModalVisible(true);
+  };
+
+  const openDocumentsModal = () => {
+    setIsDocumentsModalVisible(true);
+  };
+
+  const openEditClientModal = () => {
+    setIsEditClientModalVisible(true);
+  };
+  const openOpenCasesModal = () => {
+    setIsOpenCasesModalVisible(true);
+  };
+  const openArchivedCasesModal = () => {
+    setIsArchivedCasesModalVisible(true);
+  };
+
+
 
     return (
 
@@ -57,41 +75,68 @@ export default function Dashboard() {
           <a className="text-white/50 group-hover:text-white group-hover:smooth-hover text-center" href="#">NEW CLIENT</a>
 
           {isNewClientModalVisible ? (
-            <NewClientModal />
-) : null}
+            <NewClientModal /> ) : null}
+      </div>
 
-          
-        </div>
         <div onClick={openAllClientsModal} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
           <img className="w-20 h-20 object-cover object-center rounded-full" src={AllClientsPNG} alt="all clients" />
           <h4 className="text-white text-2xl font-bold capitalize text-center"> ALL CLIENTS</h4>
           <p className="text-white/50">VIEW ALL 55 CLIENTS </p>
 
           {isAllClientsModalVisible ? (
-            <AllClientsModal />
-) : null}
-
+            <AllClientsModal /> ) : null}
         </div>
-        <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+
+        <div onClick={openDocumentsModal} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img className="w-20 h-20 object-cover object-center rounded-full" src={DocumentsPNG} alt="generate documents" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">DOCUMENTS</h4>
           <p className="text-white/50">GENERATE CLIENT DOCS</p>
+
+          {isDocumentsModalVisible ? (
+            <DocumentsModal /> ) : null}
         </div>
-        <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+
+        <div onClick={openEditClientModal} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img className="w-20 h-20 object-cover object-center rounded-full" src={EditPNG} alt="update client" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">EDIT CLIENT</h4>
           <p className="text-white/50">UPDATE CLIENT INFO</p>
+
+          {isEditClientModalVisible ? (
+            <EditClientModal /> ) : null}
         </div>
-        <div></div>
-        <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+
+        <div onClick={openOpenCasesModal}  className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img className="w-20 h-20 object-cover object-center rounded-full" src={PendingPNG} alt="pending cases" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">OPEN CASES</h4>
           <p className="text-white/50">VIEW PENDING CASES</p>
+
+          {isOpenCasesModalVisible ? (
+            <OpenCasesModal /> ) : null}
         </div>
-        <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+
+        <div onClick={openArchivedCasesModal}  className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img className="w-20 h-20 object-cover object-center rounded-full" src={CompletePNG} alt="complete cases" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">ARCHIVED CASES</h4>
           <p className="text-white/50"> VIEW CLOSED CASES</p>
+
+          {isArchivedCasesModalVisible ? (
+            <ArchivedCasesModal /> ) : null}
+        </div>
+        <div onClick={openArchivedCasesModal}  className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+        <img className="w-20 h-20 object-cover object-center rounded-full" src={CompletePNG} alt="complete cases" />
+          <h4 className="text-white text-2xl font-bold capitalize text-center">ARCHIVED CASES</h4>
+          <p className="text-white/50"> VIEW CLOSED CASES</p>
+
+          {isArchivedCasesModalVisible ? (
+            <ArchivedCasesModal /> ) : null}
+        </div>
+        <div onClick={openArchivedCasesModal}  className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+        <img className="w-20 h-20 object-cover object-center rounded-full" src={CompletePNG} alt="complete cases" />
+          <h4 className="text-white text-2xl font-bold capitalize text-center">ARCHIVED CASES</h4>
+          <p className="text-white/50"> VIEW CLOSED CASES</p>
+
+          {isArchivedCasesModalVisible ? (
+            <ArchivedCasesModal /> ) : null}
         </div>
         
 

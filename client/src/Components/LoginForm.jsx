@@ -1,9 +1,39 @@
+import { useRef, useState } from "react";
+import axios from "axios";
+
 export default function LoginForm() {
+
+    const [formData, setFormData] = useState({client_name: '', violation_date: ''});
+    const formRef = useRef(null);
+
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+      
+        try {
+          const response = await axios.post("/search", formData, {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+      
+          if (response.status === 200) {
+            console.log("Request Success");
+          } else {
+            console.error("Request Failed");
+          }
+        } catch (error) {
+          console.error("Request Error:", error);
+        }
+      };
+
+
     return(
         <div className="font-oswald bg-gradient-to-tr from-blue-800 to-green-400 px-10 py-20 rounded-3xl border-8 border-gray-200">
             <h1 className="text-5xl text-white font-semibold">Stabile Law Firm</h1>
             <p className="font-medium text-lg text-white mt-4">Welcome back! Please enter your credentials.</p>
             <div className="mt-8">
+                <form ref={formRef} onSubmit={handleSubmit}>
                 <div>
                     <label className="text-white text-lg font-medium">Email</label>
                     <input
@@ -15,7 +45,8 @@ export default function LoginForm() {
                     <input
                     className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                     placeholder="Enter your password"
-                    type="password"/>
+                    type="password"
+                    onChange={(e)=> setFormData({...formData, violation_date: e.target})}/>
                 </div>
                 <div className="mt-8 flex justify-between items-center">
                     <div className="">
@@ -39,6 +70,7 @@ export default function LoginForm() {
                             Sign in with Google
                     </button>
                 </div>
+                </form>
             </div>
         </div>
     )

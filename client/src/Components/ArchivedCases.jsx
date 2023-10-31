@@ -2,7 +2,7 @@ import { BiArrowBack } from "react-icons/bi";
 import { useRef, useState } from "react";
 import axios from "axios";
 
-export default function AllClientsModal() {
+export default function ArchivedCases() {
   const [formData, setFormData] = useState({
     client_name: "",
     violation_date: "",

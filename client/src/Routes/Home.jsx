@@ -4,7 +4,7 @@ import Dashboard from "../Components/Dashboard";
 export default function Home() {
     return(
         <div className="flex">
-            <SideNav />
+            {/* <SideNav /> */}
             <Dashboard />
         </div>  
     )
