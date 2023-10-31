@@ -11,7 +11,7 @@
 <h4 align="center"></h4>
 
 <p align="center">
-    <img src="./assets/Screenshot 2023-10-30 at 6.17.58 PM.png" alt="Project Logo" width="60%" height="60%"/>
+    <img src="./assets/basicUi.png" alt="Project Logo" width="60%" height="60%"/>
 </p>
 
 ## Table of Contents

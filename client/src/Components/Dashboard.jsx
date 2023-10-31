@@ -5,7 +5,8 @@ import EditPNG from "../assets/edit-svgrepo-com.png"
 import CompletePNG from "../assets/checkmark-complete-correct-svgrepo-com.png"
 import PendingPNG from "../assets/shifts-pending-svgrepo-com.png"
 import { useState } from "react"
-import { BiArrowBack } from "react-icons/bi"
+import NewClientModal from "./NewClientModal"
+import AllClientsModal from "./AllClientsModal"
 
 
 export default function Dashboard() {
@@ -16,9 +17,9 @@ export default function Dashboard() {
   const openAllClientsModal = () => {
     setIsAllClientsModalVisible(true);
   };
-  const closeAllClientsModal = () => {
-    setIsAllClientsModalVisible(false);
-  };
+  // const closeAllClientsModal = () => {
+  //   setIsAllClientsModalVisible(false);
+  // };
   const openNewClientsModal = () => {
     setIsNewClientModalVisible(true);
   };
@@ -56,49 +57,7 @@ export default function Dashboard() {
           <a className="text-white/50 group-hover:text-white group-hover:smooth-hover text-center" href="#">NEW CLIENT</a>
 
           {isNewClientModalVisible ? (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="modal-overlay absolute w-full h-full backdrop-blur-md" />
-              <div className="modal-container bg-gradient-to-tr from-blue-800 to-green-400 w-11/12 md:max-w-md mx-auto rounded-xl shadow-lg z-50 p-4">
-                <div className="modal-content py-4 text-left px-6 mb-5">
-                  <h1 className="text-3xl font-bold mb-4">Add New Client</h1>
-                  <p className="mb-2">Add a new client to generate documents</p>
-                  <div className="mt-6">
-                    <label className="text-lg font-medium">Client Name:</label>
-                    <input
-                      className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-                      placeholder="e.g. John Smith"
-                    />
-                  </div>
-                  <div className="mt-4">
-                    <label className="text-lg font-medium">Date of Violation:</label>
-                    <input
-                      className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-                      type="date"
-                    />
-                  </div>
-                  <div className="mt-4 mb-5">
-                    <label className="text-lg font-medium">Violation Number or Ticket Number:</label>
-                    <input
-                      className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-                      placeholder="e.g. 1217E23006116"
-                      type="text"
-                    />
-                  </div>
-                </div>
-                <div className="flex justify-between">
-                <button
-                    
-                    className="modal-action-button px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500"
-                  >
-                    <span><BiArrowBack/></span>
-                  </button>
-                  <button className="modal-action-button px-4 text-black py-2 bg-white rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500">
-                    Add Client
-                  </button>
-              
-                </div>
-              </div>
-            </div>
+            <NewClientModal />
 ) : null}
 
           
@@ -109,102 +68,7 @@ export default function Dashboard() {
           <p className="text-white/50">VIEW ALL 55 CLIENTS </p>
 
           {isAllClientsModalVisible ? (
-            <div className="fixed inset-0 flex items-center justify-center z-50">
-              <div className="modal-overlay absolute w-full h-full backdrop-blur-md" />
-              <div className="modal-container bg-white w-3/4 md:w-3/5 mx-auto rounded shadow-lg z-50 p-4">
-                <div className="modal-content py-4 text-left px-6 mb-5">
-                  <section className="py-8">
-                    <div className="container px-4 mx-auto">
-                      <div className="pt-4 bg-white shadow rounded">
-                        <div className="flex px-6 pb-4 border-b">
-                          <h3 className="text-xl font-bold">All Clients</h3>
-                        </div>
-                        <div className="p-4 overflow-x-auto">
-                          <table className="table-auto w-full">
-                            <thead>
-                              <tr className="text-xs text-gray-500 text-left">
-                                <th className="pb-3 font-medium">Client Name</th>
-                                <th className="pb-3 font-medium">Violation Number</th>
-                                <th className="pb-3 font-medium">Date of Violation</th>
-                                <th className="pb-3 font-medium">Email Address</th>
-                                <th className="pb-3 font-medium">Actions</th>
-                              </tr>
-                            </thead>
-                            <tbody>
-                              <tr className="text-xs bg-gray-50">
-                                <td className="py-5 px-6 font-medium">Jonathan Rosenblum</td>
-                                <td className="font-medium">E12849348213</td>
-                                <td className="py-5 px-6 font-medium">October 23rd, 2023</td>
-                                <td className="font-medium">jon.m.rosenblum@gmail.com</td>
-                                <td className="font-medium">Edit Client</td>
-                              </tr>
-                            </tbody>
-                            <tbody>
-                              <tr className="text-xs bg-gray-50">
-                                <td className="py-5 px-6 font-medium">Jonathan Rosenblum</td>
-                                <td className="font-medium">E12849348213</td>
-                                <td className="py-5 px-6 font-medium">October 23rd, 2023</td>
-                                <td className="font-medium">jon.m.rosenblum@gmail.com</td>
-                                <td className="font-medium">Edit Client</td>
-                              </tr>
-                            </tbody>
-                            <tbody>
-                              <tr className="text-xs bg-gray-50">
-                                <td className="py-5 px-6 font-medium">Jonathan Rosenblum</td>
-                                <td className="font-medium">E12849348213</td>
-                                <td className="py-5 px-6 font-medium">October 23rd, 2023</td>
-                                <td className="font-medium">jon.m.rosenblum@gmail.com</td>
-                                <td className="font-medium">Edit Client</td>
-                              </tr>
-                            </tbody>
-                            <tbody>
-                              <tr className="text-xs bg-gray-50">
-                                <td className="py-5 px-6 font-medium">Jonathan Rosenblum</td>
-                                <td className="font-medium">E12849348213</td>
-                                <td className="py-5 px-6 font-medium">October 23rd, 2023</td>
-                                <td className="font-medium">jon.m.rosenblum@gmail.com</td>
-                                <td className="font-medium">Edit Client</td>
-                              </tr>
-                            </tbody>
-                            <tbody>
-                              <tr className="text-xs bg-gray-50 border-b border-gray-800 rounded-lg">
-                                <td className="py-5 px-6 font-medium">Jonathan Rosenblum</td>
-                                <td className="font-medium">E12849348213</td>
-                                <td className="py-5 px-6 font-medium">October 23rd, 2023</td>
-                                <td className="font-medium">jon.m.rosenblum@gmail.com</td>
-                                <td className="font-medium">Edit Client</td>
-                              </tr>
-                            </tbody>
-                            <tbody>
-                              <tr className="text-xs bg-gray-50 border-b border-gray-800 rounded-lg">
-                                <td className="py-5 px-6 font-medium">Jonathan Rosenblum</td>
-                                <td className="font-medium">E12849348213</td>
-                                <td className="py-5 px-6 font-medium">October 23rd, 2023</td>
-                                <td className="font-medium">jon.m.rosenblum@gmail.com</td>
-                                <td className="font-medium">Edit Client</td>
-                              </tr>
-                            </tbody>
-                          </table>
-                        </div>
-                      </div>
-                    </div>
-                  </section>
-                  
-                  
-                </div>
-                <div className="flex justify-between">
-                  <button className="modal-action-button px-4 py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-700">
-                    Add Client
-                  </button>
-                  <button
-                    onClick={closeAllClientsModal}
-                    className="modal-action-button px-4 py-2 bg-blue-500 text-white font-bold rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-700"
-                  >
-                    Back
-                  </button>
-                </div>
-              </div>
-            </div>
+            <AllClientsModal />
 ) : null}
 
         </div>
