@@ -62,3 +62,4 @@ def convert_to_pdf(docx_path, pdf_path):
 convert_to_pdf(discovery_output_path_docx, discovery_output_path_pdf)
 convert_to_pdf(representation_output_path_docx, representation_output_path_pdf)
 convert_to_pdf(retainer_output_path_docx, retainer_output_path_pdf)
+
