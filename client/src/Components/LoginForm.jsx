@@ -3,15 +3,16 @@ import axios from "axios";
 
 export default function LoginForm() {
 
-    const [formData, setFormData] = useState({client_name: '', violation_date: ''});
+    const [formData, setFormData] = useState({email: '', password: ''});
     const formRef = useRef(null);
 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+        console.log(formData);
       
         try {
-          const response = await axios.post("/search", formData, {
+          const response = await axios.post("/login", formData, {
             headers: {
               "Content-Type": "application/json",
             },
@@ -38,7 +39,10 @@ export default function LoginForm() {
                     <label className="text-white text-lg font-medium">Email</label>
                     <input
                     className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-                    placeholder="Enter your email"/>
+                    placeholder="Enter your email"
+                    onChange={(e)=> setFormData({...formData, email: e.target.value})}
+                    />
+
                 </div>
                 <div className="mt-2">
                     <label className="text-white text-lg font-medium">Password</label>
@@ -46,7 +50,7 @@ export default function LoginForm() {
                     className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                     placeholder="Enter your password"
                     type="password"
-                    onChange={(e)=> setFormData({...formData, violation_date: e.target})}/>
+                    onChange={(e)=> setFormData({...formData, password: e.target.value})}/>
                 </div>
                 <div className="mt-8 flex justify-between items-center">
                     <div className="">
@@ -70,7 +74,7 @@ export default function LoginForm() {
                             Sign in with Google
                     </button>
                 </div>
-                </form>
+              </form>
             </div>
         </div>
     )
