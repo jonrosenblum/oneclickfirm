@@ -1,5 +1,10 @@
-import PlusSignSVG from "../assets/plus-sign-svgrepo-com.svg"
-import AllClientsPNG from "../assets/users-svgrepo-com (1).png"
+import PlusSignSVG from "../assets/plus-svgrepo-com.svg"
+import AllClientsPNG from "../assets/users-svgrepo-com (4).png"
+import DocumentsPNG from "../assets/documents-svgrepo-com.png"
+import EditPNG from "../assets/edit-svgrepo-com.png"
+import CompletePNG from "../assets/checkmark-complete-correct-svgrepo-com.png"
+import PendingPNG from "../assets/shifts-pending-svgrepo-com.png"
+
 
 export default function Dashboard() {
     return (
@@ -28,28 +33,28 @@ export default function Dashboard() {
           <a className="text-white/50 group-hover:text-white group-hover:smooth-hover text-center" href="#">NEW CLIENT</a>
         </div>
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
-          <img className="w-20 h-20 object-cover object-center rounded-full" src={AllClientsPNG} alt="cuisine" />
+          <img className="w-20 h-20 object-cover object-center rounded-full" src={AllClientsPNG} alt="all clients" />
           <h4 className="text-white text-2xl font-bold capitalize text-center"> ALL CLIENTS</h4>
           <p className="text-white/50">VIEW ALL 55 CLIENTS </p>
         </div>
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
-        <img className="w-20 h-20 object-cover object-center rounded-full" src="https://logoipsum.com/logoipsum.png" alt="cuisine" />
+        <img className="w-20 h-20 object-cover object-center rounded-full" src={DocumentsPNG} alt="generate documents" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">DOCUMENTS</h4>
           <p className="text-white/50">GENERATE CLIENT DOCS</p>
         </div>
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
-        <img className="w-20 h-20 object-cover object-center rounded-full" src="https://logoipsum.com/logoipsum.png" alt="cuisine" />
+        <img className="w-20 h-20 object-cover object-center rounded-full" src={EditPNG} alt="update client" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">EDIT CLIENT</h4>
           <p className="text-white/50">UPDATE CLIENT INFO</p>
         </div>
         <div></div>
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
-        <img className="w-20 h-20 object-cover object-center rounded-full" src="https://logoipsum.com/logoipsum.png" alt="cuisine" />
+        <img className="w-20 h-20 object-cover object-center rounded-full" src={PendingPNG} alt="pending cases" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">OPEN CASES</h4>
           <p className="text-white/50">VIEW PENDING CASES</p>
         </div>
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
-        <img className="w-20 h-20 object-cover object-center rounded-full" src="https://logoipsum.com/logoipsum.png" alt="cuisine" />
+        <img className="w-20 h-20 object-cover object-center rounded-full" src={CompletePNG} alt="complete cases" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">ARCHIVED CASES</h4>
           <p className="text-white/50"> VIEW CLOSED CASES</p>
         </div>
