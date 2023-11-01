@@ -1,7 +1,10 @@
 export default function ClientLegalInformation() {
     return(
         <div>
-            <h2 className="text-lg">RYAN K GOODE </h2>
+            <div className="p-6">
+                <div className="text-center text-lg font-medium-text-gray-900">Client Legal Information</div>
+                <div className="mt-5">
+                <h2 className="text-lg">RYAN K GOODE </h2>
             <p className="m-1 text-sm">May 30, 2022 </p>
             <p className="m-1 text-sm">36 YEAR OLD MALE from SOUTH HILL, VA </p>
 
@@ -24,6 +27,10 @@ export default function ClientLegalInformation() {
                 </div>
                
             </div>
+
+                </div>
+            </div>
+            
             
         </div>
     )

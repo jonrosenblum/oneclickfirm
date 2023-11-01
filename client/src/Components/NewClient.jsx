@@ -13,12 +13,15 @@ export default function NewClient() {
     violation_ticket_number: "",
   });
   const formRef = useRef(null);
+  const [formSubmitted, setFormSubmitted] = useState(false); // State variable to track form submission
+
 
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
+    setFormSubmitted(true);
 
     try {
       const response = await axios.post("/search", formData, {
@@ -78,20 +81,10 @@ export default function NewClient() {
           </div>
           <div className="mb-10 sm:mb-0 mt-5 grid grid-cols-2 gap-4">
             <div className="bg-white rounded-md shadow-md">
-              <div className="p-6">
-                <h3 className="text-center text-lg font-medium text-gray-900">Client Legal Information</h3>
-                <div className="mt-5">
-                  <ClientLegalInformation />
-                </div>
-              </div>
+                  {formSubmitted ? <ClientLegalInformation/> : (<>Space Holder </>)}
             </div>
             <div className="bg-white rounded-md shadow-md">
-              <div className="p-6">
-                <h3 className="text-center text-lg font-medium text-gray-900">Add</h3>
-                <div className="mt-5">
-                  <ClientAddConfirmInformation />
-                </div>
-              </div>
+                  {formSubmitted ? <ClientAddConfirmInformation/> : (<>Space Holder </>)}
             </div>
           </div>
         </div>
