@@ -5,7 +5,8 @@ import './index.css';
 import Root from './Routes/Root';
 import Home from './Routes/Home';
 import LoginPage from './Routes/LoginPage';
-import NewClient from './Components/NewClient';
+import NewClient from './Routes/NewClient';
+import GenerateDocuments from './Components/GenerateDocuments';
 
 const router = createBrowserRouter([
   {path: '', 
@@ -14,6 +15,7 @@ const router = createBrowserRouter([
     {path: 'login', element: <LoginPage />},
     {path: 'home', element: <Home />},
     {path: 'new-client', element: <NewClient />},
+    {path: 'generate-documents', element: <GenerateDocuments/>},
 
   ]}
 ]);

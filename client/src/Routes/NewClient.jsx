@@ -3,8 +3,8 @@ import { AiOutlineSearch } from "react-icons/ai";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import ClientLegalInformation from "./Pieces/ClientLegalInformation";
-import ClientAddConfirmInformation from "./Pieces/ClientAddConfirmInformation";
+import ClientLegalInformation from "../Components/Pieces/ClientLegalInformation";
+import ClientAddConfirmInformation from "../Components/Pieces/ClientAddConfirmInformation";
 
 export default function NewClient() {
   const [formData, setFormData] = useState({
@@ -42,7 +42,7 @@ export default function NewClient() {
 
     return (
 
-      <div className="bg-gray-500/30 w-full min-h-screen flex items-center justify-center">
+      <div className="bg-gradient-to-tl from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
         <div className="bg-gradient-to-tr from-blue-800 to-green-400 font-oswald flex-1 flex flex-col justify-center space-y-5 lg:space-y-0 lg:flex-row lg:space-x-10 max-w-6xl sm:p-6 sm:my-2 sm:mx-4 sm:rounded-2xl">
           <div className="flex flex-col items-center">
             <h1 className="text-3xl text-white">SEARCH FOR CLIENTS</h1>

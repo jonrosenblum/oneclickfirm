@@ -8,8 +8,6 @@ import LogoutPNG from "../assets/logout-svgrepo-com.png"
 import NotesPNG from "../assets/notes-push-pin-svgrepo-com.png"
 import UserIcon from "../assets/user-icon-svgrepo-com.png"
 import { useState } from "react"
-import AllClientsModal from "./AllClientsModal"
-import DocumentsModal from "./DocumentsModal"
 import EditClientModal from "./EditClientModal"
 import OpenCasesModal from "./OpenCaseModal"
 import ArchivedCasesModal from "./ArchivedCases"
@@ -21,8 +19,7 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
 
-  const [isAllClientsModalVisible, setIsAllClientsModalVisible] = useState(false);
-  const [isDocumentsModalVisible, setIsDocumentsModalVisible] = useState(false);
+
   const [isEditClientModalVisible, setIsEditClientModalVisible] = useState(false);
   const [isOpenCasesModalVisible, setIsOpenCasesModalVisible] = useState(false);
   const [isArchivedCasesModalVisible, setIsArchivedCasesModalVisible] = useState(false);
@@ -31,14 +28,10 @@ export default function Dashboard() {
     navigate('/new-client');
 
   }
-
-  const openAllClientsModal = () => {
-    setIsAllClientsModalVisible(true);
+  const handleGenerateDocumentClick = () => {
+    navigate('/generate-documents');
   };
 
-  const openDocumentsModal = () => {
-    setIsDocumentsModalVisible(true);
-  };
 
   const openEditClientModal = () => {
     setIsEditClientModalVisible(true);
@@ -91,22 +84,16 @@ export default function Dashboard() {
           <a className="text-white/50 group-hover:text-white group-hover:smooth-hover text-center" href="#">ADD NEW CLIENT</a>
       </div>
 
-        <div onClick={openAllClientsModal} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+        <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
           <img className="w-20 h-20 object-cover object-center rounded-full" src={AllClientsPNG} alt="all clients" />
           <h4 className="text-white text-2xl font-bold capitalize text-center"> ALL CLIENTS</h4>
           <p className="text-white/50">VIEW ALL 55 CLIENTS </p>
-
-          {isAllClientsModalVisible ? (
-            <AllClientsModal /> ) : null}
         </div>
 
-        <div onClick={openDocumentsModal} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+        <div onClick={handleGenerateDocumentClick} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img className="w-20 h-20 object-cover object-center rounded-full" src={DocumentsPNG} alt="generate documents" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">DOCUMENTS</h4>
           <p className="text-white/50">GENERATE CLIENT DOCS</p>
-
-          {isDocumentsModalVisible ? (
-            <DocumentsModal /> ) : null}
         </div>
 
         <div onClick={openEditClientModal} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
