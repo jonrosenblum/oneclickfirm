@@ -2,7 +2,9 @@ export default function ClientLegalInformation() {
     return(
         <div>
             <h2 className="text-lg">RYAN K GOODE </h2>
+            <p className="m-1 text-sm">May 30, 2022 </p>
             <p className="m-1 text-sm">36 YEAR OLD MALE from SOUTH HILL, VA </p>
+
             <h3 className="mt-2 text-lg">Violation Information: </h3>
             <div className="ml-3">
                 <p className="m-1 text-sm">2013E22002366 - 39:3-10 / DRIVING WITHOUT A LICENSE</p>
