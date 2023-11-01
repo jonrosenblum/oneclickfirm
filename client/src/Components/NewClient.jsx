@@ -13,7 +13,7 @@ export default function NewClient() {
     violation_ticket_number: "",
   });
   const formRef = useRef(null);
-  const [formSubmitted, setFormSubmitted] = useState(false); // State variable to track form submission
+  const [formSubmitted, setFormSubmitted] = useState(false);
 
 
   const navigate = useNavigate();
