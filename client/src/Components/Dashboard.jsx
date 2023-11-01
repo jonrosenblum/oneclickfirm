@@ -8,26 +8,29 @@ import LogoutPNG from "../assets/logout-svgrepo-com.png"
 import NotesPNG from "../assets/notes-push-pin-svgrepo-com.png"
 import UserIcon from "../assets/user-icon-svgrepo-com.png"
 import { useState } from "react"
-import NewClientModal from "./NewClientModal"
 import AllClientsModal from "./AllClientsModal"
 import DocumentsModal from "./DocumentsModal"
 import EditClientModal from "./EditClientModal"
 import OpenCasesModal from "./OpenCaseModal"
 import ArchivedCasesModal from "./ArchivedCases"
+import { useNavigate } from "react-router-dom"
 
 
 export default function Dashboard() {
 
-  const [isNewClientModalVisible, setIsNewClientModalVisible] = useState(false);
+  const navigate = useNavigate();
+
+
   const [isAllClientsModalVisible, setIsAllClientsModalVisible] = useState(false);
   const [isDocumentsModalVisible, setIsDocumentsModalVisible] = useState(false);
   const [isEditClientModalVisible, setIsEditClientModalVisible] = useState(false);
   const [isOpenCasesModalVisible, setIsOpenCasesModalVisible] = useState(false);
   const [isArchivedCasesModalVisible, setIsArchivedCasesModalVisible] = useState(false);
 
-  const openNewClientsModal = () => {
-    setIsNewClientModalVisible(true);
-  };
+  const handleNewClientClick = () => {
+    navigate('/new-client');
+
+  }
 
   const openAllClientsModal = () => {
     setIsAllClientsModalVisible(true);
@@ -78,7 +81,7 @@ export default function Dashboard() {
 
 
       <div className="mb-10 sm:mb-0 mt-5 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        <div onClick={openNewClientsModal} className="group bg-gray-900/30 py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/40 hover:smooth-hover">
+        <div onClick={handleNewClientClick} className="group bg-gray-900/30 py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/40 hover:smooth-hover">
           <a className="bg-gray-900/70 text-white/50 group-hover:text-white group-hover:smooth-hover flex w-20 h-20 rounded-full items-center justify-center" href="#">
           <img
             src={PlusSignSVG}
@@ -86,9 +89,6 @@ export default function Dashboard() {
             className="h-7 w-10"/>
           </a>
           <a className="text-white/50 group-hover:text-white group-hover:smooth-hover text-center" href="#">ADD NEW CLIENT</a>
-
-          {isNewClientModalVisible ? (
-            <NewClientModal /> ) : null}
       </div>
 
         <div onClick={openAllClientsModal} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">

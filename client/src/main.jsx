@@ -5,6 +5,7 @@ import './index.css';
 import Root from './Routes/Root';
 import Home from './Routes/Home';
 import LoginPage from './Routes/LoginPage';
+import NewClient from './Components/NewClient';
 
 const router = createBrowserRouter([
   {path: '', 
@@ -12,6 +13,7 @@ const router = createBrowserRouter([
   children: [
     {path: 'login', element: <LoginPage />},
     {path: 'home', element: <Home />},
+    {path: 'new-client', element: <NewClient />},
 
   ]}
 ]);
