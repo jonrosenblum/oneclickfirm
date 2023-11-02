@@ -25,9 +25,10 @@ export default function AllClients() {
                         {clientInfo.map((client) => (
                             <div
                                 key={client.client_name}
-                                className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+                                className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col text-center space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+                                <h2 className={client.case_status === 'OPEN' ? 'text-green-500' : 'text-red-500'}>{client.case_status}</h2>
                                 <h1>{client.client_name}</h1>
-                                <p>Incident Date: {client.incident_date}</p>
+                                <p>{client.incident_date}</p>
                                 <p>County: {client.court_house_county}</p>
                                 <p>State: {client.court_house_state}</p>
                             </div>

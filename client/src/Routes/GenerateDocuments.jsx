@@ -10,24 +10,26 @@ export default function GenerateDocuments() {
 
   const navigate = useNavigate();
 
+    // Define the initial state
+    const initialFormData = {
+      client_name: "",
+      todays_date: '',
+      fax_number: "",
+      complaint_violation_ticket_numbers: "",
+      court_house_name: "",
+      court_house_address: "",
+      court_house_city: "",
+      court_house_state: "",
+      court_house_zip: "",
+      court_house_county: "",
+      client_email: "",
+      incident_date: "",
+      case_status: "OPEN",
+      dwi_status: "No",
+    };
 
-  const [formData, setFormData] = useState({
-    client_name: "",
-    todays_date: '',
-    fax_number: "",
-    complaint_violation_ticket_numbers: "",
-    court_house_name: "",
-    court_house_address: "",
-    court_house_city: "",
-    court_house_state: "",
-    court_house_zip: "",
-    court_house_county: "",
-    client_email: "",
-    incident_date: "",
-    case_status: "OPEN",
-    dwi_status: "",
 
-  });
+  const [formData, setFormData] = useState(initialFormData);
 
 
   const formRef = useRef(null);
@@ -36,6 +38,11 @@ export default function GenerateDocuments() {
     navigate('/home');
 
   }
+
+  // const handleClearForm = () => {
+  //   // Reset the form data to the initial state
+  //   setFormData(initialFormData);
+  // };
 
 
   const handleSubmit = async (e) => {
@@ -52,11 +59,13 @@ export default function GenerateDocuments() {
 
       if (response.status === 200) {
         console.log("Request Success");
+        alert("Request Success");
       } else {
         console.error("Request Failed");
       }
     } catch (error) {
       console.error("Request Error:", error);
+      alert("Request Error");
     }
   };
 
@@ -252,9 +261,16 @@ export default function GenerateDocuments() {
                 <BiArrowBack />
               </span>
             </button>
-            <button className="px-4 text-black py-2 bg-white rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500">
+            <div className="flex gap-2">
+            {/* <button onClick={handleClearForm} className="px-4 text-black py-2 bg-red-400 rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500">
+              Clear
+            </button> */}
+            <button className="px-4 text-black py-2 bg-green-400 rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500">
               Generate
             </button>
+
+            </div>
+       
           </div>
           </div>
 

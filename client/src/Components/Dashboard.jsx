@@ -7,10 +7,6 @@ import PendingPNG from "../assets/shifts-pending-svgrepo-com.png"
 import LogoutPNG from "../assets/logout-svgrepo-com.png"
 import NotesPNG from "../assets/notes-push-pin-svgrepo-com.png"
 import UserIcon from "../assets/user-icon-svgrepo-com.png"
-import { useState } from "react"
-import EditClientModal from "./EditClientModal"
-import OpenCasesModal from "./OpenCaseModal"
-import ArchivedCasesModal from "./ArchivedCases"
 import { useNavigate } from "react-router-dom"
 
 
@@ -19,34 +15,19 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
 
+  // const handleNewClientClick = () => {
+  //   navigate('/new-client');
 
-  const [isEditClientModalVisible, setIsEditClientModalVisible] = useState(false);
-  const [isOpenCasesModalVisible, setIsOpenCasesModalVisible] = useState(false);
-  const [isArchivedCasesModalVisible, setIsArchivedCasesModalVisible] = useState(false);
-
-  const handleNewClientClick = () => {
-    navigate('/new-client');
-
-  }
+  // }
   const handleGenerateDocumentClick = () => {
     navigate('/generate-documents');
   };
 
-  const handleAllClientsClick = () => {
-    navigate('/all-clients');
-  };
+  // const handleAllClientsClick = () => {
+  //   navigate('/all-clients');
+  // };
 
 
-
-  const openEditClientModal = () => {
-    setIsEditClientModalVisible(true);
-  };
-  const openOpenCasesModal = () => {
-    setIsOpenCasesModalVisible(true);
-  };
-  const openArchivedCasesModal = () => {
-    setIsArchivedCasesModalVisible(true);
-  };
 
 
 
@@ -79,7 +60,7 @@ export default function Dashboard() {
 
 
       <div className="mb-10 sm:mb-0 mt-5 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        <div onClick={handleNewClientClick} className="group bg-gray-900/30 py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/40 hover:smooth-hover">
+        <div className="group bg-gray-900/30 py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/40 hover:smooth-hover">
           <a className="bg-gray-900/70 text-white/50 group-hover:text-white group-hover:smooth-hover flex w-20 h-20 rounded-full items-center justify-center" href="#">
           <img
             src={PlusSignSVG}
@@ -89,7 +70,7 @@ export default function Dashboard() {
           <a className="text-white/50 group-hover:text-white group-hover:smooth-hover text-center" href="#">ADD NEW CLIENT</a>
       </div>
 
-        <div onClick={handleAllClientsClick} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+        <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
           <img className="w-20 h-20 object-cover object-center rounded-full" src={AllClientsPNG} alt="all clients" />
           <h4 className="text-white text-2xl font-bold capitalize text-center"> ALL CLIENTS</h4>
           <p className="text-white/50">VIEW ALL 55 CLIENTS </p>
@@ -101,39 +82,33 @@ export default function Dashboard() {
           <p className="text-white/50">GENERATE CLIENT DOCS</p>
         </div>
 
-        <div onClick={openEditClientModal} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+        <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img className="w-20 h-20 object-cover object-center rounded-full" src={EditPNG} alt="update client" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">EDIT CLIENT</h4>
           <p className="text-white/50">UPDATE CLIENT INFO</p>
 
-          {isEditClientModalVisible ? (
-            <EditClientModal /> ) : null}
         </div>
 
-        <div onClick={openOpenCasesModal}  className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+        <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img className="w-20 h-20 object-cover object-center rounded-full" src={PendingPNG} alt="pending cases" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">OPEN CASES</h4>
           <p className="text-white/50">VIEW PENDING CASES</p>
 
-          {isOpenCasesModalVisible ? (
-            <OpenCasesModal /> ) : null}
         </div>
 
-        <div onClick={openArchivedCasesModal}  className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+        <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img className="w-20 h-20 object-cover object-center rounded-full" src={CompletePNG} alt="complete cases" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">ARCHIVED CASES</h4>
           <p className="text-white/50"> VIEW CLOSED CASES</p>
 
-          {isArchivedCasesModalVisible ? (
-            <ArchivedCasesModal /> ) : null}
+    
         </div>
-        <div onClick={openArchivedCasesModal}  className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+        <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img className="w-20 h-20 object-cover object-center rounded-full" src={NotesPNG} alt="complete cases" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">CLIENT NOTES</h4>
           <p className="text-white/50">ADD A NOTE TO A CLIENT</p>
 
-          {isArchivedCasesModalVisible ? (
-            <ArchivedCasesModal /> ) : null}
+        
 
         </div>
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
