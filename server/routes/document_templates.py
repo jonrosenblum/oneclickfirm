@@ -96,31 +96,6 @@ def generate_documents():
         retainer_doc_data = base64.b64encode(retainer_file.read()).decode('utf-8')
 
 
-    # # Read the generated DOCX files as binary data
-    # with open(discovery_output_path_docx, 'rb') as discovery_file:
-    #     discovery_doc_data = discovery_file.read()
-    # with open(representation_output_path_docx, 'rb') as representation_file:
-    #     representation_doc_data = representation_file.read()
-    # with open(retainer_output_path_docx, 'rb') as retainer_file:
-    #     retainer_doc_data = retainer_file.read()
-
-    # Insert form data and document binary data into the database
-      # Define the context dictionary using form data
-    # context = {
-    #     'fax_number': form_data['fax_number'],
-    #     'todays_date': form_data['todays_date'],
-    #     'court_house_name': form_data['court_house_name'],
-    #     'court_house_street': form_data['court_house_address'],
-    #     'court_house_city': form_data['court_house_city'],
-    #     'court_house_state': form_data['court_house_state'],
-    #     'court_house_zip': form_data['court_house_zip'],
-    #     'client_name': form_data['client_name'].upper(),
-    #     'court_house_county': form_data['court_house_county'].upper(),
-    #     'court_house_name_upper': form_data['court_house_name'].upper(),
-    #     'complaint_number': form_data['complaint_violation_ticket_numbers'].replace(",", " ").upper(),
-    #     'incident_date': form_data['todays_date'],
-    # }
-    
     context = {
     'fax_number': form_data['fax_number'],
     'todays_date': form_data['todays_date'],
