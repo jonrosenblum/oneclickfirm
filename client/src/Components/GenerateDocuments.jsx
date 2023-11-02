@@ -3,6 +3,9 @@ import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
+
+import { MdOutlineDocumentScanner } from "react-icons/md";
+
 export default function GenerateDocuments() {
 
   const navigate = useNavigate();
@@ -57,21 +60,31 @@ export default function GenerateDocuments() {
   };
 
   return (
-    <div className="bg-gradient-to-tl from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
+    <div className="text-white bg-gradient-to-tl from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
       <form ref={formRef} onSubmit={handleSubmit}>
         <div className="bg-gradient-to-tr from-blue-800 to-green-400 w-10/12 mx-auto rounded-xl shadow-lg z-50 p-4">
           <div className="form-content  ## flex flex-col gap-2  ## py-4 text-left px-6 mb-5 ">
-            <h1 className="text-3xl font-bold mb-4">Generate Client Documents</h1>
-            <p className="mb-2">Complete the form to generate legal documents</p>
+            <div className="flex justify-between items-center">
+              <div>
+                <h1 className="text-3xl font-bold mb-4">Generate Client Documents</h1>
+                <p className="mb-2">Complete the form to generate legal documents</p>
+              </div>
+              <div className="text-white"><span className="text-9xl"><MdOutlineDocumentScanner/></span></div>
+              
+            </div>
 
             <div className="date-created">
-              <label>Date Created</label>
+              <div className="flex flex-col">
+              <label className="text-lg font-medium">Today&apos;s Date</label>
                   <input
-                  className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="w-1/5 border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                   type="date"
                   value={formData.todays_date}
                   onChange={(e) =>
                     setFormData({ ...formData, todays_date: e.target.value })}/>
+
+              </div>
+             
 
             </div>
             <div className="mt-3">
@@ -122,7 +135,7 @@ export default function GenerateDocuments() {
             <label className="text-lg font-medium">
                 Violation Number(s) or Ticket Number(s)
               </label>
-              <p>Please seperate values by commas *</p>
+              <p className="text-xs font-light mb-2">Please seperate values by commas *</p>
               <textarea
                 className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                 placeholder="e.g. 1217E23006116"
