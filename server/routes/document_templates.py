@@ -1,8 +1,12 @@
-from flask import Blueprint, request, jsonify, send_file
+from flask import Blueprint, request, jsonify, send_from_directory
+import zipfile
+import tempfile
 from docxtpl import DocxTemplate
 import os
 from os.path import expanduser
+import base64
 import psycopg2
+import io
 
 conn = psycopg2.connect(
     host="localhost",
@@ -82,31 +86,59 @@ def generate_documents():
     discovery_doc.save(discovery_output_path_docx)
     representation_doc.save(representation_output_path_docx)
     retainer_doc.save(retainer_output_path_docx)
-
-    # Read the generated DOCX files as binary data
+    
+    # Read the generated DOCX files as binary data and encode them in base64
     with open(discovery_output_path_docx, 'rb') as discovery_file:
-        discovery_doc_data = discovery_file.read()
+        discovery_doc_data = base64.b64encode(discovery_file.read()).decode('utf-8')
     with open(representation_output_path_docx, 'rb') as representation_file:
-        representation_doc_data = representation_file.read()
+        representation_doc_data = base64.b64encode(representation_file.read()).decode('utf-8')
     with open(retainer_output_path_docx, 'rb') as retainer_file:
-        retainer_doc_data = retainer_file.read()
+        retainer_doc_data = base64.b64encode(retainer_file.read()).decode('utf-8')
+
+
+    # # Read the generated DOCX files as binary data
+    # with open(discovery_output_path_docx, 'rb') as discovery_file:
+    #     discovery_doc_data = discovery_file.read()
+    # with open(representation_output_path_docx, 'rb') as representation_file:
+    #     representation_doc_data = representation_file.read()
+    # with open(retainer_output_path_docx, 'rb') as retainer_file:
+    #     retainer_doc_data = retainer_file.read()
 
     # Insert form data and document binary data into the database
       # Define the context dictionary using form data
+    # context = {
+    #     'fax_number': form_data['fax_number'],
+    #     'todays_date': form_data['todays_date'],
+    #     'court_house_name': form_data['court_house_name'],
+    #     'court_house_street': form_data['court_house_address'],
+    #     'court_house_city': form_data['court_house_city'],
+    #     'court_house_state': form_data['court_house_state'],
+    #     'court_house_zip': form_data['court_house_zip'],
+    #     'client_name': form_data['client_name'].upper(),
+    #     'court_house_county': form_data['court_house_county'].upper(),
+    #     'court_house_name_upper': form_data['court_house_name'].upper(),
+    #     'complaint_number': form_data['complaint_violation_ticket_numbers'].replace(",", " ").upper(),
+    #     'incident_date': form_data['todays_date'],
+    # }
+    
     context = {
-        'fax_number': form_data['fax_number'],
-        'todays_date': form_data['todays_date'],
-        'court_house_name': form_data['court_house_name'],
-        'court_house_street': form_data['court_house_address'],
-        'court_house_city': form_data['court_house_city'],
-        'court_house_state': form_data['court_house_state'],
-        'court_house_zip': form_data['court_house_zip'],
-        'client_name': form_data['client_name'].upper(),
-        'court_house_county': form_data['court_house_county'].upper(),
-        'court_house_name_upper': form_data['court_house_name'].upper(),
-        'complaint_number': form_data['complaint_violation_ticket_numbers'].replace(",", " ").upper(),
-        'incident_date': form_data['todays_date'],
-    }
+    'fax_number': form_data['fax_number'],
+    'todays_date': form_data['todays_date'],
+    'court_house_name': form_data['court_house_name'],
+    'court_house_street': form_data['court_house_address'],
+    'court_house_city': form_data['court_house_city'],
+    'court_house_state': form_data['court_house_state'],
+    'court_house_zip': form_data['court_house_zip'],
+    'client_name': form_data['client_name'].upper(),
+    'court_house_county': form_data['court_house_county'].upper(),
+    'court_house_name_upper': form_data['court_house_name'].upper(),
+    'complaint_number': form_data['complaint_violation_ticket_numbers'].replace(",", " ").upper(),
+    'incident_date': form_data['todays_date'],
+    'discovery_docx': discovery_doc_data,
+    'representation_docx': representation_doc_data,
+    'retainer_docx': retainer_doc_data,
+}
+
 
     # Render the documents with the provided context
     discovery_doc.render(context)
@@ -133,8 +165,8 @@ def generate_documents():
 
     # Insert form data and document binary data into the database
     cursor.execute(
-        "INSERT INTO client_information (client_name, court_house_name, court_house_street, court_house_city, court_house_state, court_house_zip, fax_number, court_house_county, complaint_number, incident_date discovery_docx, representation_docx, retainer_docx) VALUES (%s, %s, %s, %s, %s, %s)",
-        (form_data['client_name'], form_data['court_house_name'], discovery_doc_data, representation_doc_data, retainer_doc_data))
+        "INSERT INTO client_information (client_name, court_house_name, court_house_street, court_house_city, court_house_state, court_house_zip, fax_number, court_house_county, complaint_number, incident_date, discovery_docx, representation_docx, retainer_docx) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+        (form_data['client_name'], form_data['court_house_name'], form_data['court_house_address'], form_data['court_house_city'], form_data['court_house_state'], form_data['court_house_zip'], form_data['fax_number'], form_data['court_house_county'], form_data['complaint_violation_ticket_numbers'], form_data['todays_date'], discovery_doc_data, representation_doc_data, retainer_doc_data))
 
     # Commit the transaction and close the cursor
     conn.commit()
@@ -142,105 +174,6 @@ def generate_documents():
 
     return jsonify({"message": "Documents generated and data stored successfully"})
 
-
-# @document_templates_bp.route('/generate-documents', methods=['POST'])
-# def generate_documents():
-#     form_data = request.get_json()  # Get form data from the POST request
-#     cursor = conn.cursor()
-#     # Get the desktop path for the current user
-#     desktop_path = os.path.join(expanduser("~"), "Desktop")
-
-#     # Modify the client name to remove spaces
-#     client_name = form_data['client_name'].replace(" ", "")
-
-#     # Create a subfolder with the client's name on the desktop
-#     client_folder = os.path.join(desktop_path, client_name)
-
-#     # Ensure the client folder exists, or create it if not
-#     os.makedirs(client_folder, exist_ok=True)
-
-#     # Load the Word document templates based on 'dwi_status'
-#     template_folder = os.path.abspath("templates")
-
-#     if form_data.get('dwi_status') == 'Yes':
-#         # Load DWI Discovery Template
-#         discovery_template_path = os.path.join(template_folder, "dwidiscoverytemplate.docx")
-#     else:
-#         # Load Regular Discovery Template
-#         discovery_template_path = os.path.join(template_folder, "discoveryTemplate.docx")
-
-#     representation_template_path = os.path.join(template_folder, "representationTemplate.docx")
-#     retainer_template_path = os.path.join(template_folder, "retainerTemplate.docx")
-
-#     discovery_doc = DocxTemplate(discovery_template_path)
-#     representation_doc = DocxTemplate(representation_template_path)
-#     retainer_doc = DocxTemplate(retainer_template_path)
-
-#     print(form_data['complaint_violation_ticket_numbers'])
-#     # Define the context dictionary using form data
-#     context = {
-#         'fax_number': form_data['fax_number'],
-#         'todays_date': form_data['todays_date'],
-#         'court_house_name': form_data['court_house_name'],
-#         'court_house_street': form_data['court_house_address'],
-#         'court_house_city': form_data['court_house_city'],
-#         'court_house_state': form_data['court_house_state'],
-#         'court_house_zip': form_data['court_house_zip'],
-#         'client_name': form_data['client_name'].upper(),
-#         'court_house_county': form_data['court_house_county'].upper(),
-#         'court_house_name_upper': form_data['court_house_name'].upper(),
-#         'complaint_number': form_data['complaint_violation_ticket_numbers'].replace(",", " ").upper(),
-#         'court_house_name': form_data['court_house_name'],
-#         'incident_date': form_data['todays_date'],
-#     }
-
-#     # Render the documents with the provided context
-#     discovery_doc.render(context)
-#     representation_doc.render(context)
-#     retainer_doc.render(context)
-
-#     # Define the output file paths for DOCX files inside the client's folder
-#     discovery_output_path_docx = os.path.join(client_folder, f"{client_name}_discovery.docx")
-#     representation_output_path_docx = os.path.join(client_folder, f"{client_name}_representation.docx")
-#     retainer_output_path_docx = os.path.join(client_folder, f"{client_name}_retainer.docx")
-
-#     # Save the filled-in DOCX files
-#     discovery_doc.save(discovery_output_path_docx)
-#     representation_doc.save(representation_output_path_docx)
-#     retainer_doc.save(retainer_output_path_docx)
-    
-#     # Insert form data and document file paths into the database
-#     cursor.execute(
-#         "INSERT INTO client_documents (client_name, todays_date, court_house_name, discovery_docx_path, representation_docx_path, retainer_docx_path) VALUES (%s, %s, %s, %s, %s, %s)",
-#         (form_data['client_name'], form_data['todays_date'], form_data['court_house_name'], discovery_output_path_docx, representation_output_path_docx, retainer_output_path_docx)
-#     )
-
-#     # Commit the transaction and close the cursor
-#     conn.commit()
-#     cursor.close()
-
-#     return jsonify({"message": "Documents generated and data stored successfully"})
-
-# @document_templates_bp.route('/get-documents', methods=['GET'])
-# def get_documents():
-#     cursor = conn.cursor()
-#     cursor.execute("SELECT * FROM client_documents")
-#     documents = cursor.fetchall()
-#     cursor.close()
-#         # You can return the client documents data as JSON to your frontend
-#     client_documents = []
-#     for document in documents:
-#         client_documents.append({
-#             "id": document[0],
-#             "client_name": document[1],
-#             "todays_date": document[2],
-#             "court_house_name": document[3],
-#             "discovery_docx_path": document[4],
-#             "representation_docx_path": document[5],
-#             "retainer_docx_path": document[6]
-#         })
-
-#     return jsonify(client_documents)
 
 @document_templates_bp.route('/get-documents', methods=['GET'])
 def get_documents():
@@ -254,50 +187,58 @@ def get_documents():
 
     for document in documents:
         document_data.append({
-            "id": document[0],
-            "client_name": document[1],
-            "todays_date": document[2],
-            "court_house_name": document[3],
-            "discovery_docx": document[4],
-            "representation_docx": document[5],
-            "retainer_docx": document[6]
-        })
+        "id": document[0],
+        "client_name": document[1],
+        "court_house_name": document[2],
+        "court_house_street": document[3],
+        "court_house_city": document[4],
+        "court_house_state": document[5],
+        "court_house_zip": document[6],
+        "fax_number": document[7],
+        "court_house_county": document[8],
+        "complaint_number": document[9],
+        "incident_date": document[10],
+        "discovery_docx": base64.b64encode(document[11]).decode('utf-8') if document[11] is not None else None,
+        "representation_docx": base64.b64encode(document[12]).decode('utf-8') if document[12] is not None else None,
+        "retainer_docx": base64.b64encode(document[13]).decode('utf-8') if document[13] is not None else None
+    })
 
     return jsonify(document_data)
 
-@document_templates_bp.route('/download-document/<int:document_id>', methods=['GET'])
-def download_document(document_id):
+
+@document_templates_bp.route('/download-documents/<int:client_id>', methods=['GET'])
+def download_documents(client_id):
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM client_documents WHERE id = %s", (document_id,))
-    document = cursor.fetchone()
+    cursor.execute("SELECT * FROM client_information WHERE id = %s", (client_id,))
+    client_data = cursor.fetchone()
     cursor.close()
 
-    if document is None:
-        return jsonify({"error": "Document not found."}), 404
+    if client_data is None:
+        return jsonify({"error": "Client not found."}), 404
 
     # Define the document name for download
-    client_name = document[1]
-    document_name = f"{client_name}_document.docx"
+    client_name = client_data[1]
+    document_name = f"{client_name}_documents.zip"  # Creating a ZIP file to contain all documents
 
-    # Determine which document to download based on user selection
-    selected_document = None
-    document_type = request.args.get('document_type')
+    # Create a temporary directory to store the individual documents
+    temp_dir = tempfile.mkdtemp()
 
-    if document_type == 'discovery':
-        selected_document = document[4]
-    elif document_type == 'representation':
-        selected_document = document[5]
-    elif document_type == 'retainer':
-        selected_document = document[6]
+    # Determine which documents to include in the ZIP file
+    documents_to_include = {
+        'discovery.docx': client_data[4],
+        'representation.docx': client_data[5],
+        'retainer.docx': client_data[6],
+    }
 
-    if selected_document is None:
-        return jsonify({"error": "Document type not specified or not found."}), 400
+    with zipfile.ZipFile(os.path.join(temp_dir, document_name), 'w', zipfile.ZIP_DEFLATED) as zipf:
+        for doc_type, doc_data in documents_to_include.items():
+            if doc_data is not None:
+                doc_name = f"{client_name}_{doc_type}"
+                doc_data_bytes = doc_data.encode('utf-8')  # Convert to bytes
+                with open(os.path.join(temp_dir, doc_name), 'wb') as f:
+                    f.write(doc_data_bytes)
+                zipf.write(os.path.join(temp_dir, doc_name), arcname=doc_type)
 
-    # Send the selected document as a file attachment
-    return send_file(
-        io.BytesIO(selected_document),
-        as_attachment=True,
-        attachment_filename=document_name,
-        mimetype='application/vnd.openxmlformats-officedocument.wordprocessingml.document'
-    )
+    # Send the ZIP file containing all documents as a file attachment
+    return send_from_directory(temp_dir, document_name, as_attachment=True)
 
