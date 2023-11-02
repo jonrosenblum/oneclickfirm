@@ -2,6 +2,15 @@ from flask import Blueprint, request, jsonify
 from docxtpl import DocxTemplate
 import os
 from os.path import expanduser
+import psycopg2
+
+conn = psycopg2.connect(
+    host="localhost",
+    user="jonrosenblum",
+    password="Jnrsnblm1!",
+    port="5432",
+    database="jonrosenblum"
+)
 
 
 document_templates_bp = Blueprint('document_templates', __name__)
@@ -13,7 +22,7 @@ def documents():
 @document_templates_bp.route('/generate-documents', methods=['POST'])
 def generate_documents():
     form_data = request.get_json()  # Get form data from the POST request
-
+    cursor = conn.cursor()
     # Get the desktop path for the current user
     desktop_path = os.path.join(expanduser("~"), "Desktop")
 
@@ -75,5 +84,37 @@ def generate_documents():
     discovery_doc.save(discovery_output_path_docx)
     representation_doc.save(representation_output_path_docx)
     retainer_doc.save(retainer_output_path_docx)
+    
+    # Insert form data and document file paths into the database
+    cursor.execute(
+        "INSERT INTO client_documents (client_name, todays_date, court_house_name, discovery_docx_path, representation_docx_path, retainer_docx_path) VALUES (%s, %s, %s, %s, %s, %s)",
+        (form_data['client_name'], form_data['todays_date'], form_data['court_house_name'], discovery_output_path_docx, representation_output_path_docx, retainer_output_path_docx)
+    )
 
-    return jsonify({"message": "Documents generated successfully"})
+    # Commit the transaction and close the cursor
+    conn.commit()
+    cursor.close()
+
+    return jsonify({"message": "Documents generated and data stored successfully"})
+
+@document_templates_bp.route('/get-documents', methods=['GET'])
+def get_documents():
+    cursor = conn.cursor()
+    cursor.execute("SELECT * FROM client_documents")
+    documents = cursor.fetchall()
+    cursor.close()
+        # You can return the client documents data as JSON to your frontend
+    client_documents = []
+    for document in documents:
+        client_documents.append({
+            "id": document[0],
+            "client_name": document[1],
+            "todays_date": document[2],
+            "court_house_name": document[3],
+            "discovery_docx_path": document[4],
+            "representation_docx_path": document[5],
+            "retainer_docx_path": document[6]
+        })
+
+    return jsonify(client_documents)
+
