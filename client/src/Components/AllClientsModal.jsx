@@ -33,6 +33,16 @@ export default function AllClientsModal() {
     }
   };
 
+  const handleViolationsInput = (e) => {
+    const inputValue = e.target.value;
+    const valuesArray = inputValue.split(',').map(value => value.trim());
+    console.log(valuesArray) // Split by comma and trim each value
+    setFormData({
+      ...formData,
+      violation_ticket_numbers: valuesArray,
+    });
+  };
+
   return (
     <form ref={formRef} onSubmit={handleSubmit}>
       <div className="fixed inset-0 flex items-center justify-center z-50">
@@ -69,12 +79,8 @@ export default function AllClientsModal() {
                 className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                 placeholder="e.g. 1217E23006116"
                 type="text"
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    violation_ticket_number: e.target.value,
-                  })
-                }
+                onChange={handleViolationsInput}
+                
               />
             </div>
           </div>

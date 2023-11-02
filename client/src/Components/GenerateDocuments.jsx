@@ -20,14 +20,22 @@ export default function GenerateDocuments() {
   });
   const formRef = useRef(null);
 
-
+  const handleViolationsInput = (e) => {
+    const inputValue = e.target.value;
+    const valuesArray = inputValue.split(',').map(value => value.trim());
+    console.log(valuesArray) // Split by comma and trim each value
+    setFormData({
+      ...formData,
+      violation_ticket_numbers: valuesArray,
+    });
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
 
     try {
-      const response = await axios.post("/generate", formData, {
+      const response = await axios.post("http://localhost:5001/generate-documents", formData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -106,13 +114,7 @@ export default function GenerateDocuments() {
                 placeholder="e.g. 1217E23006116"
                 type="text"
                 rows="3"
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    complaint_violation_ticket_numbers: e.target.value,
-                  })
-                }
-              />
+                onChange={handleViolationsInput}/>
 
             </div>
           </div>
