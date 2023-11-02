@@ -10,7 +10,9 @@ app.register_blueprint(auth_bp)
 app.register_blueprint(document_templates_bp)
 
 # Configure CORS for your app
-CORS(app, resources={r"/generate-documents": {"origins": "http://localhost:5173"}})
-
+CORS(app, resources={
+    r"/generate-documents": {"origins": "http://localhost:5173"},
+    r"/get-clients": {"origins": "http://localhost:5173"},
+})
 if __name__ == "__main":
     app.run(debug=True, port=5001)

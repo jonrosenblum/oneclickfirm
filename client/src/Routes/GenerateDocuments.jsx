@@ -77,7 +77,7 @@ export default function GenerateDocuments() {
               <div className="flex flex-col">
               <label className="text-lg font-medium">Today&apos;s Date</label>
                   <input
-                  className="w-1/5 border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="w-1/5 text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                   type="date"
                   value={formData.todays_date}
                   onChange={(e) =>
@@ -92,7 +92,7 @@ export default function GenerateDocuments() {
                 <div>
                   <label className="text-lg font-medium">Client Name</label>
                   <input
-                  className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                   placeholder="John Smith"
                   onChange={(e) =>
                     setFormData({ ...formData, client_name: e.target.value })}/>
@@ -101,7 +101,7 @@ export default function GenerateDocuments() {
               <div>
                 <label className="text-lg font-medium">Violation Date</label>
                 <input
-                  className="w-3/4 border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="w-3/4 text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                   type="date"
                   onChange={(e) =>
                   setFormData({ ...formData, incident_date: e.target.value })}/>
@@ -111,7 +111,7 @@ export default function GenerateDocuments() {
                     Fax Number
                   </label>
                   <input
-                    className="border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                    className="border-2 text-black border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                     
                     type="text"
                     placeholder="(516) 404-8762"
@@ -137,7 +137,7 @@ export default function GenerateDocuments() {
               </label>
               <p className="text-xs font-light mb-2">Please seperate values by commas *</p>
               <textarea
-                className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                 placeholder="e.g. 1217E23006116"
                 type="text"
                 rows="3"
@@ -156,7 +156,7 @@ export default function GenerateDocuments() {
                 <div className='w-full'>
                   <label className="text-lg font-medium">Court House Name</label>
                   <input
-                  className="w-3/4 border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500 w-full"
+                  className="w-3/4 text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500 w-full"
                   placeholder="Woodbridge Municipal Court"
                   onChange={(e) =>
                     setFormData({ ...formData, court_house_name: e.target.value })}/>
@@ -165,7 +165,7 @@ export default function GenerateDocuments() {
               <div className='w-full'>
                 <label className="text-lg font-medium">Address Line 1</label>
                 <input
-                  className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500 w-full"
+                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500 w-full"
                   type="text"
                   placeholder="1 Main Street"
                   onChange={(e) =>
@@ -178,7 +178,7 @@ export default function GenerateDocuments() {
               <div className="w-full">
               <label className="text-lg font-medium">City</label>
                 <input
-                  className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                   type="text"
                   placeholder="Woodbridge"
                   onChange={(e) =>
@@ -188,7 +188,7 @@ export default function GenerateDocuments() {
               <div className="w-full">
               <label className="text-lg font-medium">State</label>
                 <input
-                  className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500 w-full"
+                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500 w-full"
                   type="text"
                   placeholder="NJ"
                   onChange={(e) =>
@@ -198,7 +198,7 @@ export default function GenerateDocuments() {
               <div className="w-full">
               <label className="text-lg font-medium">Zip Code</label>
                 <input
-                  className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                   type="text"
                   placeholder="07095"
                   onChange={(e) =>
@@ -211,7 +211,7 @@ export default function GenerateDocuments() {
               <div className="w-full">
               <label className="text-lg font-medium">County</label>
                 <input
-                  className="border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500 w-full"
+                  className="text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500 w-full"
                   type="text"
                   placeholder="Mercer"
                   onChange={(e) =>
@@ -221,9 +221,9 @@ export default function GenerateDocuments() {
               <div className="w-full">
                 <label className="text-lg font-medium">Client Email Address</label>
                   <input
-                    className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                    className="text-black w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                     type="text"
-                    placeholder="johnsmith@gmail.com"
+                    placeholder="E-Mail"
                     onChange={(e) =>
                     setFormData({ ...formData, client_email: e.target.value })}/>
                 
@@ -231,7 +231,7 @@ export default function GenerateDocuments() {
               <div className="w-full">
               <label className="text-lg font-medium">DWI?</label>
                 <select
-                  className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="w-full border-2 border-gray-300 text-black rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                   placeholder="07095"
                   value={formData.dwi_status}
                   onChange={(e) =>

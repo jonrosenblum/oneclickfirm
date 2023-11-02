@@ -184,6 +184,18 @@ def get_documents():
 
     return jsonify(document_data)
 
+@document_templates_bp.route('/get-clients', methods=['GET'])
+def get_clients():
+    cursor = conn.cursor()
+    cursor.execute("SELECT client_name FROM client_information")
+    client_names = cursor.fetchall()
+    cursor.close()
+
+    # Extract client names from the result set
+    client_names_list = [row[0] for row in client_names]
+
+    return jsonify(client_names_list)
+
 
 @document_templates_bp.route('/download-documents/<int:client_id>', methods=['GET'])
 def download_documents(client_id):
