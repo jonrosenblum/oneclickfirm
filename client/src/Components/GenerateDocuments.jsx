@@ -56,7 +56,7 @@ export default function GenerateDocuments() {
     <div className="bg-gradient-to-tl from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
       <form ref={formRef} onSubmit={handleSubmit}>
         <div className="bg-gradient-to-tr from-blue-800 to-green-400 w-10/12 mx-auto rounded-xl shadow-lg z-50 p-4">
-          <div className="py-4 text-left px-6 mb-5">
+          <div className="form-content  ## flex flex-col gap-2  ## py-4 text-left px-6 mb-5 ">
             <h1 className="text-3xl font-bold mb-4">Generate Client Documents</h1>
             <p className="mb-2">Complete the form to generate legal documents</p>
 
@@ -105,7 +105,7 @@ export default function GenerateDocuments() {
 
           <div className="gap-8 items-center">
 
-            <div className="m-2">
+            <div className="">
             <label className="text-lg font-medium">
                 Violation Number(s) or Ticket Number(s)
               </label>
@@ -126,20 +126,20 @@ export default function GenerateDocuments() {
             </div>
           </div>
           <div className="mt-3">
-              <div className="flex justify-between items-center mb-3">
-                <div>
+              <div className="flex justify-between items-center mb-3 gap-8">
+                <div className='w-full'>
                   <label className="text-lg font-medium">Court House Name</label>
                   <input
-                  className="w-3/4 border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="w-3/4 border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500 w-full"
                   placeholder="Woodbridge Municipal Court"
                   onChange={(e) =>
                     setFormData({ ...formData, court_house_name: e.target.value })}/>
                 </div>
 
-              <div>
+              <div className='w-full'>
                 <label className="text-lg font-medium">Address Line 1</label>
                 <input
-                  className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500 w-full"
                   type="text"
                   placeholder="1 Main Street"
                   onChange={(e) =>
@@ -148,8 +148,8 @@ export default function GenerateDocuments() {
             </div>
             
           </div>
-          <div className="flex justify-between gap-8 mt-3">
-              <div>
+          <div className="address-info flex justify-between gap-8 mt-3">
+              <div className="w-full">
               <label className="text-lg font-medium">City</label>
                 <input
                   className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
@@ -159,17 +159,17 @@ export default function GenerateDocuments() {
                   setFormData({ ...formData, court_house_city: e.target.value })}/>
                 
               </div>
-              <div>
+              <div className="w-full">
               <label className="text-lg font-medium">State</label>
                 <input
-                  className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500 w-full"
                   type="text"
                   placeholder="NJ"
                   onChange={(e) =>
                   setFormData({ ...formData, court_house_state: e.target.value })}/>
                 
               </div>
-              <div>
+              <div className="w-full">
               <label className="text-lg font-medium">Zip Code</label>
                 <input
                   className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
@@ -181,18 +181,18 @@ export default function GenerateDocuments() {
               </div>
             </div>
 
-            <div className="flex justify-between gap-8 mt-3">
-              <div>
+            <div className="country-email-dwi flex justify-between gap-8 mt-3">
+              <div className="w-full">
               <label className="text-lg font-medium">County</label>
                 <input
-                  className="border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500 w-full"
                   type="text"
                   placeholder="Mercer"
                   onChange={(e) =>
                   setFormData({ ...formData, court_house_county: e.target.value })}/>
                 
               </div>
-              <div>
+              <div className="w-full">
                 <label className="text-lg font-medium">Client Email Address</label>
                   <input
                     className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
@@ -202,7 +202,7 @@ export default function GenerateDocuments() {
                     setFormData({ ...formData, client_email: e.target.value })}/>
                 
               </div>
-              <div className="text-center">
+              <div className="w-full">
               <label className="text-lg font-medium">DWI?</label>
                 <select
                   className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
@@ -218,9 +218,7 @@ export default function GenerateDocuments() {
             </div>
             
 
-          </div>
-
-          <div className="flex justify-between">
+          <div className="flex justify-between mt-8">
             <button onClick={goHome} className="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500"
             >
               <span>
@@ -231,6 +229,8 @@ export default function GenerateDocuments() {
               Generate
             </button>
           </div>
+          </div>
+
         </div>
     </form>
     </div>
