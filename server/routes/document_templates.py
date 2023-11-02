@@ -6,7 +6,10 @@ import os
 from os.path import expanduser
 import base64
 import psycopg2
-import io
+
+
+
+# Connect to the PostgreSQL database
 
 conn = psycopg2.connect(
     host="localhost",
@@ -69,7 +72,7 @@ def generate_documents():
         'court_house_county': form_data['court_house_county'].upper(),
         'court_house_name_upper': form_data['court_house_name'].upper(),
         'complaint_number': form_data['complaint_violation_ticket_numbers'].replace(",", " ").upper(),
-        'incident_date': form_data['todays_date'],
+        'incident_date': form_data['incident_date'],
     }
 
     # Render the documents with the provided context
@@ -108,7 +111,7 @@ def generate_documents():
     'court_house_county': form_data['court_house_county'].upper(),
     'court_house_name_upper': form_data['court_house_name'].upper(),
     'complaint_number': form_data['complaint_violation_ticket_numbers'].replace(",", " ").upper(),
-    'incident_date': form_data['todays_date'],
+    'incident_date': form_data['incident_date'],
     'discovery_docx': discovery_doc_data,
     'representation_docx': representation_doc_data,
     'retainer_docx': retainer_doc_data,
@@ -140,8 +143,8 @@ def generate_documents():
 
     # Insert form data and document binary data into the database
     cursor.execute(
-        "INSERT INTO client_information (client_name, court_house_name, court_house_street, court_house_city, court_house_state, court_house_zip, fax_number, court_house_county, complaint_number, incident_date, discovery_docx, representation_docx, retainer_docx) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-        (form_data['client_name'], form_data['court_house_name'], form_data['court_house_address'], form_data['court_house_city'], form_data['court_house_state'], form_data['court_house_zip'], form_data['fax_number'], form_data['court_house_county'], form_data['complaint_violation_ticket_numbers'], form_data['todays_date'], discovery_doc_data, representation_doc_data, retainer_doc_data))
+        "INSERT INTO client_information (client_name, court_house_name, court_house_street, court_house_city, court_house_state, court_house_zip, fax_number, court_house_county, complaint_number, incident_date, date_created, discovery_docx, representation_docx, retainer_docx) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+        (form_data['client_name'], form_data['court_house_name'], form_data['court_house_address'], form_data['court_house_city'], form_data['court_house_state'], form_data['court_house_zip'], form_data['fax_number'], form_data['court_house_county'], form_data['complaint_violation_ticket_numbers'], form_data['incident_date'], form_data['todays_date'], discovery_doc_data, representation_doc_data, retainer_doc_data))
 
     # Commit the transaction and close the cursor
     conn.commit()
@@ -162,7 +165,7 @@ def get_documents():
 
     for document in documents:
         document_data.append({
-        "id": document[0],
+        "client_id": document[0],
         "client_name": document[1],
         "court_house_name": document[2],
         "court_house_street": document[3],
@@ -173,9 +176,10 @@ def get_documents():
         "court_house_county": document[8],
         "complaint_number": document[9],
         "incident_date": document[10],
-        "discovery_docx": base64.b64encode(document[11]).decode('utf-8') if document[11] is not None else None,
-        "representation_docx": base64.b64encode(document[12]).decode('utf-8') if document[12] is not None else None,
-        "retainer_docx": base64.b64encode(document[13]).decode('utf-8') if document[13] is not None else None
+        "todays_date": document[11],
+        "discovery_docx": base64.b64encode(document[12]).decode('utf-8') if document[12] is not None else None,
+        "representation_docx": base64.b64encode(document[13]).decode('utf-8') if document[13] is not None else None,
+        "retainer_docx": base64.b64encode(document[14]).decode('utf-8') if document[14] is not None else None
     })
 
     return jsonify(document_data)

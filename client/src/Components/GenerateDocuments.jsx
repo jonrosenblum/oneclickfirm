@@ -10,7 +10,7 @@ export default function GenerateDocuments() {
 
   const [formData, setFormData] = useState({
     client_name: "",
-    todays_date: "",
+    todays_date: '',
     fax_number: "",
     complaint_violation_ticket_numbers: "",
     court_house_name: "",
@@ -20,9 +20,12 @@ export default function GenerateDocuments() {
     court_house_zip: "",
     court_house_county: "",
     client_email: "",
+    incident_date: "",
     dwi_status: "",
 
   });
+
+
   const formRef = useRef(null);
 
   const goHome = () => {
@@ -34,6 +37,7 @@ export default function GenerateDocuments() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     console.log(formData);
+    
 
     try {
       const response = await axios.post("http://localhost:5001/generate-documents", formData, {
@@ -60,7 +64,16 @@ export default function GenerateDocuments() {
             <h1 className="text-3xl font-bold mb-4">Generate Client Documents</h1>
             <p className="mb-2">Complete the form to generate legal documents</p>
 
+            <div className="date-created">
+              <label>Date Created</label>
+                  <input
+                  className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  type="date"
+                  value={formData.todays_date}
+                  onChange={(e) =>
+                    setFormData({ ...formData, todays_date: e.target.value })}/>
 
+            </div>
             <div className="mt-3">
               <div className="flex justify-between gap-10 items-center mb-3">
                 <div>
@@ -73,12 +86,12 @@ export default function GenerateDocuments() {
                 </div>
 
               <div>
-                <label className="text-lg font-medium">Today&apos;s Date</label>
+                <label className="text-lg font-medium">Violation Date</label>
                 <input
                   className="w-3/4 border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                   type="date"
                   onChange={(e) =>
-                  setFormData({ ...formData, todays_date: e.target.value })}/>
+                  setFormData({ ...formData, incident_date: e.target.value })}/>
               </div>
               <div className="">
                 <label className="text-lg font-medium">
