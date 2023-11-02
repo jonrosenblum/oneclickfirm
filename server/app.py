@@ -14,5 +14,6 @@ CORS(app, resources={
     r"/generate-documents": {"origins": "http://localhost:5173"},
     r"/get-clients": {"origins": "http://localhost:5173"},
 })
+
 if __name__ == "__main":
     app.run(debug=True, port=5001)

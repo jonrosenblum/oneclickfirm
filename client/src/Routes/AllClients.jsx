@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 export default function AllClients() {
 
     const [clientNames, setClientNames] = useState([]);
 
-
+    const navigate = useNavigate();
     
 
     useEffect(() => {
@@ -21,6 +22,9 @@ export default function AllClients() {
         <div className="font-oswald flex-1 flex flex-col space-y-5 lg:space-y-0 lg:flex-row lg:space-x-10 max-w-6xl sm:p-6 sm:my-2 sm:mx-4 sm:rounded-2xl">
          
          <div className="flex-1 px-2 sm:px-0">
+          <button onClick={()=>{
+            navigate('/home')
+          }}>Go Back</button>
           
 
 
