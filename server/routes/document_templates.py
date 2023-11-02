@@ -73,6 +73,7 @@ def generate_documents():
         'court_house_name_upper': form_data['court_house_name'].upper(),
         'complaint_number': form_data['complaint_violation_ticket_numbers'].replace(",", " ").upper(),
         'incident_date': form_data['incident_date'],
+        'case_status': form_data['case_status'].upper(),
     }
 
     # Render the documents with the provided context
@@ -112,6 +113,7 @@ def generate_documents():
     'court_house_name_upper': form_data['court_house_name'].upper(),
     'complaint_number': form_data['complaint_violation_ticket_numbers'].replace(",", " ").upper(),
     'incident_date': form_data['incident_date'],
+    'case_status': form_data['case_status'].upper(),
     'discovery_docx': discovery_doc_data,
     'representation_docx': representation_doc_data,
     'retainer_docx': retainer_doc_data,
@@ -143,8 +145,8 @@ def generate_documents():
 
     # Insert form data and document binary data into the database
     cursor.execute(
-        "INSERT INTO client_information (client_name, court_house_name, court_house_street, court_house_city, court_house_state, court_house_zip, fax_number, court_house_county, complaint_number, incident_date, date_created, discovery_docx, representation_docx, retainer_docx) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-        (form_data['client_name'], form_data['court_house_name'], form_data['court_house_address'], form_data['court_house_city'], form_data['court_house_state'], form_data['court_house_zip'], form_data['fax_number'], form_data['court_house_county'], form_data['complaint_violation_ticket_numbers'], form_data['incident_date'], form_data['todays_date'], discovery_doc_data, representation_doc_data, retainer_doc_data))
+        "INSERT INTO client_information (client_name, court_house_name, court_house_street, court_house_city, court_house_state, court_house_zip, fax_number, court_house_county, complaint_number, incident_date, date_created, case_status, discovery_docx, representation_docx, retainer_docx) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+        (form_data['client_name'], form_data['court_house_name'], form_data['court_house_address'], form_data['court_house_city'], form_data['court_house_state'], form_data['court_house_zip'], form_data['fax_number'], form_data['court_house_county'], form_data['complaint_violation_ticket_numbers'], form_data['incident_date'], form_data['todays_date'], form_data['case_status'], discovery_doc_data, representation_doc_data, retainer_doc_data))
 
     # Commit the transaction and close the cursor
     conn.commit()
@@ -177,9 +179,10 @@ def get_documents():
         "complaint_number": document[9],
         "incident_date": document[10],
         "todays_date": document[11],
-        "discovery_docx": base64.b64encode(document[12]).decode('utf-8') if document[12] is not None else None,
-        "representation_docx": base64.b64encode(document[13]).decode('utf-8') if document[13] is not None else None,
-        "retainer_docx": base64.b64encode(document[14]).decode('utf-8') if document[14] is not None else None
+        "status": document[12],
+        "discovery_docx": base64.b64encode(document[13]).decode('utf-8') if document[13] is not None else None,
+        "representation_docx": base64.b64encode(document[14]).decode('utf-8') if document[14] is not None else None,
+        "retainer_docx": base64.b64encode(document[15]).decode('utf-8') if document[15] is not None else None
     })
 
     return jsonify(document_data)
@@ -187,15 +190,24 @@ def get_documents():
 @document_templates_bp.route('/get-clients', methods=['GET'])
 def get_clients():
     cursor = conn.cursor()
-    cursor.execute("SELECT client_name FROM client_information")
-    client_names = cursor.fetchall()
+    # Modify the SQL query to retrieve the required information
+    cursor.execute("SELECT client_name, incident_date, court_house_county, court_house_state, case_status FROM client_information")
+    client_data = cursor.fetchall()
     cursor.close()
 
-    # Extract client names from the result set
-    client_names_list = [row[0] for row in client_names]
+    # Create a list of dictionaries with the required data
+    client_info_list = []
+    for row in client_data:
+        client_info = {
+            "client_name": row[0],
+            "incident_date": row[1],
+            "court_house_county": row[2],
+            "court_house_state": row[3],
+            "case_status": row[4]
+        }
+        client_info_list.append(client_info)
 
-    return jsonify(client_names_list)
-
+    return jsonify(client_info_list)
 
 @document_templates_bp.route('/download-documents/<int:client_id>', methods=['GET'])
 def download_documents(client_id):

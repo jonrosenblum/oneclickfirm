@@ -24,6 +24,7 @@ export default function GenerateDocuments() {
     court_house_county: "",
     client_email: "",
     incident_date: "",
+    case_status: "OPEN",
     dwi_status: "",
 
   });
