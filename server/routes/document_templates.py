@@ -2,7 +2,7 @@ from flask import Blueprint, request, jsonify
 from docxtpl import DocxTemplate
 import os
 from os.path import expanduser
-from datetime import datetime  # Import the datetime module
+
 
 document_templates_bp = Blueprint('document_templates', __name__)
 
@@ -26,9 +26,16 @@ def generate_documents():
     # Ensure the client folder exists, or create it if not
     os.makedirs(client_folder, exist_ok=True)
 
-    # Load the Word document templates
+    # Load the Word document templates based on 'dwi_status'
     template_folder = os.path.abspath("templates")
-    discovery_template_path = os.path.join(template_folder, "discoveryTemplate.docx")
+
+    if form_data.get('dwi_status') == 'Yes':
+        # Load DWI Discovery Template
+        discovery_template_path = os.path.join(template_folder, "dwidiscoverytemplate.docx")
+    else:
+        # Load Regular Discovery Template
+        discovery_template_path = os.path.join(template_folder, "discoveryTemplate.docx")
+
     representation_template_path = os.path.join(template_folder, "representationTemplate.docx")
     retainer_template_path = os.path.join(template_folder, "retainerTemplate.docx")
 
@@ -36,15 +43,11 @@ def generate_documents():
     representation_doc = DocxTemplate(representation_template_path)
     retainer_doc = DocxTemplate(retainer_template_path)
 
-    # Format the 'todays_date' from the form data
-    todays_date_str = form_data['todays_date']
-    todays_date = datetime.strptime(todays_date_str, '%Y-%m-%d')
-    formatted_todays_date = todays_date.strftime('%B %dth, %Y')
-
+    print(form_data['complaint_violation_ticket_numbers'])
     # Define the context dictionary using form data
     context = {
         'fax_number': form_data['fax_number'],
-        'todays_date': formatted_todays_date, 
+        'todays_date': form_data['todays_date'],
         'court_house_name': form_data['court_house_name'],
         'court_house_street': form_data['court_house_address'],
         'court_house_city': form_data['court_house_city'],
@@ -52,9 +55,10 @@ def generate_documents():
         'court_house_zip': form_data['court_house_zip'],
         'client_name': form_data['client_name'].upper(),
         'court_house_county': form_data['court_house_county'].upper(),
-        'complaint_number': form_data['complaint_violation_ticket_numbers'],
+        'court_house_name_upper': form_data['court_house_name'].upper(),
+        'complaint_number': form_data['complaint_violation_ticket_numbers'].replace(",", " ").upper(),
         'court_house_name': form_data['court_house_name'],
-        'incident_date': formatted_todays_date
+        'incident_date': form_data['todays_date'],
     }
 
     # Render the documents with the provided context

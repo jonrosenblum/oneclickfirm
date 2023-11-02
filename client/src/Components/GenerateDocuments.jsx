@@ -1,8 +1,13 @@
 import { BiArrowBack } from "react-icons/bi";
 import { useRef, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
 export default function GenerateDocuments() {
+
+  const navigate = useNavigate();
+
+
   const [formData, setFormData] = useState({
     client_name: "",
     todays_date: "",
@@ -20,15 +25,11 @@ export default function GenerateDocuments() {
   });
   const formRef = useRef(null);
 
-  const handleViolationsInput = (e) => {
-    const inputValue = e.target.value;
-    const valuesArray = inputValue.split(',').map(value => value.trim());
-    console.log(valuesArray) // Split by comma and trim each value
-    setFormData({
-      ...formData,
-      violation_ticket_numbers: valuesArray,
-    });
-  };
+  const goHome = () => {
+    navigate('/home');
+
+  }
+
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -114,7 +115,13 @@ export default function GenerateDocuments() {
                 placeholder="e.g. 1217E23006116"
                 type="text"
                 rows="3"
-                onChange={handleViolationsInput}/>
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    complaint_violation_ticket_numbers: e.target.value,
+                  })
+                }
+              />
 
             </div>
           </div>
@@ -200,7 +207,7 @@ export default function GenerateDocuments() {
                 <select
                   className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
                   placeholder="07095"
-                  value="No"
+                  value={formData.dwi_status}
                   onChange={(e) =>
                   setFormData({ ...formData, dwi_status: e.target.value })}
                   >
@@ -214,8 +221,7 @@ export default function GenerateDocuments() {
           </div>
 
           <div className="flex justify-between">
-            <button
-              className="modal-action-button px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500"
+            <button onClick={goHome} className="px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500"
             >
               <span>
                 <BiArrowBack />
