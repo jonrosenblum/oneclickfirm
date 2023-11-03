@@ -7,6 +7,7 @@ from os.path import expanduser
 import base64
 import psycopg2
 import psycopg2.extras
+from flask_jwt_extended import jwt_required
 
 
 
@@ -27,7 +28,9 @@ document_templates_bp = Blueprint('document_templates', __name__)
 def documents():
     return "Documents Backend!"
 
+
 @document_templates_bp.route('/generate-documents', methods=['POST'])
+@jwt_required()
 def generate_documents():
     form_data = request.get_json()  # Get form data from the POST request
     cursor = conn.cursor()
