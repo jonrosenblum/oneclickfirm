@@ -16,38 +16,41 @@ export default function AllClients() {
     }, []);
 
     return (
-        <div className="bg-gradient-to-tr font-oswald from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
+        <div>
             {clientInfo.length === 0 ? (
-                // Render this element when clientInfo is empty
+                <div className="bg-gradient-to-tr font-oswald from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
                 <div className="overflow-y-auto max-h-[800px] text-white px-2 sm:px-0 text-center">
                     <h1 className="title font-extralight text-2xl">NO CLIENTS AVAILABLE</h1>
                     <button onClick={()=>{navigate('/new-client')}} className="px-4 mt-4 text-black font-medium py-2 bg-gray-300 rounded-md hover:bg-blue-300 focus:outline-none 
                     focus:shadow-outline-blue active:bg-blue-500">Add New Client</button>
                 </div>
+                </div>
+                
             ) : (
                 // Render client information when clientInfo is not empty
-                <section className="relative py-16">
-                    <div className="w-full mb-12 px-4">
-                        <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded bg-pink-900 text-white">
-                            <div className="rounded-t mb-0 px-4 py-3 border-0">
-                                <div className="flex flex-wrap items-center">
-                                    <div className="relative w-full px-4 max-w-full flex-grow flex-1">
-                                        <h3>All Clients</h3>
+                    <div className="bg-gradient-to-tr font-oswald from-blue-800 to-green-400 w-full p-4 min-h-screen flex">
+                        <div className="relative flex flex-col min-w-0 break-words w-full shadow-lg rounded bg-gray-900 text-white">
+                            <div className="rounded-t mb-0 px-4">
+                                <div className="flex flex-wrap">
+                                    <div className="p-4 relative w-full max-w-full flex-grow flex-1">
+                                        <h3 className="title text-2xl font-bold">All Clients</h3>
                                     </div>
                                 </div>
                                 
                             </div>
                             <div className="block w-full overflow x-auto">
+                            <div className="max-h-[800px] overflow-y-auto">
+
                         <table className="table-auto items-center w-full bg-transparent border-collapse">
                         <thead>
                             <tr>
-                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">Client Name</th>
-                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">Client ID</th>
-                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">Case Status</th>
-                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">Client Documents</th>
-                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">County </th>
-                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">State</th>
-                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-pink-800 text-pink-300 border-pink-700">Actions</th>
+                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">Client Name</th>
+                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">Client ID</th>
+                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">Case Status</th>
+                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">Client Documents</th>
+                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">County </th>
+                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">State</th>
+                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">Actions</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -63,7 +66,9 @@ export default function AllClients() {
                                                 </td>
                                                 <td>
                                                     <div className="flex">
-                                                            <img src="" alt="Document" className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow" />
+                                                    <img src="https://demos.creative-tim.com/notus-js/assets/img/team-2-800x800.jpg" alt="..." className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml"/>
+                                                    <img src="https://demos.creative-tim.com/notus-js/assets/img/team-3-800x800.jpg" alt="..." className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"/>
+                                                    <img src="https://demos.creative-tim.com/notus-js/assets/img/team-4-470x470.png" alt="..." className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4"/>
                                                         
                                                     </div>
                                                 </td>
@@ -78,26 +83,12 @@ export default function AllClients() {
                                         ))}
                                     </tbody>
                         </table>
+                            </div>
                     </div>
                         </div>
-                    </div>
-                   
-                </section>
+            </div>
+  
             )}
         </div>
     );
 }
-
-{/* <div className="text-white mb-10 sm:mb-0 mt-5 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-    {clientInfo.map((client) => (
-        <div
-            key={client.client_name}
-            className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col text-center space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
-            <h2 className={client.case_status === 'OPEN' ? 'text-green-500' : 'text-red-500'}>{client.case_status}</h2>
-            <h1>{client.client_name}</h1>
-            <p>{client.incident_date}</p>
-            <p>County: {client.court_house_county}</p>
-            <p>State: {client.court_house_state}</p>
-        </div>
-    ))}
-</div> */}
