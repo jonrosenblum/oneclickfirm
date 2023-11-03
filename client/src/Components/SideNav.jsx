@@ -14,15 +14,17 @@ import {
 import { RiDashboardFill } from "react-icons/ri";
 import { GiInjustice } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
+import { useAuthSelector } from "../services/useAuthSelector";
 
 export default function SideNav() {
   const navigate = useNavigate();
   const [sideNaveExpanded, setSideNavExpanded] = useState(true);
   const [submenuOpen, setSubmenuOpen] = useState(false);
+  const auth = useAuthSelector()
 
   const doLogout = () => {
     // clean up local storage
-    localStorage.removeItem(this.props.tokenName);
+    auth.doLogout()
     //go to login page
     navigate("/login");
   };

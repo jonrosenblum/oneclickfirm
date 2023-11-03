@@ -2,6 +2,7 @@ import LoginForm from "../Components/LoginForm";
 
 
 export default function LoginPage() {
+    
     return(
         <div className="flex w-full h-screen">
             <div className="w-full flex items-center justify-center lg:w-1/2">

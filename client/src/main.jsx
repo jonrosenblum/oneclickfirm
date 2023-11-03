@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Root from "./Routes/Root";
 import Home from "./Routes/Home";
@@ -8,6 +8,8 @@ import LoginPage from "./Routes/LoginPage";
 import NewClient from "./Routes/NewClient";
 import GenerateDocuments from "./Routes/GenerateDocuments";
 import AllClients from "./Routes/AllClients";
+import { store } from "./services/store";
+import { Provider } from "react-redux";
 
 const router = createBrowserRouter([
   {
@@ -19,6 +21,7 @@ const router = createBrowserRouter([
       </div>
     ),
     children: [
+      { path: "", element: <Navigate to='/home'/> },
       { path: "home", element: <Home /> },
       { path: "new-client", element: <NewClient /> },
       { path: "generate-documents", element: <GenerateDocuments /> },
@@ -34,6 +37,8 @@ const router = createBrowserRouter([
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <Provider store={store}>
+      <RouterProvider router={router} />
+    </Provider>
   </React.StrictMode>
 );
