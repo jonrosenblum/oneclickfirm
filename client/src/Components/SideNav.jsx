@@ -30,41 +30,49 @@ export default function SideNav() {
   };
 
   const Menus = [
-    { title: "Dashboard", onAction: { onClick: () => navigate("/home") } },
+    { title: "Dashboard", key: 1, onAction: { onClick: () => navigate("/home") } },
     {
       title: "Clients",
+      key: 2,
       submenu: true,
       icon: <BsFillPeopleFill />,
+      onAction: { onClick: () => navigate("/all-clients") },
       submenuItems: [
         {
           title: "Add New Client",
+          key:7,
           onAction: { onClick: () => navigate("/new-client") },
         },
-        {
-          title: "View All Clients",
-          onAction: { onClick: () => navigate("/all-clients") },
-        },
+        // {
+        //   title: "View All Clients",
+        //   key: 8,
+        //   onAction: { onClick: () => navigate("/all-clients") },
+        // },
       ],
     },
     {
       title: "Documents",
+      key: 3,
       icon: <AiOutlineFileText />,
       onAction: { onClick: () => navigate("/generate-documents") },
     },
 
     {
       title: "Profile",
+      key: 4,
       spacing: true,
       icon: <BsPerson />,
       onAction: { onClick: () => navigate("/profile") },
     },
     {
       title: "Settings",
+      key: 5,
       icon: <AiOutlineSetting />,
       onAction: { onClick: () => navigate("/settings") },
     },
     {
       title: "Logout",
+      key: 6,
       icon: <AiOutlineLogout />,
       onAction: { onClick: doLogout },
     },
@@ -129,10 +137,10 @@ export default function SideNav() {
         </div>
 
         <ul className="pt-2">
-          {Menus.map((menu, index) => (
-            <>
+          {Menus.map((menu) => (
+            <div key={menu.key}>
               <li
-                key={index}
+                
                 {...{ ...menu.onAction }}
                 className={`text-white text-sm flex items-center 
                     gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md ${
@@ -159,9 +167,9 @@ export default function SideNav() {
 
               {menu.submenu && submenuOpen && sideNaveExpanded && (
                 <ul>
-                  {menu.submenuItems.map((submenuItem, index) => (
+                  {menu.submenuItems.map((submenuItem) => (
                     <li
-                      key={index}
+                      key={submenuItem.key}
                       {...{ ...submenuItem.onAction }}
                       className="text-white mt-2 text-sm flex items-center gap-x-4
                                 cursor-pointer p-2 px-5 hover:bg-light-white rounded-md"
@@ -171,7 +179,7 @@ export default function SideNav() {
                   ))}
                 </ul>
               )}
-            </>
+            </div>
           ))}
         </ul>
       </div>

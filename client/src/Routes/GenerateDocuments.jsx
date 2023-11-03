@@ -76,7 +76,7 @@ export default function GenerateDocuments() {
             <div className="flex justify-between items-center">
               <div>
                 <h1 className="text-3xl font-bold mb-4">
-                  Generate Client Documents
+                  GENERATE CLIENT DOCUMENTS
                 </h1>
                 <p className="mb-2">
                   Complete the form to generate legal documents
