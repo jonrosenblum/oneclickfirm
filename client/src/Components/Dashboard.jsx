@@ -15,17 +15,17 @@ export default function Dashboard() {
   const navigate = useNavigate();
 
 
-  // const handleNewClientClick = () => {
-  //   navigate('/new-client');
+  const handleNewClientClick = () => {
+    navigate('/new-client');
 
-  // }
+  }
   const handleGenerateDocumentClick = () => {
     navigate('/generate-documents');
   };
 
-  // const handleAllClientsClick = () => {
-  //   navigate('/all-clients');
-  // };
+  const handleAllClientsClick = () => {
+    navigate('/all-clients');
+  };
 
 
 
@@ -60,7 +60,7 @@ export default function Dashboard() {
 
 
       <div className="mb-10 sm:mb-0 mt-5 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        <div className="group bg-gray-900/30 py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/40 hover:smooth-hover">
+        <div onClick={handleNewClientClick} className="group bg-gray-900/30 py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/40 hover:smooth-hover">
           <a className="bg-gray-900/70 text-white/50 group-hover:text-white group-hover:smooth-hover flex w-20 h-20 rounded-full items-center justify-center" href="#">
           <img
             src={PlusSignSVG}
@@ -70,7 +70,7 @@ export default function Dashboard() {
           <a className="text-white/50 group-hover:text-white group-hover:smooth-hover text-center" href="#">ADD NEW CLIENT</a>
       </div>
 
-        <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+        <div onClick={handleAllClientsClick} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
           <img className="w-20 h-20 object-cover object-center rounded-full" src={AllClientsPNG} alt="all clients" />
           <h4 className="text-white text-2xl font-bold capitalize text-center"> ALL CLIENTS</h4>
           <p className="text-white/50">VIEW ALL 55 CLIENTS </p>

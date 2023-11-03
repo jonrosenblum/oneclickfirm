@@ -6,6 +6,7 @@ import os
 from os.path import expanduser
 import base64
 import psycopg2
+import psycopg2.extras
 
 
 
@@ -211,7 +212,7 @@ def get_clients():
 
 @document_templates_bp.route('/download-documents/<int:client_id>', methods=['GET'])
 def download_documents(client_id):
-    cursor = conn.cursor()
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute("SELECT * FROM client_information WHERE id = %s", (client_id,))
     client_data = cursor.fetchone()
     cursor.close()
@@ -225,22 +226,26 @@ def download_documents(client_id):
 
     # Create a temporary directory to store the individual documents
     temp_dir = tempfile.mkdtemp()
+    print({'temp_dir': temp_dir})
 
     # Determine which documents to include in the ZIP file
     documents_to_include = {
-        'discovery.docx': client_data[4],
-        'representation.docx': client_data[5],
-        'retainer.docx': client_data[6],
+        'discovery.docx': client_data['discovery_docx'],  # Replace with actual column names
+        'representation.docx': client_data['representation_docx'],  # Replace with actual column names
+        'retainer.docx': client_data['retainer_docx'],  # Replace with actual column names
     }
 
     with zipfile.ZipFile(os.path.join(temp_dir, document_name), 'w', zipfile.ZIP_DEFLATED) as zipf:
-        for doc_type, doc_data in documents_to_include.items():
-            if doc_data is not None:
-                doc_name = f"{client_name}_{doc_type}"
-                doc_data_bytes = doc_data.encode('utf-8')  # Convert to bytes
-                with open(os.path.join(temp_dir, doc_name), 'wb') as f:
-                    f.write(doc_data_bytes)
-                zipf.write(os.path.join(temp_dir, doc_name), arcname=doc_type)
+        for doc_name_key, doc_data in documents_to_include.items():
+            if doc_data is None:
+                continue;
+            
+            doc_name = f"{client_name}_{doc_name_key}"
+            
+        #    # Write the document to the temporary directory
+            with open(os.path.join(temp_dir, doc_name), 'wb') as f:
+                f.write(doc_data)
+            zipf.write(os.path.join(temp_dir, doc_name), arcname=doc_name_key)
 
     # Send the ZIP file containing all documents as a file attachment
     return send_from_directory(temp_dir, document_name, as_attachment=True)

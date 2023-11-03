@@ -1,0 +1,14 @@
+{
+  "name": "stabilelf",
+  "version": "1.0.0",
+  "description": "<p align=\"center\"> <!--     <a href=\"\"><img src=\"\" /></a>     <a href=\"\"><img src=\"\"/></a>     <a href=\"\"><img src=\"\" /></a>     <a href=\"\"><img src=\"\" /></a> -->     <br>     <a href=\"\"><img src=\"https://badgen.net/github/commits/jonrosenblum/StabileLF\" /></a> </p>",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev:client": "npm --prefix client run dev",
+    "dev:server": "cd server && pipenv run python run.py",
+    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\""
+  },
+  "author": "",
+  "license": "ISC"
+}

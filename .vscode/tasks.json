@@ -1,0 +1,19 @@
+{
+	"version": "2.0.0",
+	"tasks": [
+		{
+			"type": "npm",
+			"script": "dev",
+			"problemMatcher": [],
+			"label": "npm: dev",
+			"detail": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+			"group": {
+				"kind": "build",
+				"isDefault": true
+			},
+			"runOptions": {
+				"runOn": "folderOpen"
+			}
+		}
+	]
+}
