@@ -30,7 +30,7 @@ def documents():
 
 
 @document_templates_bp.route('/generate-documents', methods=['POST'])
-@jwt_required()
+# @jwt_required()
 def generate_documents():
     form_data = request.get_json()  # Get form data from the POST request
     cursor = conn.cursor()
@@ -207,7 +207,7 @@ def get_clients():
             "incident_date": row[1],
             "court_house_county": row[2],
             "court_house_state": row[3],
-            "case_status": row[4]
+            "case_status": row[4],
         }
         client_info_list.append(client_info)
 
