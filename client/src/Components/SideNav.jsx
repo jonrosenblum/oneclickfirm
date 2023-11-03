@@ -93,7 +93,7 @@ export default function SideNav() {
   return (
     <div className="flex">
       <div
-        className={`font-oswald bg-gradient-to-tr from-blue-800 to-green-400 h-screen p-5 pt-8 
+        className={`font-oswald bg-gradient-to-tr from-blue-800 to-green-400 p-5 pt-8 
             ${sideNaveExpanded ? "w-72" : "w-20"} duration-300 relative`}
       >
         <BsArrowLeftShort
