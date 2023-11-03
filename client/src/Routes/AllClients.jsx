@@ -29,7 +29,7 @@ export default function AllClients() {
             ) : (
                 // Render client information when clientInfo is not empty
                     <div className="bg-gradient-to-tr font-oswald from-blue-800 to-green-400 w-full p-4 min-h-screen flex">
-                        <div className="relative flex flex-col min-w-0 break-words w-full shadow-lg rounded bg-gray-900 text-white">
+                        <div className="relative flex flex-col min-w-0 break-words w-full shadow-lg rounded-lg bg-gray-900 text-white">
                             <div className="rounded-t mb-0 px-4">
                                 <div className="flex flex-wrap">
                                     <div className="p-4 relative w-full max-w-full flex-grow flex-1">
@@ -39,7 +39,7 @@ export default function AllClients() {
                                 
                             </div>
                             <div className="block w-full overflow x-auto">
-                            <div className="max-h-[800px] overflow-y-auto">
+                            <div>
 
                         <table className="table-auto items-center w-full bg-transparent border-collapse">
                         <thead>
