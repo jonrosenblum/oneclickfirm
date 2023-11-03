@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { IoEllipsisVerticalCircleOutline } from 'react-icons/io5';
 
 
 
@@ -55,8 +56,8 @@ export default function AllClients() {
                         </thead>
                         <tbody>
                                         {clientInfo.map((client) => (
-                                            <tr key={client.id}>
-                                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-left flex items-center">
+                                            <tr key={client.id} className="hover:text-black hover:bg-gray-100 transition duration-150 ease-in-out">
+                                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-s whitespace-nowrap p-4 text-left flex items-center">
                                                     <img src="https://demos.creative-tim.com/notus-js/assets/img/bootstrap.jpg" className="h-12 w-12 bg-white rounded-full border" alt="Client Avatar" />
                                                     <span className="ml-3 font-bold">{client.client_name}</span>
                                                 </td>
@@ -72,11 +73,11 @@ export default function AllClients() {
                                                         
                                                     </div>
                                                 </td>
-                                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{client.court_house_county}</td>
-                                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{client.court_house_state}</td>
-                                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4 text-right">
+                                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{client.court_house_county.toUpperCase()}</td>
+                                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{client.court_house_state.toUpperCase()}</td>
+                                                <td className="border-t-0 px-9 align-middle items-center border-l-0 border-r-0 text-s whitespace-nowrap">
                                                     <span>
-                                                        <i className="fas fa-ellipsis-v text-blueGray-300 mr-2">Icon</i>
+                                                        <i className="text-red-400"><IoEllipsisVerticalCircleOutline/></i>
                                                     </span>
                                                 </td>
                                             </tr>
