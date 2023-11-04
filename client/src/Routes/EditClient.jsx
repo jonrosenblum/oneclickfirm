@@ -1,58 +1,89 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import axios from 'axios';
 
 export default function EditClient() {
-    const [clientID, setClientID] = useState('');
-    const [newCaseStatus, setNewCaseStatus] = useState('');
-    const [message, setMessage] = useState('');
+    const [clientData, setClientData] = useState([]);
 
-    const updateCaseStatus = () => {
-        // Send a PATCH request to update the case status in the backend
-        const data = {
-            case_status: newCaseStatus,
-            clientID: clientID,
-        };
-        console.log(data);
+    useEffect(() => {
+    // Fetch client data from your Flask API
+    axios.get('http://localhost:5001/get-all-clients')
+      .then(response => {
+        setClientData(response.data);
+      })
+      .catch(error => {
+        console.error('Error fetching client data', error);
+      });
+  }, []);
+    // const [clientID, setClientID] = useState('');
+    // const [newCaseStatus, setNewCaseStatus] = useState('');
+    // const [message, setMessage] = useState('');
 
-        axios
-            .patch(`http://localhost:5001/update-case-status/${clientID}`, data)
-            .then((response) => {
-                console.log(response);
-                setMessage('Case status updated successfully.');
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-                setMessage('An error occurred while updating the case status.');
-            });
-    };
+    // const updateCaseStatus = () => {
+    //     // Send a PATCH request to update the case status in the backend
+    //     const data = {
+    //         case_status: newCaseStatus,
+    //         clientID: clientID,
+    //     };
+    //     console.log(data);
+
+    //     axios
+    //         .patch(`http://localhost:5001/update-case-status/${clientID}`, data)
+    //         .then((response) => {
+    //             console.log(response);
+    //             setMessage('Case status updated successfully.');
+    //         })
+    //         .catch((error) => {
+    //             console.error('Error:', error);
+    //             setMessage('An error occurred while updating the case status.');
+    //         });
+    // };
 
     return (
-        <div>
-            <h1>Edit Client</h1>
-            <form>
-                <label htmlFor="clientID">Client ID:</label>
-                <input
-                    type="number"
-                    id="clientID"
-                    value={clientID}
-                    onChange={(e) => setClientID(e.target.value)}
-                    required
-                />
-                <br />
-                <label htmlFor="newCaseStatus">New Case Status:</label>
-                <input
-                    type="text"
-                    id="newCaseStatus"
-                    value={newCaseStatus}
-                    onChange={(e) => setNewCaseStatus(e.target.value)}
-                    required
-                />
-                <br />
-                <button type="button" onClick={updateCaseStatus}>
-                    Update Case Status
-                </button>
-            </form>
-            <p>{message}</p>
+        <div className="bg-gradient-to-tr from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
+            <div className="bg-gray-100 flex p-3 gap-8 rounded-md">
+                <div className='flex flex-col border border-2'>
+                    <h1 className='title text-2xl font-medium'>All Clients</h1>
+                    <p className='text-xs font-extralight'>Please select a client to update information</p>
+                    <form className='mt-2'>
+                        <input placeholder='Search Client'/>
+                    </form>
+                    <div className='mt-3'>
+                        <ul>
+                            {clientData.map((client, index) => (
+                                <li className="cursor-pointer hover:bg-gray-300 m-2 p-2" key={index}>{client.client_name}</li>))}
+                        </ul>
+                    </div>
+                </div>
+                <div className='flex flex-col border border-2'>
+                    <h1 className='title text-2xl font-medium'>Client Information</h1>
+                </div>
+            </div>
         </div>
     );
 }
+
+{/* <h1>Edit Client</h1>
+<form>
+    <label htmlFor="clientID">Client ID:</label>
+    <input
+        type="number"
+        id="clientID"
+        value={clientID}
+        onChange={(e) => setClientID(e.target.value)}
+        required
+    />
+    <br />
+    <label htmlFor="newCaseStatus">New Case Status:</label>
+    <input
+        type="text"
+        id="newCaseStatus"
+        value={newCaseStatus}
+        onChange={(e) => setNewCaseStatus(e.target.value)}
+        required
+    />
+    <br />
+    <button type="button" onClick={updateCaseStatus}>
+        Update Case Status
+    </button>
+</form>
+<p>{message}</p> */}

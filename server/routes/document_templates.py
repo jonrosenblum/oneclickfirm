@@ -304,3 +304,23 @@ def update_case_status(client_id):
 
     finally:
         cursor.close()  # Close the cursor
+
+
+@document_templates_bp.route('/get-all-clients', methods=['GET'])
+def get_all_clients():
+    cursor = conn.cursor()
+    # Modify the SQL query to retrieve the required information
+    cursor.execute("SELECT client_name, case_status FROM client_information")
+    client_data = cursor.fetchall()
+    cursor.close()
+
+    # Create a list of dictionaries with the required data
+    client_info_list = []
+    for row in client_data:
+        client_info = {
+            "client_name": row[0],
+            "case_status": row[1],
+        }
+        client_info_list.append(client_info)
+
+    return jsonify(client_info_list)
