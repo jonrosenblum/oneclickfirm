@@ -12,6 +12,7 @@ flask-cors = "*"
 flask-psycopg2 = "*"
 psycopg2-binary = "*"
 flask-jwt-extended = "*"
+python-decouple = "*"
 
 [dev-packages]
 

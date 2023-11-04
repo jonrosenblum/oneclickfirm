@@ -1,4 +1,5 @@
 from flask import Blueprint, request, jsonify, send_from_directory
+from decouple import config  # Import config from decouple
 import zipfile
 import tempfile
 from docxtpl import DocxTemplate
@@ -11,23 +12,28 @@ from flask_jwt_extended import jwt_required
 
 
 
-# Connect to the PostgreSQL database
+# Database configuration
+DATABASE_HOST = config("DATABASE_HOST")
+DATABASE_USER = config("DATABASE_USER")
+DATABASE_PASSWORD = config("DATABASE_PASSWORD")
+DATABASE_PORT = config("DATABASE_PORT")
+DATABASE_NAME = config("DATABASE_NAME")
 
+# Connect to the PostgreSQL database using the configuration from .env
 conn = psycopg2.connect(
-    host="localhost",
-    user="jonrosenblum",
-    password="Jnrsnblm1!",
-    port="5432",
-    database="jonrosenblum"
+    host=DATABASE_HOST,
+    user=DATABASE_USER,
+    password=DATABASE_PASSWORD,
+    port=DATABASE_PORT,
+    database=DATABASE_NAME
 )
-
-
 document_templates_bp = Blueprint('document_templates', __name__)
 
 @document_templates_bp.route('/generate', methods=['GET'])
 def documents():
     return "Documents Backend!"
 
+### THIS IS THE ROUTE THAT WILL GENERATE THE DOCUMENTS FOR A NEW CLIENT ###
 
 @document_templates_bp.route('/generate-documents', methods=['POST'])
 # @jwt_required()
@@ -115,7 +121,7 @@ def generate_documents():
         credit_doc_data = base64.b64encode(credit_card_file.read()).decode('utf-8')
 
 
-
+    # Insert form data and document binary data into the database
     context = {
     'fax_number': form_data['fax_number'],
     'todays_date': form_data['todays_date'],
@@ -180,6 +186,7 @@ def generate_documents():
 
     return jsonify({"message": "Documents generated and data stored successfully"})
 
+### THIS IS THE ROUTE TO FETCH THE CLIENT DOCUMENT ZIP FILE AND START A DOWNLOAD ###
 
 @document_templates_bp.route('/get-documents', methods=['GET'])
 def get_documents():
