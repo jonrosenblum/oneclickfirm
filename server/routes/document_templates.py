@@ -58,10 +58,12 @@ def generate_documents():
 
     representation_template_path = os.path.join(template_folder, "representationTemplate.docx")
     retainer_template_path = os.path.join(template_folder, "retainerTemplate.docx")
+    credit_card_auth_path = os.path.join(template_folder, "ccauthTemplate.docx")
 
     discovery_doc = DocxTemplate(discovery_template_path)
     representation_doc = DocxTemplate(representation_template_path)
     retainer_doc = DocxTemplate(retainer_template_path)
+    credit_card_doc = DocxTemplate(credit_card_auth_path)
 
     # Define the context dictionary using form data
     context = {
@@ -78,22 +80,29 @@ def generate_documents():
         'complaint_number': form_data['complaint_violation_ticket_numbers'].replace(",", " ").upper(),
         'incident_date': form_data['incident_date'],
         'case_status': form_data['case_status'].upper(),
+        'credit_card_number': form_data['credit_card_number'],
+        'credit_card_expiration': form_data['credit_card_expiration'],
+        'credit_card_cvv': form_data['credit_card_cvv'],
+        'client_balance': form_data['client_balance'],
     }
 
     # Render the documents with the provided context
     discovery_doc.render(context)
     representation_doc.render(context)
     retainer_doc.render(context)
+    credit_card_doc.render(context)
 
     # Define the output file paths for DOCX files inside the client's folder
     discovery_output_path_docx = os.path.join(client_folder, f"{client_name}_discovery.docx")
     representation_output_path_docx = os.path.join(client_folder, f"{client_name}_representation.docx")
     retainer_output_path_docx = os.path.join(client_folder, f"{client_name}_retainer.docx")
+    credit_card_output_path_docx = os.path.join(client_folder, f"{client_name}_creditcardauth.docx")
 
     # Save the filled-in DOCX files
     discovery_doc.save(discovery_output_path_docx)
     representation_doc.save(representation_output_path_docx)
     retainer_doc.save(retainer_output_path_docx)
+    credit_card_doc.save(credit_card_output_path_docx)
     
     # Read the generated DOCX files as binary data and encode them in base64
     with open(discovery_output_path_docx, 'rb') as discovery_file:
@@ -102,6 +111,9 @@ def generate_documents():
         representation_doc_data = base64.b64encode(representation_file.read()).decode('utf-8')
     with open(retainer_output_path_docx, 'rb') as retainer_file:
         retainer_doc_data = base64.b64encode(retainer_file.read()).decode('utf-8')
+    with open(credit_card_output_path_docx, 'rb') as credit_card_file:
+        credit_doc_data = base64.b64encode(credit_card_file.read()).decode('utf-8')
+
 
 
     context = {
@@ -118,6 +130,11 @@ def generate_documents():
     'complaint_number': form_data['complaint_violation_ticket_numbers'].replace(",", " ").upper(),
     'incident_date': form_data['incident_date'],
     'case_status': form_data['case_status'].upper(),
+    'credit_card_number': form_data['credit_card_number'],
+    'credit_card_expiration': form_data['credit_card_expiration'],
+    'credit_card_cvv': form_data['credit_card_cvv'],
+    'client_balance': form_data['client_balance'],
+    'ccauth_docx': credit_doc_data,
     'discovery_docx': discovery_doc_data,
     'representation_docx': representation_doc_data,
     'retainer_docx': retainer_doc_data,
@@ -128,16 +145,19 @@ def generate_documents():
     discovery_doc.render(context)
     representation_doc.render(context)
     retainer_doc.render(context)
+    credit_card_doc.render(context)
 
     # Define the output file paths for DOCX files inside the client's folder
     discovery_output_path_docx = os.path.join(client_folder, f"{client_name}_discovery.docx")
     representation_output_path_docx = os.path.join(client_folder, f"{client_name}_representation.docx")
     retainer_output_path_docx = os.path.join(client_folder, f"{client_name}_retainer.docx")
+    credit_card_output_path_docx = os.path.join(client_folder, f"{client_name}_creditcardauth.docx")
 
     # Save the filled-in DOCX files
     discovery_doc.save(discovery_output_path_docx)
     representation_doc.save(representation_output_path_docx)
     retainer_doc.save(retainer_output_path_docx)
+    credit_card_doc.save(credit_card_output_path_docx)
 
     # Read the generated DOCX files as binary data
     with open(discovery_output_path_docx, 'rb') as discovery_file:
@@ -146,11 +166,13 @@ def generate_documents():
         representation_doc_data = representation_file.read()
     with open(retainer_output_path_docx, 'rb') as retainer_file:
         retainer_doc_data = retainer_file.read()
+    with open(credit_card_output_path_docx, 'rb') as credit_card_file:
+        credit_doc_data = credit_card_file.read()
 
     # Insert form data and document binary data into the database
     cursor.execute(
-        "INSERT INTO client_information (client_name, court_house_name, court_house_street, court_house_city, court_house_state, court_house_zip, fax_number, court_house_county, complaint_number, incident_date, date_created, case_status, discovery_docx, representation_docx, retainer_docx) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-        (form_data['client_name'], form_data['court_house_name'], form_data['court_house_address'], form_data['court_house_city'], form_data['court_house_state'], form_data['court_house_zip'], form_data['fax_number'], form_data['court_house_county'], form_data['complaint_violation_ticket_numbers'], form_data['incident_date'], form_data['todays_date'], form_data['case_status'], discovery_doc_data, representation_doc_data, retainer_doc_data))
+        "INSERT INTO client_information (client_name, court_house_name, court_house_street, court_house_city, court_house_state, court_house_zip, fax_number, court_house_county, complaint_number, incident_date, date_created, case_status, credit_card_number, credit_card_expiration, credit_card_cvv, client_balance, ccauth_docx, discovery_docx, representation_docx, retainer_docx) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
+        (form_data['client_name'], form_data['court_house_name'], form_data['court_house_address'], form_data['court_house_city'], form_data['court_house_state'], form_data['court_house_zip'], form_data['fax_number'], form_data['court_house_county'], form_data['complaint_violation_ticket_numbers'], form_data['incident_date'], form_data['todays_date'], form_data['case_status'], form_data['credit_card_number'], form_data['credit_card_expiration'], form_data['credit_card_cvv'], form_data['client_balance'], credit_doc_data, discovery_doc_data, representation_doc_data, retainer_doc_data))
 
     # Commit the transaction and close the cursor
     conn.commit()
@@ -184,9 +206,15 @@ def get_documents():
         "incident_date": document[10],
         "todays_date": document[11],
         "status": document[12],
-        "discovery_docx": base64.b64encode(document[13]).decode('utf-8') if document[13] is not None else None,
-        "representation_docx": base64.b64encode(document[14]).decode('utf-8') if document[14] is not None else None,
-        "retainer_docx": base64.b64encode(document[15]).decode('utf-8') if document[15] is not None else None
+        "credit_card_number": document[13],
+        "credit_card_expiration": document[14],
+        "credit_card_cvv": document[15],
+        "client_balance": document[16],
+        "ccauth_docx": base64.b64encode(document[17]).decode('utf-8') if document[17] is not None else None,
+        
+        "discovery_docx": base64.b64encode(document[18]).decode('utf-8') if document[18] is not None else None,
+        "representation_docx": base64.b64encode(document[19]).decode('utf-8') if document[19] is not None else None,
+        "retainer_docx": base64.b64encode(document[20]).decode('utf-8') if document[20] is not None else None
     })
 
     return jsonify(document_data)

@@ -25,6 +25,10 @@ export default function GenerateDocuments() {
     incident_date: "",
     case_status: "OPEN",
     dwi_status: "No",
+    credit_card_number: "",
+    credit_card_expiration: "",
+    credit_card_cvv: "",
+    client_balance: "",
   };
 
 
@@ -278,6 +282,46 @@ export default function GenerateDocuments() {
               <option value="Yes">Yes</option>
               <option value="No">No</option>
             </select>
+          </div>
+          <div>
+            <label className="text-lg font-medium">Credit Card Number</label>
+            <input
+              type="text"
+              className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+              placeholder="Credit Card Number"
+              value={formData.credit_card_number}
+              required
+              onChange={(e)=> {setFormData({...formData, credit_card_number: e.target.value})}}/>
+          </div>
+          <div>
+            <label className="text-lg font-medium">Credit Card Expiration</label>
+            <input
+              type="text"
+              className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+              placeholder="MM/YY"
+              value={formData.credit_card_expiration}
+              required
+              onChange={(e)=> {setFormData({...formData, credit_card_expiration: e.target.value})}}/>
+          </div>
+          <div>
+            <label className="text-lg font-medium">Credit Card CVV</label>
+            <input
+              type="text"
+              className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+              placeholder="XXX"
+              value={formData.credit_card_cvv}
+              required
+              onChange={(e)=> {setFormData({...formData, credit_card_cvv: e.target.value})}}/>
+          </div>
+          <div>
+            <label className="text-lg font-medium">Client Balance</label>
+            <input
+              type="text"
+              className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+              placeholder="$"
+              value={formData.client_balance}
+              required
+              onChange={(e)=> {setFormData({...formData, client_balance: e.target.value})}}/>
           </div>
         </div>
 
