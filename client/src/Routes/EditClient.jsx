@@ -3,17 +3,24 @@ import axios from 'axios';
 
 export default function EditClient() {
     const [clientData, setClientData] = useState([]);
+    const [selectedClient, setSelectedClient] = useState(null);
+
 
     useEffect(() => {
-    // Fetch client data from your Flask API
-    axios.get('http://localhost:5001/get-all-clients')
-      .then(response => {
-        setClientData(response.data);
-      })
-      .catch(error => {
-        console.error('Error fetching client data', error);
-      });
-  }, []);
+        axios.get('http://localhost:5001/get-all-clients')
+        .then(response => {
+            setClientData(response.data);
+            })
+        .catch(error => {
+            console.error('Error fetching client data', error);
+        });
+    }, []);
+
+
+    const handleClientClick = (client) => {
+        setSelectedClient(client);
+    };
+
     // const [clientID, setClientID] = useState('');
     // const [newCaseStatus, setNewCaseStatus] = useState('');
     // const [message, setMessage] = useState('');
@@ -50,12 +57,18 @@ export default function EditClient() {
                     <div className='mt-3'>
                         <ul>
                             {clientData.map((client, index) => (
-                                <li className="cursor-pointer hover:bg-gray-300 m-2 p-2" key={index}>{client.client_name}</li>))}
+                                <li 
+                                onClick={() => handleClientClick(client)}
+                                className="cursor-pointer hover:bg-gray-300 m-2 p-2" key={index}>{client.client_name}</li>))}
                         </ul>
                     </div>
                 </div>
-                <div className='flex flex-col border border-2'>
+                <div className='flex-1 flex-col border border-2'>
                     <h1 className='title text-2xl font-medium'>Client Information</h1>
+                    {selectedClient && (
+                        <div>
+                            <p>{selectedClient.case_status}</p>
+                        </div>)}
                 </div>
             </div>
         </div>
