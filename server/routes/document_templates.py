@@ -253,3 +253,26 @@ def download_documents(client_id):
     # Send the ZIP file containing all documents as a file attachment
     return send_from_directory(temp_dir, document_name, as_attachment=True)
 
+
+@document_templates_bp.route('/update-case-status/<int:client_id>', methods=['PATCH'])
+def update_case_status(client_id):
+    # Get the new case status (you can pass it in the request data or use a fixed value like 'open')
+    form_data = request.get_json() 
+    new_case_status = form_data['case_status']
+    client_id = form_data['clientID']
+
+    # Connect to the database
+    cursor = conn.cursor()
+
+    try:
+        # Update the case status for the specified client
+        cursor.execute("UPDATE client_information SET case_status = %s WHERE id = %s", (new_case_status, client_id))
+        conn.commit()  # Commit the transaction
+
+        return jsonify({"message": f"Case status updated to '{new_case_status}' for client ID {client_id}"})
+    except Exception as e:
+        conn.rollback()  # Roll back the transaction in case of an error
+        return jsonify({"error": str(e)}), 500  # Return an error response with a 500 status code
+
+    finally:
+        cursor.close()  # Close the cursor

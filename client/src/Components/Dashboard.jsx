@@ -27,6 +27,9 @@ export default function Dashboard() {
     navigate('/all-clients');
   };
 
+  const handlEditClientClick = () => {
+    navigate('/edit-client');
+  };
 
 
 
@@ -82,7 +85,7 @@ export default function Dashboard() {
           <p className="text-white/50">GENERATE CLIENT DOCS</p>
         </div>
 
-        <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+        <div onClick={handlEditClientClick} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img className="w-20 h-20 object-cover object-center rounded-full" src={EditPNG} alt="update client" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">EDIT CLIENT</h4>
           <p className="text-white/50">UPDATE CLIENT INFO</p>

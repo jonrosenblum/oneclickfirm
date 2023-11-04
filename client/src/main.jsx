@@ -10,6 +10,7 @@ import GenerateDocuments from "./Routes/GenerateDocuments";
 import AllClients from "./Routes/AllClients";
 import { store } from "./services/store";
 import { Provider } from "react-redux";
+import EditClient from "./Routes/EditClient";
 
 const router = createBrowserRouter([
   {
@@ -26,6 +27,7 @@ const router = createBrowserRouter([
       { path: "new-client", element: <NewClient /> },
       { path: "generate-documents", element: <GenerateDocuments /> },
       { path: "all-clients", element: <AllClients /> },
+      { path: "edit-client", element: <EditClient /> },
       // {path: '*', element: <div><>},
       // { path: "login", element: <LoginPage /> },
     ],
