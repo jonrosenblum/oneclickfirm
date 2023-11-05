@@ -7,44 +7,43 @@ export default function EditClient() {
 
 
     useEffect(() => {
-        axios.get('http://localhost:5001/get-clients')
+        axios.get('http://localhost:5001/api/clients')
         .then(response => {
             setClientData(response.data);
             })
         .catch(error => {
             console.error('Error fetching client data', error);
         });
-    }, []);
+    }, [selectedClient]);
 
 
     const handleClientClick = (client) => {
         setSelectedClient(client);
     };
 
-    // const [clientID, setClientID] = useState('');
-    // const [newCaseStatus, setNewCaseStatus] = useState('');
-    // const [message, setMessage] = useState('');
-
-    // const updateCaseStatus = () => {
-    //     // Send a PATCH request to update the case status in the backend
-    //     const data = {
-    //         case_status: newCaseStatus,
-    //         clientID: clientID,
-    //     };
-    //     console.log(data);
-
-    //     axios
-    //         .patch(`http://localhost:5001/update-case-status/${clientID}`, data)
-    //         .then((response) => {
-    //             console.log(response);
-    //             setMessage('Case status updated successfully.');
-    //         })
-    //         .catch((error) => {
-    //             console.error('Error:', error);
-    //             setMessage('An error occurred while updating the case status.');
-    //         });
-    // };
-
+    const updateCaseStatus = () => {
+        if (selectedClient) {
+            let newStatus;
+            if (selectedClient.case_status === 'OPEN') {
+                newStatus = 'CLOSED';
+            } else {
+                newStatus = 'OPEN';
+            }
+    
+            // Send a PATCH request to update the case status
+            axios.patch(`http://localhost:5001/api/clients/${selectedClient.client_id}`, {
+                case_status: newStatus
+            })
+            .then(() => {
+                setSelectedClient({ ...selectedClient, case_status: newStatus });
+                // Do nothing here because the useEffect will handle the data reload
+            })
+            .catch(error => {
+                console.error('Error updating case status', error);
+            });
+        }
+    };
+    
     return (
         <div className="bg-gradient-to-tr from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
             <div className="bg-gray-100 flex p-3 gap-8 rounded-md">
@@ -67,12 +66,10 @@ export default function EditClient() {
                     <h1 className='title text-2xl font-medium'>Client Information</h1>
                     {selectedClient && (
                         <div className='p-6'>
+                            <div>
                             <p>{selectedClient.case_status}</p>
-                            <p>{selectedClient.case_status}</p>
-                            <p>{selectedClient.case_status}</p>
-                            <p>{selectedClient.case_status}</p>
-                            <p>{selectedClient.case_status}</p>
-                            <p>{selectedClient.case_status}</p>
+                            <button onClick={updateCaseStatus} className='button rounded-md bg-blue-500 p-4'> Change Status</button>
+                            </div>
                         </div>)}
                 </div>
             </div>

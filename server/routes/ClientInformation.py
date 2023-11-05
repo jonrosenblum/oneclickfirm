@@ -10,7 +10,7 @@ import psycopg2
 import psycopg2.extras
 from flask_jwt_extended import jwt_required
 
-document_templates_bp = Blueprint('document_templates', __name__)
+client_information_bp = Blueprint('clientInformation', __name__)
 
 # Database configuration
 DATABASE_HOST = config("DATABASE_HOST")
@@ -42,7 +42,7 @@ def create_tables_if_not_exist():
             cursor.execute("CREATE TABLE IF NOT EXISTS client_information (\
                 client_id SERIAL PRIMARY KEY, \
                 client_name VARCHAR(255), \
-                todays_date DATE, \
+                date_created DATE, \
                 credit_card_number VARCHAR(20), \
                 credit_card_expiration VARCHAR(10), \
                 credit_card_cvv VARCHAR(4), \
@@ -88,11 +88,11 @@ create_tables_if_not_exist()
 
 ################ START OF THE ROUTES #################
 
-### THIS IS THE ROUTE THAT WILL GENERATE THE DOCUMENTS FOR A NEW CLIENT ###
+### THIS IS THE ROUTE THAT WILL ADD A NEW CLIENT TO THE DATABASE AND GENERATE THE DOCUMENTS FOR A NEW CLIENT AT THE SAME TIME ###
 
-@document_templates_bp.route('/new-client', methods=['POST'])
+@client_information_bp.route('/new-client', methods=['POST'])
 # @jwt_required()
-def generate_documents():
+def new_client():
     form_data = request.get_json()  # Get form data from the POST request
     cursor = conn.cursor()
     # Get the desktop path for the current user
@@ -179,7 +179,7 @@ def generate_documents():
     # Insert form data and document binary data into the database
     context = {
     'fax_number': form_data['fax_number'],
-    'todays_date': form_data['todays_date'],
+    'date_created': form_data['todays_date'],
     'court_house_name': form_data['court_house_name'],
     'court_house_street': form_data['court_house_address'],
     'court_house_city': form_data['court_house_city'],
@@ -233,10 +233,10 @@ def generate_documents():
     # Insert form data and document binary data into the database
     # Insert data into the client_information table
     cursor.execute('''
-        INSERT INTO client_information (client_name, credit_card_number, credit_card_expiration, credit_card_cvv, client_balance, ccauth_docx, discovery_docx, representation_docx, retainer_docx)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO client_information (client_name, date_created, credit_card_number, credit_card_expiration, credit_card_cvv, client_balance, ccauth_docx, discovery_docx, representation_docx, retainer_docx)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
         RETURNING client_id
-    ''', (form_data['client_name'], form_data['credit_card_number'], form_data['credit_card_expiration'], form_data['credit_card_cvv'], form_data['client_balance'], credit_doc_data, discovery_doc_data, representation_doc_data, retainer_doc_data))
+    ''', (form_data['client_name'], form_data['todays_date'], form_data['credit_card_number'], form_data['credit_card_expiration'], form_data['credit_card_cvv'], form_data['client_balance'], credit_doc_data, discovery_doc_data, representation_doc_data, retainer_doc_data))
 
     client_id = cursor.fetchone()[0]
 
@@ -253,6 +253,7 @@ def generate_documents():
     ''', (client_id, form_data['fax_number'], form_data['court_house_name'], form_data['court_house_address'], form_data['court_house_city'], form_data['court_house_state'], form_data['court_house_zip'], form_data['court_house_county']))
 
 
+
     # Commit the transaction and close the cursor
     conn.commit()
     cursor.close()
@@ -260,13 +261,69 @@ def generate_documents():
     return jsonify({"message": "Documents generated and data stored successfully"})
 
 
+@client_information_bp.route('/api/clients/<int:client_id>', methods=['PATCH'])
+def update_case_status(client_id):
+    cursor = conn.cursor()
+    new_case_status = request.json.get('case_status')
 
+    try:
+        cursor.execute("UPDATE violations SET case_status = %s WHERE client_id = %s", (new_case_status, client_id))
+        conn.commit()
+        cursor.close()
+        return jsonify({"message": "Case status updated successfully"})
+    except Exception as e:
+        return jsonify({"error": str(e)})
+    
 
+@client_information_bp.route('/api/clients', methods=['GET'])
+def get_all_clients():
+    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    
+    try:
+        # Modify the SQL query to retrieve client information from multiple tables
+        cursor.execute("""
+            SELECT
+                ci.client_id,
+                ci.client_name,
+                ci.credit_card_number,
+                ci.credit_card_expiration,
+                ci.credit_card_cvv,
+                ci.client_balance,
+                v.case_status,
+                v.complaint_number,
+                v.incident_date,
+                co.fax_number,
+                co.court_house_name,
+                co.court_house_street,
+                co.court_house_city,
+                co.court_house_state,
+                co.court_house_zip,
+                co.court_house_county,
+                ci.ccauth_docx,
+                ci.discovery_docx,
+                ci.representation_docx,
+                ci.retainer_docx
+            FROM client_information ci
+            LEFT JOIN violations v ON ci.client_id = v.client_id
+            LEFT JOIN court_information co ON ci.client_id = co.client_id
+        """)
 
+        client_data = cursor.fetchall()
+        cursor.close()
 
+        # Convert bytea data to base64-encoded strings
+        for client in client_data:
+            for field in ['ccauth_docx', 'discovery_docx', 'representation_docx', 'retainer_docx']:
+                if client[field]:
+                    client[field] = base64.b64encode(client[field]).decode('utf-8')
 
+        return jsonify(client_data)
 
-@document_templates_bp.route('/get-clients', methods=['GET'])
+    except Exception as e:
+        return jsonify({"error": str(e)})
+    
+    
+@client_information_bp.route('/get-clients', methods=['GET'])
 def get_clients():
     cursor = conn.cursor()
     cursor.execute("SELECT * FROM client_information")
@@ -302,7 +359,10 @@ def get_clients():
         client_info_list.append(client_info)
 
     return jsonify(client_info_list)
-@document_templates_bp.route('/download-documents/<int:client_id>', methods=['GET'])
+
+
+
+@client_information_bp.route('/download-documents/<int:client_id>', methods=['GET'])
 def download_documents(client_id):
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute("SELECT * FROM client_information WHERE id = %s", (client_id,))
@@ -343,29 +403,4 @@ def download_documents(client_id):
     return send_from_directory(temp_dir, document_name, as_attachment=True)
 
 
-
-
-
-@document_templates_bp.route('/update-case-status/<int:client_id>', methods=['PATCH'])
-def update_case_status(client_id):
-    # Get the new case status (you can pass it in the request data or use a fixed value like 'open')
-    form_data = request.get_json() 
-    new_case_status = form_data['case_status']
-    client_id = form_data['clientID']
-
-    # Connect to the database
-    cursor = conn.cursor()
-
-    try:
-        # Update the case status for the specified client
-        cursor.execute("UPDATE client_information SET case_status = %s WHERE id = %s", (new_case_status, client_id))
-        conn.commit()  # Commit the transaction
-
-        return jsonify({"message": f"Case status updated to '{new_case_status}' for client ID {client_id}"})
-    except Exception as e:
-        conn.rollback()  # Roll back the transaction in case of an error
-        return jsonify({"error": str(e)}), 500  # Return an error response with a 500 status code
-
-    finally:
-        cursor.close()  # Close the cursor
 

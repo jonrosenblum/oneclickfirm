@@ -29,7 +29,7 @@ export default function AllClients() {
 
     useEffect(() => {
         // Fetch client information from your backend
-        axios.get('http://localhost:5001/get-clients')
+        axios.get('http://localhost:5001/api/clients')
             .then((response) => {
                 setClientInfo(response.data);
                 // Initialize the dropdown states for each row to be initially closed
