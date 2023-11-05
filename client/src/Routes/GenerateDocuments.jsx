@@ -51,7 +51,7 @@ export default function GenerateDocuments() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/generate-documents",
+        "http://localhost:5001/new-client",
         formData,
         {
           headers: {

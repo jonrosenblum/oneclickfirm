@@ -90,7 +90,7 @@ create_tables_if_not_exist()
 
 ### THIS IS THE ROUTE THAT WILL GENERATE THE DOCUMENTS FOR A NEW CLIENT ###
 
-@document_templates_bp.route('/generate-documents', methods=['POST'])
+@document_templates_bp.route('/new-client', methods=['POST'])
 # @jwt_required()
 def generate_documents():
     form_data = request.get_json()  # Get form data from the POST request
@@ -231,9 +231,27 @@ def generate_documents():
         credit_doc_data = credit_card_file.read()
 
     # Insert form data and document binary data into the database
-    cursor.execute(
-        "INSERT INTO client_information (client_name, court_house_name, court_house_street, court_house_city, court_house_state, court_house_zip, fax_number, court_house_county, complaint_number, incident_date, date_created, case_status, credit_card_number, credit_card_expiration, credit_card_cvv, client_balance, ccauth_docx, discovery_docx, representation_docx, retainer_docx) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)",
-        (form_data['client_name'], form_data['court_house_name'], form_data['court_house_address'], form_data['court_house_city'], form_data['court_house_state'], form_data['court_house_zip'], form_data['fax_number'], form_data['court_house_county'], form_data['complaint_violation_ticket_numbers'], form_data['incident_date'], form_data['todays_date'], form_data['case_status'], form_data['credit_card_number'], form_data['credit_card_expiration'], form_data['credit_card_cvv'], form_data['client_balance'], credit_doc_data, discovery_doc_data, representation_doc_data, retainer_doc_data))
+    # Insert data into the client_information table
+    cursor.execute('''
+        INSERT INTO client_information (client_name, credit_card_number, credit_card_expiration, credit_card_cvv, client_balance, ccauth_docx, discovery_docx, representation_docx, retainer_docx)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+        RETURNING client_id
+    ''', (form_data['client_name'], form_data['credit_card_number'], form_data['credit_card_expiration'], form_data['credit_card_cvv'], form_data['client_balance'], credit_doc_data, discovery_doc_data, representation_doc_data, retainer_doc_data))
+
+    client_id = cursor.fetchone()[0]
+
+    # Insert data into the violations table
+    cursor.execute('''
+        INSERT INTO violations (client_id, case_status, complaint_number, incident_date)
+        VALUES (%s, %s, %s, %s)
+    ''', (client_id, form_data['case_status'], form_data['complaint_violation_ticket_numbers'], form_data['incident_date']))
+
+    # Insert data into the court_information table
+    cursor.execute('''
+        INSERT INTO court_information (client_id, fax_number, court_house_name, court_house_street, court_house_city, court_house_state, court_house_zip, court_house_county)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+    ''', (client_id, form_data['fax_number'], form_data['court_house_name'], form_data['court_house_address'], form_data['court_house_city'], form_data['court_house_state'], form_data['court_house_zip'], form_data['court_house_county']))
+
 
     # Commit the transaction and close the cursor
     conn.commit()
