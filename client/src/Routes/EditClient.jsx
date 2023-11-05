@@ -7,7 +7,7 @@ export default function EditClient() {
 
 
     useEffect(() => {
-        axios.get('http://localhost:5001/get-all-clients')
+        axios.get('http://localhost:5001/get-clients')
         .then(response => {
             setClientData(response.data);
             })
@@ -66,7 +66,12 @@ export default function EditClient() {
                 <div className='flex-1 flex-col border border-2'>
                     <h1 className='title text-2xl font-medium'>Client Information</h1>
                     {selectedClient && (
-                        <div>
+                        <div className='p-6'>
+                            <p>{selectedClient.case_status}</p>
+                            <p>{selectedClient.case_status}</p>
+                            <p>{selectedClient.case_status}</p>
+                            <p>{selectedClient.case_status}</p>
+                            <p>{selectedClient.case_status}</p>
                             <p>{selectedClient.case_status}</p>
                         </div>)}
                 </div>

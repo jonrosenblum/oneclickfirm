@@ -19,7 +19,6 @@ DATABASE_PASSWORD = config("DATABASE_PASSWORD")
 DATABASE_PORT = config("DATABASE_PORT")
 DATABASE_NAME = config("DATABASE_NAME")
 
-# Connect to the PostgreSQL database using the configuration from .env
 conn = psycopg2.connect(
     host=DATABASE_HOST,
     user=DATABASE_USER,
@@ -29,9 +28,7 @@ conn = psycopg2.connect(
 )
 document_templates_bp = Blueprint('document_templates', __name__)
 
-@document_templates_bp.route('/generate', methods=['GET'])
-def documents():
-    return "Documents Backend!"
+################ START OF THE ROUTES #################
 
 ### THIS IS THE ROUTE THAT WILL GENERATE THE DOCUMENTS FOR A NEW CLIENT ###
 
@@ -186,51 +183,17 @@ def generate_documents():
 
     return jsonify({"message": "Documents generated and data stored successfully"})
 
-### THIS IS THE ROUTE TO FETCH THE CLIENT DOCUMENT ZIP FILE AND START A DOWNLOAD ###
 
-@document_templates_bp.route('/get-documents', methods=['GET'])
-def get_documents():
-    cursor = conn.cursor()
-    cursor.execute("SELECT * FROM client_information")
-    documents = cursor.fetchall()
-    cursor.close()
 
-    # Create a list to store the document data
-    document_data = []
 
-    for document in documents:
-        document_data.append({
-        "client_id": document[0],
-        "client_name": document[1],
-        "court_house_name": document[2],
-        "court_house_street": document[3],
-        "court_house_city": document[4],
-        "court_house_state": document[5],
-        "court_house_zip": document[6],
-        "fax_number": document[7],
-        "court_house_county": document[8],
-        "complaint_number": document[9],
-        "incident_date": document[10],
-        "todays_date": document[11],
-        "status": document[12],
-        "credit_card_number": document[13],
-        "credit_card_expiration": document[14],
-        "credit_card_cvv": document[15],
-        "client_balance": document[16],
-        "ccauth_docx": base64.b64encode(document[17]).decode('utf-8') if document[17] is not None else None,
-        
-        "discovery_docx": base64.b64encode(document[18]).decode('utf-8') if document[18] is not None else None,
-        "representation_docx": base64.b64encode(document[19]).decode('utf-8') if document[19] is not None else None,
-        "retainer_docx": base64.b64encode(document[20]).decode('utf-8') if document[20] is not None else None
-    })
 
-    return jsonify(document_data)
+
+
 
 @document_templates_bp.route('/get-clients', methods=['GET'])
 def get_clients():
     cursor = conn.cursor()
-    # Modify the SQL query to retrieve the required information
-    cursor.execute("SELECT client_name, incident_date, court_house_county, court_house_state, case_status FROM client_information")
+    cursor.execute("SELECT * FROM client_information")
     client_data = cursor.fetchall()
     cursor.close()
 
@@ -238,16 +201,31 @@ def get_clients():
     client_info_list = []
     for row in client_data:
         client_info = {
-            "client_name": row[0],
-            "incident_date": row[1],
-            "court_house_county": row[2],
-            "court_house_state": row[3],
-            "case_status": row[4],
+            "client_id": row[0],
+            "client_name": row[1],
+            "court_house_name": row[2],
+            "court_house_street": row[3],
+            "court_house_city": row[4],
+            "court_house_state": row[5],
+            "court_house_zip": row[6],
+            "fax_number": row[7],
+            "court_house_county": row[8],
+            "complaint_number": row[9],
+            "incident_date": row[10].isoformat() if row[10] else None,
+            "date_created": row[11].isoformat() if row[11] else None,
+            "case_status": row[12],
+            "credit_card_number": row[13],
+            "credit_card_expiration": row[14],
+            "credit_card_cvv": row[15],
+            "client_balance": float(row[16]) if row[16] else None,
+            "ccauth_docx": base64.b64encode(row[17]).decode('utf-8') if row[17] is not None else None,
+            "discovery_docx": base64.b64encode(row[18]).decode('utf-8') if row[18] is not None else None,
+            "representation_docx": base64.b64encode(row[19]).decode('utf-8') if row[19] is not None else None,
+            "retainer_docx": base64.b64encode(row[20]).decode('utf-8') if row[20] is not None else None,
         }
         client_info_list.append(client_info)
 
     return jsonify(client_info_list)
-
 @document_templates_bp.route('/download-documents/<int:client_id>', methods=['GET'])
 def download_documents(client_id):
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
@@ -289,6 +267,9 @@ def download_documents(client_id):
     return send_from_directory(temp_dir, document_name, as_attachment=True)
 
 
+
+
+
 @document_templates_bp.route('/update-case-status/<int:client_id>', methods=['PATCH'])
 def update_case_status(client_id):
     # Get the new case status (you can pass it in the request data or use a fixed value like 'open')
@@ -312,22 +293,3 @@ def update_case_status(client_id):
     finally:
         cursor.close()  # Close the cursor
 
-
-@document_templates_bp.route('/get-all-clients', methods=['GET'])
-def get_all_clients():
-    cursor = conn.cursor()
-    # Modify the SQL query to retrieve the required information
-    cursor.execute("SELECT client_name, case_status FROM client_information")
-    client_data = cursor.fetchall()
-    cursor.close()
-
-    # Create a list of dictionaries with the required data
-    client_info_list = []
-    for row in client_data:
-        client_info = {
-            "client_name": row[0],
-            "case_status": row[1],
-        }
-        client_info_list.append(client_info)
-
-    return jsonify(client_info_list)
