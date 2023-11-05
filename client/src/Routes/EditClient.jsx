@@ -4,6 +4,8 @@ import axios from 'axios';
 export default function EditClient() {
     const [clientData, setClientData] = useState([]);
     const [selectedClient, setSelectedClient] = useState(null);
+    const [newClientName, setNewClientName] = useState('');
+
 
 
     useEffect(() => {
@@ -43,12 +45,30 @@ export default function EditClient() {
             });
         }
     };
+
+    const updateClientName = () => {
+        if (selectedClient && newClientName) {
+            // Send a PATCH request to update the client name
+            axios.patch(`http://localhost:5001/api/clients/${selectedClient.client_id}`, {
+                client_name: newClientName
+            })
+            .then(() => {
+                console.log('Updated client name', newClientName);
+                setSelectedClient({ ...selectedClient, client_name: newClientName });
+                // Clear the input field
+                setNewClientName('');
+            })
+            .catch(error => {
+                console.error('Error updating client name', error);
+            });
+        }
+    };
     
     return (
-        <div className="bg-gradient-to-tr from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
-            <div className="bg-gray-100 flex p-3 gap-8 rounded-md">
-                <div className='flex flex-col border border-2'>
-                    <h1 className='title text-2xl font-medium'>All Clients</h1>
+        <div className="bg-gradient-to-tr p-2 from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
+            <div className="bg-gray-100 h-100 w-full flex p-3 gap-8 rounded-md">
+                <div className='flex flex-col border border-2 p-10'>
+                    <h1 className='bg-gray-400 title text-2xl font-medium'>All Clients</h1>
                     <p className='text-xs font-extralight'>Please select a client to update information</p>
                     <form className='mt-2'>
                         <input placeholder='Search Client'/>
@@ -58,17 +78,35 @@ export default function EditClient() {
                             {clientData.map((client, index) => (
                                 <li 
                                 onClick={() => handleClientClick(client)}
-                                className="cursor-pointer hover:bg-gray-300 m-2 p-2" key={index}>{client.client_name}</li>))}
+                                className="w-full cursor-pointer bg-blue-400 hover:bg-gray-300 m-2 p-2 rounded-md" key={index}>{client.client_name}</li>))}
                         </ul>
                     </div>
                 </div>
                 <div className='flex-1 flex-col border border-2'>
-                    <h1 className='title text-2xl font-medium'>Client Information</h1>
                     {selectedClient && (
-                        <div className='p-6'>
+                        <div className='m-2'>
+                            <div className='flex justify-between items-center'>
+                            <h1 className='title text-2xl font-medium m-2'>{selectedClient.client_name}</h1>
+                            <input 
+                            value={newClientName}
+                            onChange={(e)=> setNewClientName(e.target.value)}
+                            placeholder={selectedClient.client_name}/>
+                            <button onClick={updateClientName} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Update Client Name</button>
+                            </div>
+                            <div className='flex justify-between items-center'>
+                            <p> Case Status: {selectedClient.case_status}</p>
+                            <button onClick={updateCaseStatus} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Change Status</button>
+                            </div>
+                            <div className='flex justify-between items-center'>
+                            <p> Case Status: {selectedClient.case_status}</p>
+                            <button onClick={updateCaseStatus} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Change Status</button>
+                            </div>
+                            <div className='flex justify-between items-center'>
+                            <p> Case Status: {selectedClient.case_status}</p>
+                            <button onClick={updateCaseStatus} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Change Status</button>
+                            </div>
                             <div>
-                            <p>{selectedClient.case_status}</p>
-                            <button onClick={updateCaseStatus} className='button rounded-md bg-blue-500 p-4'> Change Status</button>
+                      
                             </div>
                         </div>)}
                 </div>
@@ -76,29 +114,3 @@ export default function EditClient() {
         </div>
     );
 }
-
-{/* <h1>Edit Client</h1>
-<form>
-    <label htmlFor="clientID">Client ID:</label>
-    <input
-        type="number"
-        id="clientID"
-        value={clientID}
-        onChange={(e) => setClientID(e.target.value)}
-        required
-    />
-    <br />
-    <label htmlFor="newCaseStatus">New Case Status:</label>
-    <input
-        type="text"
-        id="newCaseStatus"
-        value={newCaseStatus}
-        onChange={(e) => setNewCaseStatus(e.target.value)}
-        required
-    />
-    <br />
-    <button type="button" onClick={updateCaseStatus}>
-        Update Case Status
-    </button>
-</form>
-<p>{message}</p> */}

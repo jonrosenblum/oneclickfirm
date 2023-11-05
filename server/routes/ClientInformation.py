@@ -260,20 +260,23 @@ def new_client():
 
     return jsonify({"message": "Documents generated and data stored successfully"})
 
-
 @client_information_bp.route('/api/clients/<int:client_id>', methods=['PATCH'])
-def update_case_status(client_id):
+def update_client_info(client_id):
     cursor = conn.cursor()
     new_case_status = request.json.get('case_status')
+    new_client_name = request.json.get('client_name')
 
     try:
-        cursor.execute("UPDATE violations SET case_status = %s WHERE client_id = %s", (new_case_status, client_id))
+        if new_case_status:
+            cursor.execute("UPDATE violations SET case_status = %s WHERE client_id = %s", (new_case_status, client_id))
+        if new_client_name:
+            cursor.execute("UPDATE client_information SET client_name = %s WHERE client_id = %s", (new_client_name, client_id))
+
         conn.commit()
         cursor.close()
-        return jsonify({"message": "Case status updated successfully"})
+        return jsonify({"message": "Client information updated successfully"})
     except Exception as e:
         return jsonify({"error": str(e)})
-    
 
 @client_information_bp.route('/api/clients', methods=['GET'])
 def get_all_clients():
