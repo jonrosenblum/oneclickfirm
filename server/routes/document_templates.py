@@ -10,7 +10,7 @@ import psycopg2
 import psycopg2.extras
 from flask_jwt_extended import jwt_required
 
-
+document_templates_bp = Blueprint('document_templates', __name__)
 
 # Database configuration
 DATABASE_HOST = config("DATABASE_HOST")
@@ -19,14 +19,72 @@ DATABASE_PASSWORD = config("DATABASE_PASSWORD")
 DATABASE_PORT = config("DATABASE_PORT")
 DATABASE_NAME = config("DATABASE_NAME")
 
-conn = psycopg2.connect(
-    host=DATABASE_HOST,
-    user=DATABASE_USER,
-    password=DATABASE_PASSWORD,
-    port=DATABASE_PORT,
-    database=DATABASE_NAME
+try: 
+    conn = psycopg2.connect(
+        host=DATABASE_HOST,
+        user=DATABASE_USER,
+        password=DATABASE_PASSWORD,
+        port=DATABASE_PORT,
+        database=DATABASE_NAME
 )
-document_templates_bp = Blueprint('document_templates', __name__)
+except Exception as e:
+    print("Error connecting to the database: ", str(e))
+    conn = None 
+    
+    
+# Check if the table exists, and create it if not
+def create_tables_if_not_exist():
+    if conn is not None:
+        try:
+            cursor = conn.cursor()
+
+            # Create the client_information table
+            cursor.execute("CREATE TABLE IF NOT EXISTS client_information (\
+                client_id SERIAL PRIMARY KEY, \
+                client_name VARCHAR(255), \
+                todays_date DATE, \
+                credit_card_number VARCHAR(20), \
+                credit_card_expiration VARCHAR(10), \
+                credit_card_cvv VARCHAR(4), \
+                client_balance NUMERIC(10, 2), \
+                ccauth_docx BYTEA, \
+                discovery_docx BYTEA, \
+                representation_docx BYTEA, \
+                retainer_docx BYTEA \
+            )")
+            
+            # Create the violations table
+            cursor.execute("CREATE TABLE IF NOT EXISTS violations (\
+                violation_id SERIAL PRIMARY KEY, \
+                client_id INT, \
+                case_status VARCHAR(20), \
+                complaint_number VARCHAR(255), \
+                incident_date DATE, \
+                FOREIGN KEY (client_id) REFERENCES client_information(client_id) \
+            )")
+
+            # Create the court_information table
+            cursor.execute("CREATE TABLE IF NOT EXISTS court_information (\
+                court_id SERIAL PRIMARY KEY, \
+                client_id INT, \
+                fax_number VARCHAR(20), \
+                court_house_name VARCHAR(255), \
+                court_house_street VARCHAR(255), \
+                court_house_city VARCHAR(255), \
+                court_house_state VARCHAR(255), \
+                court_house_zip VARCHAR(10), \
+                court_house_county VARCHAR(255), \
+                FOREIGN KEY (client_id) REFERENCES client_information(client_id) \
+            )")
+            
+            conn.commit()
+            print("Tables created successfully.")
+            cursor.close()
+        except Exception as e:
+            print("Error creating tables:", str(e))
+
+create_tables_if_not_exist()
+
 
 ################ START OF THE ROUTES #################
 
