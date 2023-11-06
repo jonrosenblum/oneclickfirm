@@ -63,6 +63,38 @@ export default function EditClient() {
             });
         }
     };
+
+
+    const downloadDocuments = () => {
+      if (selectedClient) {
+        const clientId = selectedClient.client_id;
+    
+        // Construct the URL for the download route
+        const downloadURL = `/download-documents/${clientId}`;
+    
+        // Send a GET request to the backend route to download the documents
+        axios.get(downloadURL, { responseType: 'blob' })
+          .then(response => {
+            // Create a blob from the response data
+            const blob = new Blob([response.data], { type: 'application/zip' });
+    
+            // Create a URL for the blob
+            const url = window.URL.createObjectURL(blob);
+    
+            // Create an invisible anchor element to trigger the download
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = 'client_documents.zip';
+            link.click();
+    
+            // Release the URL object
+            window.URL.revokeObjectURL(url);
+          })
+          .catch(error => {
+            console.error('Error downloading documents', error);
+          });
+      }
+    };
     
     return (
         <div className="bg-gradient-to-tr p-2 from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
@@ -97,15 +129,9 @@ export default function EditClient() {
                             <p> Case Status: {selectedClient.case_status}</p>
                             <button onClick={updateCaseStatus} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Change Status</button>
                             </div>
-                            <div className='flex justify-between items-center'>
-                            <p> Case Status: {selectedClient.case_status}</p>
-                            <button onClick={updateCaseStatus} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Change Status</button>
-                            </div>
-                            <div className='flex justify-between items-center'>
-                            <p> Case Status: {selectedClient.case_status}</p>
-                            <button onClick={updateCaseStatus} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Change Status</button>
-                            </div>
                             <div>
+                                <p>Download Documents:</p>
+                                <button onClick={downloadDocuments} className='button rounded-md bg-blue-500 px-3'>Click Here</button>
                       
                             </div>
                         </div>)}

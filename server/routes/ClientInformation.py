@@ -310,7 +310,7 @@ def get_clients():
 @client_information_bp.route('/download-documents/<int:client_id>', methods=['GET'])
 def download_documents(client_id):
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute("SELECT * FROM client_information WHERE id = %s", (client_id,))
+    cursor.execute("SELECT * FROM client_information WHERE client_id = %s", (client_id,))
     client_data = cursor.fetchone()
     cursor.close()
 
