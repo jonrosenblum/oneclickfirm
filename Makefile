@@ -5,4 +5,4 @@ build: install
 	cd client && npm install && npm run build
 
 run:
-	cd server && HOST=0.0.0.0 pipenv run python3 run.py
+	cd server && HOST=0.0.0.0 pipenv run python run.py
