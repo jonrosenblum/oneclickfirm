@@ -16,7 +16,7 @@ export default function LoginForm() {
 
     try {
       const response = await axios.post(
-        "http://localhost:5001/login",
+        "/login",
         formData,
         {
           headers: {

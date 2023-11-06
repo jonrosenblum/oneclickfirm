@@ -9,7 +9,7 @@ export default function EditClient() {
 
 
     useEffect(() => {
-        axios.get('/api/clients')
+        axios.get('/clients')
         .then(response => {
             setClientData(response.data);
             })
@@ -33,7 +33,7 @@ export default function EditClient() {
             }
     
             // Send a PATCH request to update the case status
-            axios.patch(`http://localhost:5001/api/clients/${selectedClient.client_id}`, {
+            axios.patch(`/clients/${selectedClient.client_id}`, {
                 case_status: newStatus
             })
             .then(() => {
@@ -49,7 +49,7 @@ export default function EditClient() {
     const updateClientName = () => {
         if (selectedClient && newClientName) {
             // Send a PATCH request to update the client name
-            axios.patch(`http://localhost:5001/api/clients/${selectedClient.client_id}`, {
+            axios.patch(`/clients/${selectedClient.client_id}`, {
                 client_name: newClientName
             })
             .then(() => {

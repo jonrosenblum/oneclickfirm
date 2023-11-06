@@ -1,6 +1,10 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import { createBrowserRouter, Navigate, RouterProvider } from "react-router-dom";
+import {
+  createBrowserRouter,
+  Navigate,
+  RouterProvider,
+} from "react-router-dom";
 import "./index.css";
 import Root from "./Routes/Root";
 import Home from "./Routes/Home";
@@ -11,6 +15,7 @@ import AllClients from "./Routes/AllClients";
 import { store } from "./services/store";
 import { Provider } from "react-redux";
 import EditClient from "./Routes/EditClient";
+import "./axios";
 
 const router = createBrowserRouter([
   {
@@ -22,7 +27,7 @@ const router = createBrowserRouter([
       </div>
     ),
     children: [
-      { path: "", element: <Navigate to='/home'/> },
+      { path: "", element: <Navigate to="/home" /> },
       { path: "home", element: <Home /> },
       { path: "new-client", element: <NewClient /> },
       { path: "generate-documents", element: <GenerateDocuments /> },
