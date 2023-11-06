@@ -85,7 +85,7 @@ export default function AllClients() {
                                                     <img src="https://demos.creative-tim.com/notus-js/assets/img/bootstrap.jpg" className="h-12 w-12 bg-white rounded-full border" alt="Client Avatar" />
                                                     <span className="ml-3 font-bold">{client.client_name}</span>
                                                 </td>
-                                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">Client ID</td>
+                                                <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{client.client_id}</td>
                                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
                                                     <i className={`fas fa-circle ${client.case_status === 'OPEN' ? 'text-green-500' : 'text-red-500'} mr-2`}>{client.case_status}</i>
                                                 </td>
@@ -100,7 +100,7 @@ export default function AllClients() {
                                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{client.court_house_state.toUpperCase()}</td>
                                                 <td className="border-t-0 px-9 align-middle items-center border-l-0 border-r-0 text-s whitespace-nowrap">
                                                     <div className="relative group">
-                                                        <span className="text-red-400 cursor-pointer" onClick={() => toggleDropdown(client.id)}>
+                                                        <span className="text-red-400 cursor-pointer">
                                                             <IoEllipsisVerticalCircleOutline />
                                                         </span>
                                                         <div className={`absolute text-center text-blue-500 mt-2 bg-gray-900 rounded-md py-1 text-xs ${dropdownStates[client.id] ? 'block' : 'hidden'}`}>
