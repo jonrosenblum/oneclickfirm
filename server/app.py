@@ -5,6 +5,7 @@ from flask_jwt_extended import JWTManager
 
 
 app = Flask(__name__, static_folder="templates", static_url_path="/templates")
+app = Flask(__name__, static_folder="./../client/dist", static_url_path="/")
 
 
 # Configure CORS for your app
@@ -25,7 +26,9 @@ app.register_blueprint(client_scraper_bp)
 app.register_blueprint(auth_bp)
 app.register_blueprint(client_information_bp)
 
-
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
 
 
 

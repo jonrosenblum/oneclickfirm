@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:client": "npm --prefix client run dev",
-    "dev:server": "cd server && PORT=5001 pipenv run python run.py",
+    "dev:server": "cd server &&DEBUG=True PORT=5001 HOST=0.0.0.0 pipenv run python run.py",
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\""
   },
   "author": "",
