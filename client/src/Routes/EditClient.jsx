@@ -141,7 +141,7 @@ export default function EditClient() {
                         <div className='m-2'>
                             <div className='flex justify-between items-center'>
                             <h1 className='title text-2xl font-medium m-2'>{selectedClient.client_name}</h1>
-                            <button onClick={handleClientDelete} className='button rounded-md bg-red-500 px-3 m-4 py-2 text-sm'>Delete Client</button>
+                            <button onClick={handleClientDelete} className='button rounded-md bg-red-500 px-3 m-4 py-2 text-sm'>Delete</button>
 
                             <input 
                             value={newClientName}
