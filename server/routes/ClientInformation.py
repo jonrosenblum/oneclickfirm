@@ -1,5 +1,5 @@
 from flask import Blueprint, request, jsonify, send_from_directory
-from decouple import config  # Import config from decouple
+from decouple import config 
 import zipfile
 import tempfile
 from docxtpl import DocxTemplate
@@ -201,24 +201,8 @@ def new_client():
 
     return jsonify({"message": "Documents generated and data stored successfully"})
 
+### THIS IS THE ROUTE THAT WILL GET ALL CLIENTS IN THE DATABASE AND ALL THERE INFO ###
 
-@client_information_bp.route('/clients/<int:client_id>', methods=['PATCH'])
-def update_client_info(client_id):
-    cursor = conn.cursor()
-    new_case_status = request.json.get('case_status')
-    new_client_name = request.json.get('client_name')
-
-    try:
-        if new_case_status:
-            cursor.execute("UPDATE violations SET case_status = %s WHERE client_id = %s", (new_case_status, client_id))
-        if new_client_name:
-            cursor.execute("UPDATE client_information SET client_name = %s WHERE client_id = %s", (new_client_name, client_id))
-
-        conn.commit()
-        cursor.close()
-        return jsonify({"message": "Client information updated successfully"})
-    except Exception as e:
-        return jsonify({"error": str(e)})
 
 @client_information_bp.route('/clients', methods=['GET'])
 def get_all_clients():
@@ -267,44 +251,54 @@ def get_all_clients():
     except Exception as e:
         return jsonify({"error": str(e)})
     
+@client_information_bp.route('/clients/<int:client_id>', methods=['DELETE'])
+def delete_client(client_id):
+    try:
+        cursor = conn.cursor()
+        
+        # Check if the client exists
+        cursor.execute("SELECT * FROM client_information WHERE client_id = %s", (client_id,))
+        client_data = cursor.fetchone()
+        if client_data is None:
+            cursor.close()
+            return jsonify({"error": "Client not found."}), 404
+        
+        # Delete associated data from other tables, if necessary
+        cursor.execute("DELETE FROM violations WHERE client_id = %s", (client_id,))
+        cursor.execute("DELETE FROM court_information WHERE client_id = %s", (client_id,))
+
+        # Delete the client information from the client_information table
+        cursor.execute("DELETE FROM client_information WHERE client_id = %s", (client_id,))
+
+
+
+        conn.commit()
+        cursor.close()
+
+        return jsonify({"message": "Client deleted successfully"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)})
     
-@client_information_bp.route('/get-clients', methods=['GET'])
-def get_clients():
+    
+
+@client_information_bp.patch('/clients/<int:client_id>')
+def update_client_info(client_id):
     cursor = conn.cursor()
-    cursor.execute("SELECT * FROM client_information")
-    client_data = cursor.fetchall()
-    cursor.close()
+    new_case_status = request.json.get('case_status')
+    new_client_name = request.json.get('client_name')
 
-    # Create a list of dictionaries with the required data
-    client_info_list = []
-    for row in client_data:
-        client_info = {
-            "client_id": row[0],
-            "client_name": row[1],
-            "court_house_name": row[2],
-            "court_house_street": row[3],
-            "court_house_city": row[4],
-            "court_house_state": row[5],
-            "court_house_zip": row[6],
-            "fax_number": row[7],
-            "court_house_county": row[8],
-            "complaint_number": row[9],
-            "incident_date": row[10].isoformat() if row[10] else None,
-            "date_created": row[11].isoformat() if row[11] else None,
-            "case_status": row[12],
-            "credit_card_number": row[13],
-            "credit_card_expiration": row[14],
-            "credit_card_cvv": row[15],
-            "client_balance": float(row[16]) if row[16] else None,
-            "ccauth_docx": base64.b64encode(row[17]).decode('utf-8') if row[17] is not None else None,
-            "discovery_docx": base64.b64encode(row[18]).decode('utf-8') if row[18] is not None else None,
-            "representation_docx": base64.b64encode(row[19]).decode('utf-8') if row[19] is not None else None,
-            "retainer_docx": base64.b64encode(row[20]).decode('utf-8') if row[20] is not None else None,
-        }
-        client_info_list.append(client_info)
+    try:
+        if new_case_status:
+            cursor.execute("UPDATE violations SET case_status = %s WHERE client_id = %s", (new_case_status, client_id))
+        if new_client_name:
+            cursor.execute("UPDATE client_information SET client_name = %s WHERE client_id = %s", (new_client_name, client_id))
 
-    return jsonify(client_info_list)
-
+        conn.commit()
+        cursor.close()
+        return jsonify({"message": "Client information updated successfully"})
+    except Exception as e:
+        return jsonify({"error": str(e)})
 
 
 @client_information_bp.route('/download-documents/<int:client_id>', methods=['GET'])

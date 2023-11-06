@@ -95,6 +95,28 @@ export default function EditClient() {
           });
       }
     };
+
+
+    const handleClientDelete = () => {
+        if (selectedClient) {
+          const clientId = selectedClient.client_id;
+      
+          // Send a DELETE request to the backend route for client deletion
+          axios.delete(`/clients/${clientId}`)
+            .then(() => {
+              // Client deleted successfully, you can perform any additional actions here
+              console.log('Client deleted successfully');
+              setSelectedClient(null);
+
+              
+            })
+            .catch(error => {
+              console.error('Error deleting client', error);
+              // Handle the error, display a message, or take appropriate action
+            });
+        }
+      };
+      
     
     return (
         <div className="bg-gradient-to-tr p-2 from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
@@ -119,6 +141,8 @@ export default function EditClient() {
                         <div className='m-2'>
                             <div className='flex justify-between items-center'>
                             <h1 className='title text-2xl font-medium m-2'>{selectedClient.client_name}</h1>
+                            <button onClick={handleClientDelete} className='button rounded-md bg-red-500 px-3 m-4 py-2 text-sm'>Delete Client</button>
+
                             <input 
                             value={newClientName}
                             onChange={(e)=> setNewClientName(e.target.value)}
