@@ -8,24 +8,24 @@ export default function AllClients() {
     const [dropdownStates, setDropdownStates] = useState({});
     const navigate = useNavigate();
 
-    const toggleDropdown = (clientId) => {
-        setDropdownStates({
-            ...dropdownStates,
-            [clientId]: !dropdownStates[clientId],
-        });
-    };
+    // const toggleDropdown = (clientId) => {
+    //     setDropdownStates({
+    //         ...dropdownStates,
+    //         [clientId]: !dropdownStates[clientId],
+    //     });
+    // };
 
-    const editClient = (clientId) => {
-        // Implement the editClient functionality here for the specific clientId
-    };
+    // const editClient = (clientId) => {
+    //     // Implement the editClient functionality here for the specific clientId
+    // };
 
-    const generateDocuments = (clientId) => {
-        // Implement the generateDocuments functionality here for the specific clientId
-    };
+    // const generateDocuments = (clientId) => {
+    //     // Implement the generateDocuments functionality here for the specific clientId
+    // };
 
-    const closeCase = (clientId) => {
-        // Implement the closeCase functionality here for the specific clientId
-    };
+    // const closeCase = (clientId) => {
+    //     // Implement the closeCase functionality here for the specific clientId
+    // };
 
     useEffect(() => {
         // Fetch client information from your backend
@@ -105,9 +105,9 @@ export default function AllClients() {
                                                         </span>
                                                         <div className={`absolute text-center text-blue-500 mt-2 bg-gray-900 rounded-md py-1 text-xs ${dropdownStates[client.id] ? 'block' : 'hidden'}`}>
                                                             <ul>
-                                                                <li className="hover:underline cursor-pointer" onClick={() => editClient(client.id)}>Edit Client</li>
+                                                                {/* <li className="hover:underline cursor-pointer" onClick={() => editClient(client.id)}>Edit Client</li>
                                                                 <li className="hover:underline cursor-pointer" onClick={() => generateDocuments(client.id)}>Generate Documents</li>
-                                                                <li className="hover:underline cursor-pointer" onClick={() => closeCase(client.id)}>Close Case</li>
+                                                                <li className="hover:underline cursor-pointer" onClick={() => closeCase(client.id)}>Close Case</li> */}
                                                             </ul>
                                                         </div>
                                                     </div>
