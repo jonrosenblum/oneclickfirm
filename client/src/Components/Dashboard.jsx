@@ -7,6 +7,7 @@ import PendingPNG from "../assets/shifts-pending-svgrepo-com.png"
 import LogoutPNG from "../assets/logout-svgrepo-com.png"
 import NotesPNG from "../assets/notes-push-pin-svgrepo-com.png"
 import UserIcon from "../assets/user-icon-svgrepo-com.png"
+import CalendarIcon from "../assets/calendar-svgrepo-com.png"
 import { useNavigate } from "react-router-dom"
 import { format } from 'date-fns';
 import { useAuthSelector } from "../services/useAuthSelector";
@@ -122,9 +123,9 @@ const formattedDate = format(currentDate, 'MMMM d, yyyy'); // Format the date as
 
         </div>
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
-        <img className="w-20 h-20 object-cover object-center rounded-full" src={LogoutPNG} alt="Logout" />
-          <h4 className="text-white text-2xl font-bold capitalize text-center">LOGOUT</h4>
-          <p className="text-white/50">SEE YOU LATER!</p>
+        <img className="w-20 h-20 object-cover object-center rounded-full" src={CalendarIcon} alt="Logout" />
+          <h4 className="text-white text-2xl font-bold capitalize text-center">CALENDAR</h4>
+          <p className="text-white/50">SCHEDULE OR CHECK APPOINTMENTS</p>
         </div>
         
 
