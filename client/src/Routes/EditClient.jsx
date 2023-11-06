@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import axios from 'axios';
+import axios from './../axios'
 
 export default function EditClient() {
     const [clientData, setClientData] = useState([]);
