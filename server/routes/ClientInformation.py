@@ -14,20 +14,10 @@ from flask_jwt_extended import jwt_required
 client_information_bp = Blueprint('clientInformation', __name__)
 
 # Database configuration
-DATABASE_HOST = config("DATABASE_HOST")
-DATABASE_USER = config("DATABASE_USER")
-DATABASE_PASSWORD = config("DATABASE_PASSWORD")
-DATABASE_PORT = config("DATABASE_PORT")
-DATABASE_NAME = config("DATABASE_NAME")
+
 
 try: 
-    conn = psycopg2.connect(
-        host=DATABASE_HOST,
-        user=DATABASE_USER,
-        password=DATABASE_PASSWORD,
-        port=DATABASE_PORT,
-        database=DATABASE_NAME
-)
+    conn = psycopg2.connect(config('DATABASE_URL'))
 except Exception as e:
     print("Error connecting to the database: ", str(e))
     conn = None 

@@ -21,7 +21,7 @@ def client_scraper():
 def search():
     
     # data = request.json
-    data = {'client_name': 'JOHNNY E FALCONESCALLE ', 'violation_date': 'Nov 03, 2023'}
+    data = {'client_name': 'RYAN A GOODE ', 'violation_date': 'Oct 19, 2023'}
     client_name = data.get('client_name')
 
     violation_date = data.get('violation_date')
