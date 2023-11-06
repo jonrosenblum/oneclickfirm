@@ -9,7 +9,7 @@ export default function EditClient() {
 
 
     useEffect(() => {
-        axios.get('http://localhost:5001/api/clients')
+        axios.get('/api/clients')
         .then(response => {
             setClientData(response.data);
             })
