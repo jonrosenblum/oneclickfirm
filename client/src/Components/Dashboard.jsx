@@ -8,11 +8,16 @@ import LogoutPNG from "../assets/logout-svgrepo-com.png"
 import NotesPNG from "../assets/notes-push-pin-svgrepo-com.png"
 import UserIcon from "../assets/user-icon-svgrepo-com.png"
 import { useNavigate } from "react-router-dom"
+import { format } from 'date-fns';
 
 
 export default function Dashboard() {
 
   const navigate = useNavigate();
+
+const currentDate = new Date();
+const formattedDate = format(currentDate, 'MMMM d, yyyy'); // Format the date as "Month Day, Year"
+
 
 
   const handleNewClientClick = () => {
@@ -48,7 +53,7 @@ export default function Dashboard() {
               <img src={UserIcon} className="h-6 w-6"/>
               <h6 className="ml-3 flex">Steven Stabile </h6>
             </div>
-            <h6 className="items-center ml-5 mt-2">October 31st, 2023</h6>
+            <h6 className="items-center ml-5 mt-2">{formattedDate}</h6>
             </div>
           
           <div className="inline-flex items-center space-x-2">
