@@ -202,7 +202,7 @@ def new_client():
     return jsonify({"message": "Documents generated and data stored successfully"})
 
 
-@client_information_bp.route('/api/clients/<int:client_id>', methods=['PATCH'])
+@client_information_bp.route('/clients/<int:client_id>', methods=['PATCH'])
 def update_client_info(client_id):
     cursor = conn.cursor()
     new_case_status = request.json.get('case_status')
@@ -220,7 +220,7 @@ def update_client_info(client_id):
     except Exception as e:
         return jsonify({"error": str(e)})
 
-@client_information_bp.route('/api/clients', methods=['GET'])
+@client_information_bp.route('/clients', methods=['GET'])
 def get_all_clients():
     cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     
