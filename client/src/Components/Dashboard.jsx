@@ -9,6 +9,8 @@ import NotesPNG from "../assets/notes-push-pin-svgrepo-com.png"
 import UserIcon from "../assets/user-icon-svgrepo-com.png"
 import { useNavigate } from "react-router-dom"
 import { format } from 'date-fns';
+import { useAuthSelector } from "../services/useAuthSelector";
+
 
 
 export default function Dashboard() {
@@ -37,7 +39,7 @@ const formattedDate = format(currentDate, 'MMMM d, yyyy'); // Format the date as
   };
 
 
-
+  const auth = useAuthSelector();
 
     return (
 
@@ -48,10 +50,10 @@ const formattedDate = format(currentDate, 'MMMM d, yyyy'); // Format the date as
           
           <div className="flex justify-between items-center text-white">
             <div>
-            <h3 className="text-3xl font-bold text-white">Welcome Back!</h3>
+            <h3 className="text-xl font-bold text-white">Welcome Back!</h3>
             <div className="flex mt-2 ml-3 items-center" >
               <img src={UserIcon} className="h-6 w-6"/>
-              <h6 className="ml-3 flex">Steven Stabile </h6>
+              <h6 className="ml-3 flex">{auth.user.username} </h6>
             </div>
             <h6 className="items-center ml-5 mt-2">{formattedDate}</h6>
             </div>
