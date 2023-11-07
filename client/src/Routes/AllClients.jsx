@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "./../axios";
 import { useNavigate } from "react-router-dom";
-import { AiOutlineDownload } from 'react-icons/ai';
+// import { AiOutlineDownload } from 'react-icons/ai';
 import AlertDocumentDownload from "../Components/Pieces/AlertDocumentDownload";
 
 
@@ -91,7 +91,7 @@ export default function AllClients() {
                                             <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">Client Documents</th>
                                             <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">County </th>
                                             <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">State</th>
-                                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">Download</th>
+                                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -110,16 +110,15 @@ export default function AllClients() {
                                                         <img src="https://png.pngtree.com/png-vector/20190406/ourmid/pngtree-doc-file-document-icon-png-image_913809.jpg" alt="..." className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow " />
                                                         <img src="https://png.pngtree.com/png-vector/20190406/ourmid/pngtree-doc-file-document-icon-png-image_913809.jpg" alt="..." className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4" />
                                                         <img src="https://png.pngtree.com/png-vector/20190406/ourmid/pngtree-doc-file-document-icon-png-image_913809.jpg" alt="..." className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4" />
+                                                        <img src="https://png.pngtree.com/png-vector/20190406/ourmid/pngtree-doc-file-document-icon-png-image_913809.jpg" alt="..." className="w-10 h-10 rounded-full border-2 border-blueGray-50 shadow -ml-4" />
                                                     </div>
                                                 </td>
                                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{client.court_house_county.toUpperCase()}</td>
                                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{client.court_house_state.toUpperCase()}</td>
-                                                <td className="border-t-0 px-9 align-middle items-center border-l-0 border-r-0 text-s whitespace-nowrap">
+                                                <td className="border-t-0 px-2 align-middle items-center border-l-0 border-r-0 text-s whitespace-nowrap">
                                                     <div>
-                                                        <button onClick={() => downloadDocuments(client)} className="rounded-md bg-white text-3xl text-red-600 cursor-pointer button active:scale-[.95] active:duration-75 hover:scale-[1.05] ease-in-out transition-all">
-                                                        <span>
-                                                            <AiOutlineDownload />
-                                                        </span>
+                                                        <button onClick={() => downloadDocuments(client)} className="rounded-md bg-blue-500 p-2 text-xs cursor-pointer button active:scale-[.95] active:duration-75 hover:scale-[1.05] ease-in-out transition-all">
+                                                            Download Documents
                                                         </button>
                                                         
                                                     </div>

@@ -9,16 +9,19 @@ export default function EditClient() {
 
 
     useEffect(() => {
-        axios.get('/clients')
-        .then(response => {
+        // Fetch client data when the component mounts or when a client is selected
+        const fetchData = async () => {
+          try {
+            const response = await axios.get('/clients');
             setClientData(response.data);
-            })
-        .catch(error => {
+          } catch (error) {
             console.error('Error fetching client data', error);
-        });
-    }, [selectedClient]);
-
-
+          }
+        };
+    
+        fetchData();
+      }, [selectedClient]);
+    
     const handleClientClick = (client) => {
         setSelectedClient(client);
     };
@@ -141,27 +144,57 @@ export default function EditClient() {
                 </div>
                 <div className='flex-1 flex-col border border-2'>
                     {selectedClient && (
-                        <div className='m-2'>
-                            <div className='flex justify-between items-center'>
-                            <h1 className='title text-2xl font-medium m-2'>{selectedClient.client_name}</h1>
-                            <button onClick={handleClientDelete} className='button rounded-md bg-red-500 px-3 m-4 py-2 text-sm'>Delete</button>
 
-                            <input 
-                            value={newClientName}
-                            onChange={(e)=> setNewClientName(e.target.value)}
-                            placeholder={selectedClient.client_name}/>
-                            <button onClick={updateClientName} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Update Client Name</button>
+                        <div className='p-16'>
+                            <div className='flex'>
+                                <div className='flex flex-col'>
+                                    <h1 className='title text-2xl font-medium'>Client ID: {selectedClient.client_id}</h1>
+                                    <p className='title text-2xl font-medium'> Violation Number: {selectedClient.complaint_number}</p>
+                                </div>
                             </div>
-                            <div className='flex justify-between items-center'>
-                            <p> Case Status: {selectedClient.case_status}</p>
-                            <button onClick={updateCaseStatus} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Change Status</button>
+           
+                            <div className='flex items-center'>
+                            <p className={`title bg-red-500 text-sm text-white rounded-md p-2 ${selectedClient.case_status === 'OPEN' ? 'bg-green-500' : ''}`}>{selectedClient.case_status}</p>
+                                <button onClick={updateCaseStatus} className='button rounded-md bg-gray-400 px-3 m-4 py-2 text-sm button active:scale-[.95] active:duration-75 hover:scale-[1.01] ease-in-out transition-all'>
+                                {selectedClient.case_status === 'OPEN' ? 'CLOSE' : 'OPEN'}
+                                </button>
                             </div>
+
+                           
+                           
+
+                            <div className='flex gap-8 items-center'>
+                                <h1 className='title bg-black text-sm text-white rounded-md p-2'>{selectedClient.client_name}</h1>
+                                <input 
+                                className='bg-black text-white text-sm rounded-md p-2'
+                                value={newClientName}
+                                onChange={(e)=> setNewClientName(e.target.value)}
+                                placeholder="New client name..."/>
+                                <button onClick={updateClientName} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Update Client Name</button>
+                            </div>
+
+                            <div className='flex gap-8 items-center'>
+                                <h1 className='title bg-black text-sm text-white rounded-md p-2'>{selectedClient.client_name}</h1>
+                                <input 
+                                className='bg-black text-white text-sm rounded-md p-2'
+                                value={newClientName}
+                                onChange={(e)=> setNewClientName(e.target.value)}
+                                placeholder="New client name..."/>
+                                <button onClick={updateClientName} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Update Client Name</button>
+                            </div>
+
+
                             <div>
                                 <p>Download Documents:</p>
                                 <button onClick={downloadDocuments} className='button rounded-md bg-blue-500 px-3'>Click Here</button>
                       
                             </div>
+                         
                         </div>)}
+                        <div className='mt-4 p-16'>
+                            <button onClick={handleClientDelete} className='button rounded-md bg-red-500 px-3 m-4 py-2 text-sm'>Delete client</button>
+                        </div>
+                       
                 </div>
             </div>
         </div>
