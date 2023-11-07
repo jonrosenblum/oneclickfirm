@@ -189,11 +189,11 @@ export default function EditClient() {
                                 <button onClick={downloadDocuments} className='button rounded-md bg-blue-500 px-3'>Click Here</button>
                       
                             </div>
-                         
-                        </div>)}
-                        <div className='mt-4 p-16'>
+                            <div className='mt-4 p-16'>
                             <button onClick={handleClientDelete} className='button rounded-md bg-red-500 px-3 m-4 py-2 text-sm'>Delete client</button>
                         </div>
+                         
+                        </div>)}
                        
                 </div>
             </div>
