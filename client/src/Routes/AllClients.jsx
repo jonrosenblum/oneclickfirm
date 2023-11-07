@@ -70,7 +70,7 @@ export default function AllClients() {
                 <div className="bg-gradient-to-tr font-oswald from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
                     <div className="overflow-y-auto max-h-[800px] text-white px-2 sm:px-0 text-center">
                         <h1 className="title font-extralight text-2xl">NO CLIENTS AVAILABLE</h1>
-                        <button onClick={() => { navigate('/new-client') }} className="px-4 mt-4 text-black font-medium py-2 bg-gray-300 rounded-md hover:bg-blue-300 focus:outline-none
+                        <button onClick={() => { navigate('/generate-documents') }} className="px-4 mt-4 text-black font-medium py-2 bg-gray-300 rounded-md hover:bg-blue-300 focus:outline-none
                             focus:shadow-outline-blue active:bg-blue-500">Add New Client</button>
                     </div>
                 </div>
