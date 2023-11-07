@@ -120,7 +120,6 @@ export default function AllClients() {
                                                         <button onClick={() => downloadDocuments(client)} className="rounded-md bg-blue-500 p-2 text-xs cursor-pointer button active:scale-[.95] active:duration-75 hover:scale-[1.05] ease-in-out transition-all">
                                                             Download Documents
                                                         </button>
-                                                        
                                                     </div>
                                                 </td>
                                             </tr>

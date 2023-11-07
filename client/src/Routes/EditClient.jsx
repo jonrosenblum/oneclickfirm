@@ -158,20 +158,27 @@ export default function EditClient() {
                 </div>
                 <div className='flex-1 flex-col border border-2'>
                     {selectedClient && (
-
-                        
-
                         <div className='p-16'>
                             <div className='flex'>
                                 <div className='flex flex-col'>
-                                    <h1 className='title text-2xl font-medium p-2'>Client ID: {selectedClient.client_id}</h1>
-                                    <p className='title text-2xl font-medium p-2'> Violation Number: {selectedClient.complaint_number}</p>
+                                    <div className='flex justify-between items-center'>
+                                        <h1 className='title text-2xl font-medium p-2'>Client ID: {selectedClient.client_id}</h1>
+                                        <div className=''>
+                                            <button onClick={handleClientDelete} className='button rounded-md bg-red-500 px-3 m-4 py-2 text-sm'>Delete client</button>
+                                       </div>
+                                       <div>
+                                            <button onClick={downloadDocuments} className='button rounded-md m-2 px-3 py-2 text-sm bg-blue-500 px-3'>Generate Documents</button>
+                                        </div>
+                                    </div>
+                                   
+                                    <p className='title text-2xl font-medium p-2'> Violations </p>
+                                    <p className='title text-lg font-light m-3 p-4'>{selectedClient.complaint_number}</p>
                                     <p className='title text-lg p-2'>{formatDate(selectedClient.incident_date)}</p>
                                 </div>
                             </div>
            
-                            <div className='flex items-center'>
-                            <p className={`title bg-green-500 text-sm text-white rounded-md p-2 ${selectedClient.case_status === 'OPEN' ? 'bg-green-500' : 'bg-red-500'}`}>{selectedClient.case_status}</p>
+                            <div className=''>
+                            <p className={`title bg-green-500 text-sm text-white rounded-md text-center p-2 ${selectedClient.case_status === 'OPEN' ? 'bg-green-500' : 'bg-red-500'}`}>{selectedClient.case_status}</p>
                                 <button onClick={updateCaseStatus} className='button rounded-md bg-gray-400 px-3 m-4 py-2 text-sm button active:scale-[.95] active:duration-75 hover:scale-[1.01] ease-in-out transition-all'>
                                 {selectedClient.case_status === 'OPEN' ? 'CLOSE' : 'OPEN'}
                                 </button>
@@ -207,14 +214,8 @@ export default function EditClient() {
                             </div>
 
 
-                            <div>
-                                <p>Download Documents:</p>
-                                <button onClick={downloadDocuments} className='button rounded-md bg-blue-500 px-3'>Click Here</button>
-                      
-                            </div>
-                            <div className='mt-4 p-16'>
-                            <button onClick={handleClientDelete} className='button rounded-md bg-red-500 px-3 m-4 py-2 text-sm'>Delete client</button>
-                        </div>
+                           
+                            
                          
                         </div>)}
                        
