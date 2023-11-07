@@ -1,31 +1,17 @@
 import { useEffect, useState } from "react";
 import axios from "./../axios";
 import { useNavigate } from "react-router-dom";
-import { IoEllipsisVerticalCircleOutline } from 'react-icons/io5';
+import { AiOutlineDownload } from 'react-icons/ai';
+import AlertDocumentDownload from "../Components/Pieces/AlertDocumentDownload";
+
 
 export default function AllClients() {
     const [clientInfo, setClientInfo] = useState([]);
-    const [dropdownStates, setDropdownStates] = useState({});
     const navigate = useNavigate();
+    const [selectedClient, setSelectedClient] = useState(null); // State to store the selected client
+    const [showAlert, setShowAlert] = useState(false); // State variable to control the alert visibility
+    
 
-    // const toggleDropdown = (clientId) => {
-    //     setDropdownStates({
-    //         ...dropdownStates,
-    //         [clientId]: !dropdownStates[clientId],
-    //     });
-    // };
-
-    // const editClient = (clientId) => {
-    //     // Implement the editClient functionality here for the specific clientId
-    // };
-
-    // const generateDocuments = (clientId) => {
-    //     // Implement the generateDocuments functionality here for the specific clientId
-    // };
-
-    // const closeCase = (clientId) => {
-    //     // Implement the closeCase functionality here for the specific clientId
-    // };
 
     useEffect(() => {
         // Fetch client information from your backend
@@ -37,10 +23,46 @@ export default function AllClients() {
                 response.data.forEach((client) => {
                     initialDropdownStates[client.id] = false;
                 });
-                setDropdownStates(initialDropdownStates);
+                
             })
             .catch((error) => console.error(error));
     }, []);
+
+    const downloadDocuments = (client) => {
+        
+        setSelectedClient(client);
+        if (selectedClient) {
+          const clientId = selectedClient.client_id;
+      
+          // Construct the URL for the download route
+          const downloadURL = `/download-documents/${clientId}`;
+      
+          // Send a GET request to the backend route to download the documents
+          axios.get(downloadURL, { responseType: 'blob' })
+            .then(response => {
+              // Create a blob from the response data
+              const blob = new Blob([response.data], { type: 'application/zip' });
+      
+              // Create a URL for the blob
+              const url = window.URL.createObjectURL(blob);
+      
+              // Create an invisible anchor element to trigger the download
+              const link = document.createElement('a');
+              link.href = url;
+              link.download = 'client_documents.zip';
+              link.click();
+              setShowAlert(true);
+      
+              // Release the URL object
+              window.URL.revokeObjectURL(url);
+            })
+            .catch(error => {
+              console.error('Error downloading documents', error);
+            });
+        }
+      };
+  
+  
 
     return (
         <div>
@@ -75,7 +97,7 @@ export default function AllClients() {
                                             <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">Client Documents</th>
                                             <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">County </th>
                                             <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">State</th>
-                                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">Actions</th>
+                                            <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">Download</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -100,16 +122,9 @@ export default function AllClients() {
                                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{client.court_house_state.toUpperCase()}</td>
                                                 <td className="border-t-0 px-9 align-middle items-center border-l-0 border-r-0 text-s whitespace-nowrap">
                                                     <div className="relative group">
-                                                        <span className="text-red-400 cursor-pointer">
-                                                            <IoEllipsisVerticalCircleOutline />
+                                                        <span onClick={() => downloadDocuments(client)} className="text-3xl text-red-400 cursor-pointer">
+                                                            <AiOutlineDownload />
                                                         </span>
-                                                        <div className={`absolute text-center text-blue-500 mt-2 bg-gray-900 rounded-md py-1 text-xs ${dropdownStates[client.id] ? 'block' : 'hidden'}`}>
-                                                            <ul>
-                                                                {/* <li className="hover:underline cursor-pointer" onClick={() => editClient(client.id)}>Edit Client</li>
-                                                                <li className="hover:underline cursor-pointer" onClick={() => generateDocuments(client.id)}>Generate Documents</li>
-                                                                <li className="hover:underline cursor-pointer" onClick={() => closeCase(client.id)}>Close Case</li> */}
-                                                            </ul>
-                                                        </div>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -121,6 +136,7 @@ export default function AllClients() {
                     </div>
                 </div>
             )}
+            {showAlert && <AlertDocumentDownload />}
         </div>
     );
 }
