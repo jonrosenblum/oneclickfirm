@@ -12,9 +12,7 @@
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "concurrently": "^8.2.2",
     "vite": "^4.5.0"
-  },
-  "dependencies": {
-    "concurrently": "^8.2.2"
   }
 }
