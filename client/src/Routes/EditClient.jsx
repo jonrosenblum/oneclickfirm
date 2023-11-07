@@ -5,6 +5,7 @@ export default function EditClient() {
     const [clientData, setClientData] = useState([]);
     const [selectedClient, setSelectedClient] = useState(null);
     const [newClientName, setNewClientName] = useState('');
+    const [newClientNotes, setNewClientNotes] = useState('');
 
 
 
@@ -119,7 +120,13 @@ export default function EditClient() {
             });
         }
       };
-      
+
+      const addClientNote = () => {
+        console.log('Adding client note:', newClientNotes);
+        setNewClientNotes('');
+      }
+
+
     
     return (
         <div className="bg-gradient-to-tr p-2 from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
@@ -145,16 +152,19 @@ export default function EditClient() {
                 <div className='flex-1 flex-col border border-2'>
                     {selectedClient && (
 
+                        
+
                         <div className='p-16'>
                             <div className='flex'>
                                 <div className='flex flex-col'>
-                                    <h1 className='title text-2xl font-medium'>Client ID: {selectedClient.client_id}</h1>
-                                    <p className='title text-2xl font-medium'> Violation Number: {selectedClient.complaint_number}</p>
+                                    <h1 className='title text-2xl font-medium p-2'>Client ID: {selectedClient.client_id}</h1>
+                                    <p className='title text-2xl font-medium p-2'> Violation Number: {selectedClient.complaint_number}</p>
+                                    <p className='title text-lg p-2'>Date</p>
                                 </div>
                             </div>
            
                             <div className='flex items-center'>
-                            <p className={`title bg-red-500 text-sm text-white rounded-md p-2 ${selectedClient.case_status === 'OPEN' ? 'bg-green-500' : ''}`}>{selectedClient.case_status}</p>
+                            <p className={`title bg-green-500 text-sm text-white rounded-md p-2 ${selectedClient.case_status === 'OPEN' ? 'bg-green-500' : 'bg-red-500'}`}>{selectedClient.case_status}</p>
                                 <button onClick={updateCaseStatus} className='button rounded-md bg-gray-400 px-3 m-4 py-2 text-sm button active:scale-[.95] active:duration-75 hover:scale-[1.01] ease-in-out transition-all'>
                                 {selectedClient.case_status === 'OPEN' ? 'CLOSE' : 'OPEN'}
                                 </button>
@@ -170,17 +180,23 @@ export default function EditClient() {
                                 value={newClientName}
                                 onChange={(e)=> setNewClientName(e.target.value)}
                                 placeholder="New client name..."/>
-                                <button onClick={updateClientName} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Update Client Name</button>
+                                <button onClick={updateClientName} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Update</button>
                             </div>
 
-                            <div className='flex gap-8 items-center'>
-                                <h1 className='title bg-black text-sm text-white rounded-md p-2'>{selectedClient.client_name}</h1>
-                                <input 
-                                className='bg-black text-white text-sm rounded-md p-2'
-                                value={newClientName}
-                                onChange={(e)=> setNewClientName(e.target.value)}
-                                placeholder="New client name..."/>
-                                <button onClick={updateClientName} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Update Client Name</button>
+                            <div className='flex flex-col bg-gray-400 rounded-md'>
+                                <h1 className='title text-lg p-4'>Client Notes</h1>
+                                <textarea
+                                value={newClientNotes}
+                                onChange={(e)=> {setNewClientNotes(e.target.value)
+                                console.log(e.target.value)}}
+                                type='text'
+                                rows='5'
+                                className='bg-white text-black text-sm rounded-md p-2 m-4'
+                                placeholder="Enter notes about client here"/>
+                                <div className='text-center'> 
+                                <button onClick={addClientNote} className='button rounded-md bg-blue-500 px-3 m-4 py-2 w-1/2 text-sm'>+ New Note</button>
+                                </div>
+                               
                             </div>
 
 
