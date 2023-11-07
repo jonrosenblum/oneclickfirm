@@ -80,10 +80,10 @@ export default function AllClients() {
                             </div>
 
                         </div>
-                        <div className="block w-full overflow-x-auto">
-                            <div>
+                        <div className="block w-full overflow-x-auto max-h-[800px] overflow-y-auto">
+                            <div className="">
                                 <table className="table-auto items-center w-full bg-transparent border-collapse">
-                                    <thead>
+                                    <thead className="sticky top-0">
                                         <tr>
                                             <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">Client Name</th>
                                             <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">Client ID</th>
