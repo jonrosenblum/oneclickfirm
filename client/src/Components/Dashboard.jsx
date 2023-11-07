@@ -10,6 +10,8 @@ import CalendarIcon from "../assets/calendar-svgrepo-com.png"
 import { useNavigate } from "react-router-dom"
 import { format } from 'date-fns';
 import { useAuthSelector } from "../services/useAuthSelector";
+import { useEffect, useState } from "react"
+import axios from "axios"
 
 
 
@@ -19,7 +21,16 @@ export default function Dashboard() {
 
 const currentDate = new Date();
 const formattedDate = format(currentDate, 'MMMM d, yyyy'); // Format the date as "Month Day, Year"
+const [clientCount, setClientCount] = useState(0);
 
+useEffect(() => {
+  // Fetch the count of clients from your backend
+  axios.get('/clients')
+    .then((response) => {
+      setClientCount(response.data.length);
+    })
+    .catch((error) => console.error(error));
+}, []);
 
 
   const handleNewClientClick = () => {
@@ -71,19 +82,19 @@ const formattedDate = format(currentDate, 'MMMM d, yyyy'); // Format the date as
 
       <div className="mb-10 sm:mb-0 mt-5 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
         <div onClick={handleNewClientClick} className="group bg-gray-900/30 py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/40 hover:smooth-hover">
-          <a className="bg-gray-900/70 text-white/50 group-hover:text-white group-hover:smooth-hover flex w-20 h-20 rounded-full items-center justify-center" href="#">
+          <a className="bg-gray-900/70 text-white/50 group-hover:text-white group-hover:smooth-hover flex w-20 h-20 rounded-full items-center justify-center">
           <img
             src={PlusSignSVG}
             alt="plus sign to add clients"
             className="h-7 w-10"/>
           </a>
-          <a className="text-white/50 group-hover:text-white group-hover:smooth-hover text-center" href="#">ADD NEW CLIENT</a>
+          <a className="text-white/50 group-hover:text-white group-hover:smooth-hover text-center">ADD NEW CLIENT</a>
       </div>
 
         <div onClick={handleAllClientsClick} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
           <img className="w-20 h-20 object-cover object-center rounded-full" src={AllClientsPNG} alt="all clients" />
           <h4 className="text-white text-2xl font-bold capitalize text-center"> ALL CLIENTS</h4>
-          <p className="text-white/50">VIEW ALL 55 CLIENTS </p>
+          <p className="text-white/50">VIEW ALL {clientCount} CLIENTS </p>
         </div>
 
         <div onClick={handleGenerateDocumentClick} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
@@ -124,7 +135,7 @@ const formattedDate = format(currentDate, 'MMMM d, yyyy'); // Format the date as
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img className="w-20 h-20 object-cover object-center rounded-full" src={CalendarIcon} alt="Logout" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">CALENDAR</h4>
-          <p className="text-white/50">SCHEDULE OR CHECK APPOINTMENTS</p>
+          <p className="text-white/50">SCHEDULE APPOINTMENTS</p>
         </div>
         
 

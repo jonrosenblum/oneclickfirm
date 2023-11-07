@@ -45,7 +45,6 @@ export default function GenerateDocuments() {
   const handleClearForm = () => {
     // Reset the form data to the initial state
     setFormData(initialFormData);
-    setShowAlert(true);
   };
 
   const handleSubmit = async (e) => {
