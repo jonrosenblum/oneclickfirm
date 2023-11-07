@@ -20,7 +20,7 @@ export default function AllClients() {
                 setClientInfo(response.data);           
             })
             .catch((error) => console.error(error));
-    }, [clientInfo]);
+    }, []);
 
     const downloadDocuments = (client) => {
         
