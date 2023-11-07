@@ -1,17 +1,20 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export default function AlertDocumentDownload() {
   const [showAlert, setShowAlert] = useState(true);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     const alertTimeout = setTimeout(() => {
       setShowAlert(false);
       // Reload the page after 7 seconds
-      window.location.reload();
-    }, 1000);
+      navigate('/home');
+    }, 2000);
   
     return () => clearTimeout(alertTimeout);
-  }, []);
+  }, [navigate]);
 
   return showAlert ? (
     <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-green-100 border border-green-500 text-green-700 p-4 rounded-md shadow-lg" role="alert">
