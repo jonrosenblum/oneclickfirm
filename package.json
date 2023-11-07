@@ -10,5 +10,8 @@
     "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\""
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "devDependencies": {
+    "vite": "^4.5.0"
+  }
 }

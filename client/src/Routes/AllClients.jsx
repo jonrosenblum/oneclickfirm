@@ -17,16 +17,10 @@ export default function AllClients() {
         // Fetch client information from your backend
         axios.get('/clients')
             .then((response) => {
-                setClientInfo(response.data);
-                // Initialize the dropdown states for each row to be initially closed
-                const initialDropdownStates = {};
-                response.data.forEach((client) => {
-                    initialDropdownStates[client.id] = false;
-                });
-                
+                setClientInfo(response.data);           
             })
             .catch((error) => console.error(error));
-    }, []);
+    }, [clientInfo]);
 
     const downloadDocuments = (client) => {
         
