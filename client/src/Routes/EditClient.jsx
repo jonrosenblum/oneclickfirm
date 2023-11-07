@@ -8,6 +8,13 @@ export default function EditClient() {
     const [newClientNotes, setNewClientNotes] = useState('');
 
 
+    function formatDate(dateString) {
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        const formattedDate = new Date(dateString).toLocaleDateString(undefined, options);
+        return formattedDate;
+      }
+
+
 
     useEffect(() => {
         // Fetch client data when the component mounts or when a client is selected
@@ -159,7 +166,7 @@ export default function EditClient() {
                                 <div className='flex flex-col'>
                                     <h1 className='title text-2xl font-medium p-2'>Client ID: {selectedClient.client_id}</h1>
                                     <p className='title text-2xl font-medium p-2'> Violation Number: {selectedClient.complaint_number}</p>
-                                    <p className='title text-lg p-2'>Date</p>
+                                    <p className='title text-lg p-2'>{formatDate(selectedClient.incident_date)}</p>
                                 </div>
                             </div>
            
@@ -176,10 +183,10 @@ export default function EditClient() {
                             <div className='flex gap-8 items-center'>
                                 <h1 className='title bg-black text-sm text-white rounded-md p-2'>{selectedClient.client_name}</h1>
                                 <input 
-                                className='bg-black text-white text-sm rounded-md p-2'
+                                className='border border-2 border-gray-500 text-sm rounded-md p-2'
                                 value={newClientName}
                                 onChange={(e)=> setNewClientName(e.target.value)}
-                                placeholder="New client name..."/>
+                                placeholder="Enter new client name"/>
                                 <button onClick={updateClientName} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Update</button>
                             </div>
 
