@@ -115,10 +115,13 @@ export default function AllClients() {
                                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{client.court_house_county.toUpperCase()}</td>
                                                 <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">{client.court_house_state.toUpperCase()}</td>
                                                 <td className="border-t-0 px-9 align-middle items-center border-l-0 border-r-0 text-s whitespace-nowrap">
-                                                    <div onClick={() => downloadDocuments(client)} className="relative group">
-                                                        <span className="text-3xl text-red-400 cursor-pointer">
+                                                    <div>
+                                                        <button onClick={() => downloadDocuments(client)} className="rounded-md bg-white text-3xl text-red-600 cursor-pointer button active:scale-[.95] active:duration-75 hover:scale-[1.05] ease-in-out transition-all">
+                                                        <span>
                                                             <AiOutlineDownload />
                                                         </span>
+                                                        </button>
+                                                        
                                                     </div>
                                                 </td>
                                             </tr>
