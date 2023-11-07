@@ -10,18 +10,18 @@ import CalendarIcon from "../assets/calendar-svgrepo-com.png"
 import { useNavigate } from "react-router-dom"
 import { format } from 'date-fns';
 import { useAuthSelector } from "../services/useAuthSelector";
-import { useEffect, useState } from "react";
-import axios from "axios"; // Assuming axios is correctly configured
+import { useEffect, useState } from "react"
+import axios from "axios"
 
 
 
 export default function Dashboard() {
 
-const navigate = useNavigate();
-const [clientCount, setClientCount] = useState(0);
+  const navigate = useNavigate();
 
 const currentDate = new Date();
 const formattedDate = format(currentDate, 'MMMM d, yyyy'); // Format the date as "Month Day, Year"
+const [clientCount, setClientCount] = useState(0);
 
 useEffect(() => {
   // Fetch the count of clients from your backend
@@ -32,10 +32,11 @@ useEffect(() => {
     .catch((error) => console.error(error));
 }, []);
 
-  // const handleNewClientClick = () => {
-  //   navigate('/new-client');
 
-  // }
+  const handleNewClientClick = () => {
+    navigate('/new-client');
+
+  }
   const handleGenerateDocumentClick = () => {
     navigate('/generate-documents');
   };
@@ -44,9 +45,9 @@ useEffect(() => {
     navigate('/all-clients');
   };
 
-  // const handlEditClientClick = () => {
-  //   navigate('/edit-client');
-  // };
+  const handlEditClientClick = () => {
+    navigate('/edit-client');
+  };
 
 
   const auth = useAuthSelector();
@@ -80,8 +81,7 @@ useEffect(() => {
 
 
       <div className="mb-10 sm:mb-0 mt-5 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        {/* <div onClick={handleNewClientClick} className="group bg-gray-900/30 py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/40 hover:smooth-hover"> */}
-        <div className="group bg-gray-900/30 py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/40 hover:smooth-hover">
+        <div onClick={handleNewClientClick} className="group bg-gray-900/30 py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/40 hover:smooth-hover">
           <a className="bg-gray-900/70 text-white/50 group-hover:text-white group-hover:smooth-hover flex w-20 h-20 rounded-full items-center justify-center">
           <img
             src={PlusSignSVG}
@@ -103,8 +103,7 @@ useEffect(() => {
           <p className="text-white/50">GENERATE CLIENT DOCS</p>
         </div>
 
-        {/* <div onClick={handlEditClientClick} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover"> */}
-        <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+        <div onClick={handlEditClientClick} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img className="w-20 h-20 object-cover object-center rounded-full" src={EditPNG} alt="update client" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">EDIT CLIENT</h4>
           <p className="text-white/50">UPDATE CLIENT INFO</p>
@@ -136,7 +135,7 @@ useEffect(() => {
         <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img className="w-20 h-20 object-cover object-center rounded-full" src={CalendarIcon} alt="Logout" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">CALENDAR</h4>
-          <p className="text-white/50">SCHEDULE OR CHECK APPOINTMENTS</p>
+          <p className="text-white/50">SCHEDULE APPOINTMENTS</p>
         </div>
         
 
