@@ -22,10 +22,10 @@ const formattedDate = format(currentDate, 'MMMM d, yyyy'); // Format the date as
 
 
 
-  const handleNewClientClick = () => {
-    navigate('/new-client');
+  // const handleNewClientClick = () => {
+  //   navigate('/new-client');
 
-  }
+  // }
   const handleGenerateDocumentClick = () => {
     navigate('/generate-documents');
   };
@@ -34,9 +34,9 @@ const formattedDate = format(currentDate, 'MMMM d, yyyy'); // Format the date as
     navigate('/all-clients');
   };
 
-  const handlEditClientClick = () => {
-    navigate('/edit-client');
-  };
+  // const handlEditClientClick = () => {
+  //   navigate('/edit-client');
+  // };
 
 
   const auth = useAuthSelector();
@@ -70,14 +70,15 @@ const formattedDate = format(currentDate, 'MMMM d, yyyy'); // Format the date as
 
 
       <div className="mb-10 sm:mb-0 mt-5 grid gap-4 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
-        <div onClick={handleNewClientClick} className="group bg-gray-900/30 py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/40 hover:smooth-hover">
-          <a className="bg-gray-900/70 text-white/50 group-hover:text-white group-hover:smooth-hover flex w-20 h-20 rounded-full items-center justify-center" href="#">
+        {/* <div onClick={handleNewClientClick} className="group bg-gray-900/30 py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/40 hover:smooth-hover"> */}
+        <div className="group bg-gray-900/30 py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/40 hover:smooth-hover">
+          <a className="bg-gray-900/70 text-white/50 group-hover:text-white group-hover:smooth-hover flex w-20 h-20 rounded-full items-center justify-center">
           <img
             src={PlusSignSVG}
             alt="plus sign to add clients"
             className="h-7 w-10"/>
           </a>
-          <a className="text-white/50 group-hover:text-white group-hover:smooth-hover text-center" href="#">ADD NEW CLIENT</a>
+          <a className="text-white/50 group-hover:text-white group-hover:smooth-hover text-center">ADD NEW CLIENT</a>
       </div>
 
         <div onClick={handleAllClientsClick} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
@@ -92,7 +93,8 @@ const formattedDate = format(currentDate, 'MMMM d, yyyy'); // Format the date as
           <p className="text-white/50">GENERATE CLIENT DOCS</p>
         </div>
 
-        <div onClick={handlEditClientClick} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
+        {/* <div onClick={handlEditClientClick} className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover"> */}
+        <div className="relative group bg-gray-900 py-10 sm:py-20 px-4 flex flex-col space-y-2 items-center cursor-pointer rounded-md hover:bg-gray-900/80 hover:smooth-hover">
         <img className="w-20 h-20 object-cover object-center rounded-full" src={EditPNG} alt="update client" />
           <h4 className="text-white text-2xl font-bold capitalize text-center">EDIT CLIENT</h4>
           <p className="text-white/50">UPDATE CLIENT INFO</p>

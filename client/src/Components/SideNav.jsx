@@ -41,7 +41,7 @@ export default function SideNav() {
         {
           title: "Add New Client",
           key:7,
-          onAction: { onClick: () => navigate("/new-client") },
+          onAction: { onClick: () => navigate("/generate-documents") },
         },
         // {
         //   title: "View All Clients",
@@ -62,13 +62,13 @@ export default function SideNav() {
       key: 4,
       spacing: true,
       icon: <BsPerson />,
-      onAction: { onClick: () => navigate("/profile") },
+      // onAction: { onClick: () => navigate("/profile") },
     },
     {
       title: "Settings",
       key: 5,
       icon: <AiOutlineSetting />,
-      onAction: { onClick: () => navigate("/settings") },
+      // onAction: { onClick: () => navigate("/settings") },
     },
     {
       title: "Logout",
