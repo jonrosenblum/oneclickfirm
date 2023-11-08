@@ -69,6 +69,12 @@ def create_tables_if_not_exist():
                 court_house_county VARCHAR(255), \
                 FOREIGN KEY (client_id) REFERENCES client_information(client_id) \
             )")
+            cursor.execute("CREATE TABLE IF NOT EXISTS client_notes (\
+                notes_id SERIAL PRIMARY KEY, \
+                client_id INT, \
+                client_notes TEXT, \
+                FOREIGN KEY (client_id) REFERENCES client_information(client_id) \
+            )")
             
             conn.commit()
             print("Tables created successfully.")
@@ -371,6 +377,34 @@ def download_documents(client_id):
     makeTempClientFiles( client_data ,temp_dir, document_name)
     # Send the ZIP file containing all documents as a file attachment
     return send_from_directory(temp_dir, document_name, as_attachment=True)
+
+
+@client_information_bp.route('/client-notes', methods=['POST'])
+def add_client_notes():
+    try:
+        form_data = request.get_json()
+        client_id = form_data.get('client_id')  # Assuming you have the client_id as part of the form data
+        client_notes = form_data.get('client_notes')
+        print(client_id, client_notes)
+
+        if not client_id or not client_notes:
+            return jsonify({"error": "Client ID and client notes are required fields."}), 400
+
+        cursor = conn.cursor()
+
+        cursor.execute('''
+            INSERT INTO client_notes (client_id, client_notes)
+            VALUES (%s, %s)
+        ''', (client_id, client_notes))
+
+        conn.commit()
+        cursor.close()
+
+        return jsonify({"message": "Client notes added successfully"})
+
+    except Exception as e:
+        return jsonify({"error": str(e)}, 500)
+
 
 
 

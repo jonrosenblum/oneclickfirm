@@ -17,6 +17,7 @@ export default function EditClient() {
 
 
 
+
     useEffect(() => {
         // Fetch client data when the component mounts or when a client is selected
         const fetchData = async () => {
@@ -76,6 +77,29 @@ export default function EditClient() {
             });
         }
     };
+
+
+    const addClientNote = () => {
+        console.log(selectedClient.client_id)
+        console.log(typeof selectedClient.client_id)
+        if (selectedClient && newClientNotes) {
+          // Send a POST request to add client notes
+          axios
+            .post('/client-notes', {
+              client_id: selectedClient.client_id,
+              client_notes: newClientNotes,
+            })
+            .then((response) => {
+            console.log('Client notes added successfully', response.data);
+              // Clear the input field
+              setNewClientNotes('');
+              // You can update the client notes list here or trigger a data reload.
+            })
+            .catch((error) => {
+              console.error('Error adding client notes', error);
+            });
+        }
+      };
 
     const updateClientEmail = () => {
         if (selectedClient && newClientEmail) {
@@ -148,11 +172,6 @@ export default function EditClient() {
             });
         }
       };
-
-      const addClientNote = () => {
-        console.log('Adding client note:', newClientNotes);
-        setNewClientNotes('');
-      }
 
 
     
@@ -234,11 +253,11 @@ export default function EditClient() {
                                 <textarea
                                 value={newClientNotes}
                                 onChange={(e)=> {setNewClientNotes(e.target.value)
-                                console.log(e.target.value)}}
+                                }}
                                 type='text'
                                 rows='5'
                                 className='bg-white text-black text-sm rounded-md p-2 m-4'
-                                placeholder="Enter notes about client here"/>
+                                placeholder={selectedClient.client_id}/>
                                 <div className='text-center'> 
                                 <button onClick={addClientNote} className='button rounded-md bg-blue-500 px-3 m-4 py-2 w-1/2 text-sm'>+ New Note</button>
                                 </div>
