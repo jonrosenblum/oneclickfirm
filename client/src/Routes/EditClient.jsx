@@ -5,6 +5,7 @@ export default function EditClient() {
     const [clientData, setClientData] = useState([]);
     const [selectedClient, setSelectedClient] = useState(null);
     const [newClientName, setNewClientName] = useState('');
+    const [newClientEmail, setNewClientEmail] = useState('');
     const [newClientNotes, setNewClientNotes] = useState('');
 
 
@@ -74,6 +75,25 @@ export default function EditClient() {
             });
         }
     };
+
+    const updateClientEmail = () => {
+        if (selectedClient && newClientEmail) {
+            // Send a PATCH request to update the client name
+            axios.patch(`/clients/${selectedClient.client_id}`, {
+                client_email: newClientEmail
+            })
+            .then(() => {
+                console.log('Updated client email', newClientEmail);
+                setSelectedClient({ ...selectedClient, client_email: newClientEmail });
+                // Clear the input field
+                setNewClientEmail('');
+            })
+            .catch(error => {
+                console.error('Error updating client email', error);
+            });
+        }
+    };
+
 
 
     const downloadDocuments = () => {
@@ -161,6 +181,14 @@ export default function EditClient() {
                         <div className='p-16'>
                             <div className='flex'>
                                 <div className='flex flex-col'>
+                                <div>
+                                    <div className='flex gap-4 items-center'>
+                                        <p className={`bg-green-500 p-2 ${selectedClient.case_status === 'OPEN' ? 'bg-green-500' : 'bg-red-500'}`}>{selectedClient.case_status}</p>
+                                        <button onClick={updateCaseStatus} className='button rounded-md bg-gray-400 px-3 m-4 py-2 text-sm button active:scale-[.95] active:duration-75 hover:scale-[1.01] ease-in-out transition-all'>
+                                        {selectedClient.case_status === 'OPEN' ? 'CLOSE' : 'OPEN'}
+                                        </button>
+                                    </div>
+                                </div>
                                     <div className='flex justify-between items-center'>
                                         <h1 className='title text-2xl font-medium p-2'>Client ID: {selectedClient.client_id}</h1>
                                         <div className=''>
@@ -172,16 +200,9 @@ export default function EditClient() {
                                     </div>
                                    
                                     <p className='title text-2xl font-medium p-2'> Violations </p>
-                                    <p className='title text-lg font-light m-3 p-4'>{selectedClient.complaint_number}</p>
-                                    <p className='title text-lg p-2'>{formatDate(selectedClient.incident_date)}</p>
+                                    <p className='title text-lg font-light p-4'>{selectedClient.complaint_number}</p>
+                                    <p className='title text-lg p-2 mb-2'>{formatDate(selectedClient.incident_date)}</p>
                                 </div>
-                            </div>
-           
-                            <div className=''>
-                            <p className={`title bg-green-500 text-sm text-white rounded-md text-center p-2 ${selectedClient.case_status === 'OPEN' ? 'bg-green-500' : 'bg-red-500'}`}>{selectedClient.case_status}</p>
-                                <button onClick={updateCaseStatus} className='button rounded-md bg-gray-400 px-3 m-4 py-2 text-sm button active:scale-[.95] active:duration-75 hover:scale-[1.01] ease-in-out transition-all'>
-                                {selectedClient.case_status === 'OPEN' ? 'CLOSE' : 'OPEN'}
-                                </button>
                             </div>
 
                            
@@ -195,6 +216,16 @@ export default function EditClient() {
                                 onChange={(e)=> setNewClientName(e.target.value)}
                                 placeholder="Enter new client name"/>
                                 <button onClick={updateClientName} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Update</button>
+                            </div>
+
+                            <div className='flex gap-8 items-center'>
+                                <h1 className='title bg-black text-sm text-white rounded-md p-2'>{selectedClient.client_email}</h1>
+                                <input 
+                                className='border border-2 border-gray-500 text-sm rounded-md p-2'
+                                value={newClientEmail}
+                                onChange={(e)=> setNewClientEmail(e.target.value)}
+                                placeholder="Enter new client email"/>
+                                <button onClick={updateClientEmail} className='button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm'>Update</button>
                             </div>
 
                             <div className='flex flex-col bg-gray-400 rounded-md'>

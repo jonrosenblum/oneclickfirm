@@ -34,6 +34,7 @@ def create_tables_if_not_exist():
             cursor.execute("CREATE TABLE IF NOT EXISTS client_information (\
                 client_id SERIAL PRIMARY KEY, \
                 client_name VARCHAR(255), \
+                client_email VARCHAR(255), \
                 date_created DATE, \
                 credit_card_number VARCHAR(20), \
                 credit_card_expiration VARCHAR(10), \
@@ -99,10 +100,10 @@ def new_client():
     # Insert form data and document binary data into the database
     # Insert data into the client_information table
     cursor.execute('''
-        INSERT INTO client_information (client_name, date_created, credit_card_number, credit_card_expiration, credit_card_cvv, client_balance)
-        VALUES (%s, %s, %s, %s, %s, %s)
+        INSERT INTO client_information (client_name, client_email, date_created, credit_card_number, credit_card_expiration, credit_card_cvv, client_balance)
+        VALUES (%s, %s, %s, %s, %s, %s, %s)
         RETURNING client_id
-    ''', (form_data['client_name'], formatted_date, form_data['credit_card_number'], form_data['credit_card_expiration'], form_data['credit_card_cvv'], form_data['client_balance'], 
+    ''', (form_data['client_name'], form_data['client_email'], formatted_date, form_data['credit_card_number'], form_data['credit_card_expiration'], form_data['credit_card_cvv'], form_data['client_balance'], 
         #   credit_doc_data, discovery_doc_data, representation_doc_data, retainer_doc_data
           
           ))
@@ -175,6 +176,7 @@ def makeTempClientFiles(form_data,temp_dir, document_name):
         'court_house_city': form_data['court_house_city'],
         'court_house_state': form_data['court_house_state'],
         'court_house_zip': form_data['court_house_zip'],
+        'client_email': form_data['client_email'],
         'client_name': form_data['client_name'].upper(),
         'court_house_county': form_data['court_house_county'].upper(),
         'court_house_name_upper': form_data['court_house_name'].upper(),
@@ -253,6 +255,7 @@ def get_all_clients():
                 ci.credit_card_expiration,
                 ci.credit_card_cvv,
                 ci.client_balance,
+                ci.client_email,
                 v.case_status,
                 v.complaint_number,
                 v.incident_date,
@@ -322,12 +325,16 @@ def update_client_info(client_id):
     cursor = conn.cursor()
     new_case_status = request.json.get('case_status')
     new_client_name = request.json.get('client_name')
+    new_client_email = request.json.get('client_email')
 
     try:
         if new_case_status:
             cursor.execute("UPDATE violations SET case_status = %s WHERE client_id = %s", (new_case_status, client_id))
         if new_client_name:
             cursor.execute("UPDATE client_information SET client_name = %s WHERE client_id = %s", (new_client_name, client_id))
+        if new_client_email:
+            cursor.execute("UPDATE client_information SET client_email = %s WHERE client_id = %s", (new_client_email, client_id))
+
 
         conn.commit()
         cursor.close()
