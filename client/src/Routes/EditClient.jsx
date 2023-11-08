@@ -6,7 +6,7 @@ export default function EditClient() {
     const [selectedClient, setSelectedClient] = useState(null);
     const [newClientName, setNewClientName] = useState('');
     const [newClientEmail, setNewClientEmail] = useState('');
-    const [newClientNotes, setNewClientNotes] = useState('');
+    const [newClientNotes, setNewClientNotes] = useState(selectedClient?.client_notes);
 
 
     function formatDate(dateString) {
@@ -71,6 +71,7 @@ export default function EditClient() {
                 setSelectedClient({ ...selectedClient, client_name: newClientName });
                 // Clear the input field
                 setNewClientName('');
+        
             })
             .catch(error => {
                 console.error('Error updating client name', error);
@@ -80,8 +81,6 @@ export default function EditClient() {
 
 
     const addClientNote = () => {
-        console.log(selectedClient.client_id)
-        console.log(typeof selectedClient.client_id)
         if (selectedClient && newClientNotes) {
           // Send a POST request to add client notes
           axios
@@ -257,7 +256,8 @@ export default function EditClient() {
                                 type='text'
                                 rows='5'
                                 className='bg-white text-black text-sm rounded-md p-2 m-4'
-                                placeholder={selectedClient.client_id}/>
+                                placeholder="Enter new client notes"
+                                />
                                 <div className='text-center'> 
                                 <button onClick={addClientNote} className='button rounded-md bg-blue-500 px-3 m-4 py-2 w-1/2 text-sm'>+ New Note</button>
                                 </div>

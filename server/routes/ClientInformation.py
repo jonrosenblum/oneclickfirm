@@ -275,10 +275,12 @@ def get_all_clients():
                 ci.ccauth_docx,
                 ci.discovery_docx,
                 ci.representation_docx,
-                ci.retainer_docx
+                ci.retainer_docx,
+                cn.client_notes  -- Include client_notes from the client_notes table
             FROM client_information ci
             LEFT JOIN violations v ON ci.client_id = v.client_id
             LEFT JOIN court_information co ON ci.client_id = co.client_id
+            LEFT JOIN client_notes cn ON ci.client_id = cn.client_id
         """)
 
         client_data = cursor.fetchall()
