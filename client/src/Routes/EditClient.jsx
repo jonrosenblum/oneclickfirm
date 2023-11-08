@@ -30,6 +30,7 @@ export default function EditClient() {
     
         fetchData();
       }, [selectedClient]);
+      
     
     const handleClientClick = (client) => {
         setSelectedClient(client);
