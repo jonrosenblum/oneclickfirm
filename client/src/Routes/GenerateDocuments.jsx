@@ -11,6 +11,7 @@ import AlertClientAdded from "../Components/Pieces/Alert";
 export default function GenerateDocuments() {
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false); // State variable to control the alert visibility
+  const stateAbbreviations = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
 
   const njCounties = [
     'Atlantic',
@@ -45,7 +46,7 @@ export default function GenerateDocuments() {
     court_house_name: "",
     court_house_address: "",
     court_house_city: "",
-    court_house_state: "",
+    court_house_state: "NJ",
     court_house_zip: "",
     court_house_county: "",
     client_email: "",
@@ -238,20 +239,14 @@ export default function GenerateDocuments() {
             />
           </div>
 
-          <div>
-            <label className="text-lg font-medium">State</label>
-            <input
-              className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-              type="text"
-              value={formData.court_house_state}
-              required
-              placeholder="NJ"
-              onChange={(e) =>
-                setFormData({ ...formData, court_house_state: e.target.value })
-              }
-              minLength={2}
-              maxLength={2}
-            />
+          <div className="flex flex-col">
+            <label className="text-md font-light mb-2">Select a State:</label>
+            <select required className="rounded-lg w-1/4 text-center text-sm text-black p-2" value={formData.court_house_state} onChange={(e) => setFormData({ ...formData, court_house_state: e.target.value })}>
+              <option value="">-- Select State --</option>
+              {stateAbbreviations.map((state, index)=> (
+                <option value={state} key={index}>{state}</option>
+              ))}
+            </select>
           </div>
 
           <div>
@@ -272,14 +267,12 @@ export default function GenerateDocuments() {
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
           <div className="flex flex-col">
             <label className="text-md font-light mb-2">Select a County: </label>
-            <select className="rounded-lg w-3/5 text-center text-sm text-black p-2"required value={formData.court_house_county} onChange={(e) => setFormData({ ...formData, court_house_county: e.target.value })}>
+            <select className="rounded-lg w-3/5 text-center text-sm text-black p-2" required value={formData.court_house_county} onChange={(e) => setFormData({ ...formData, court_house_county: e.target.value })}>
               <option value="">-- Select County --</option>
               {njCounties.map((county, index)=> (
                 <option key={index} value={county}>{county}</option>
               ))}
             </select>
-        
-            
           </div>
 
           <div>
