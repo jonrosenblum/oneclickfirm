@@ -12,6 +12,29 @@ export default function GenerateDocuments() {
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false); // State variable to control the alert visibility
 
+  const njCounties = [
+    'Atlantic',
+    'Bergen',
+    'Burlington',
+    'Camden',
+    'Cape May',
+    'Cumberland',
+    'Essex',
+    'Gloucester',
+    'Hudson',
+    'Hunterdon',
+    'Mercer',
+    'Middlesex',
+    'Monmouth',
+    'Morris',
+    'Ocean',
+    'Passaic',
+    'Salem',
+    'Somerset',
+    'Sussex',
+    'Union',
+    'Warren',
+  ];
 
   // Define the initial state
   const initialFormData = {
@@ -247,18 +270,16 @@ export default function GenerateDocuments() {
         </div>
 
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-          <div>
-            <label className="text-lg font-medium">County</label>
-            <input
-              className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-              type="text"
-              placeholder="Mercer"
-              value={formData.court_house_county}
-              required
-              onChange={(e) =>
-                setFormData({ ...formData, court_house_county: e.target.value })
-              }
-            />
+          <div className="flex flex-col">
+            <label className="text-md font-light mb-2">Select a County: </label>
+            <select className="rounded-lg w-3/5 text-center text-sm text-black p-2"required value={formData.court_house_county} onChange={(e) => setFormData({ ...formData, court_house_county: e.target.value })}>
+              <option value="">-- Select County --</option>
+              {njCounties.map((county, index)=> (
+                <option key={index} value={county}>{county}</option>
+              ))}
+            </select>
+        
+            
           </div>
 
           <div>
