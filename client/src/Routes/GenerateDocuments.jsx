@@ -33,6 +33,7 @@ export default function GenerateDocuments() {
     credit_card_expiration: "",
     credit_card_cvv: "",
     client_balance: "",
+    payment_type: "",
   };
 
 
@@ -288,13 +289,23 @@ export default function GenerateDocuments() {
             </select>
           </div>
           <div>
+            <label className="text-lg font-medium">Payment Type</label>
+            <input
+              type="text"
+              className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+              placeholder="Enter Credit Card or Zelle"
+              value={formData.payment_type}
+              required
+              onChange={(e)=> {setFormData({...formData, payment_type: e.target.value})}}/>
+          </div>
+          <div>
             <label className="text-lg font-medium">Credit Card Number</label>
             <input
               type="text"
               className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
               placeholder="Credit Card Number"
               value={formData.credit_card_number}
-              required
+              // required
               onChange={(e)=> {setFormData({...formData, credit_card_number: e.target.value})}}/>
           </div>
           <div>
@@ -304,7 +315,7 @@ export default function GenerateDocuments() {
               className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
               placeholder="MM/YY"
               value={formData.credit_card_expiration}
-              required
+              // required
               onChange={(e)=> {setFormData({...formData, credit_card_expiration: e.target.value})}}/>
           </div>
           <div>
@@ -314,7 +325,7 @@ export default function GenerateDocuments() {
               className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
               placeholder="XXX"
               value={formData.credit_card_cvv}
-              required
+              // required
               onChange={(e)=> {setFormData({...formData, credit_card_cvv: e.target.value})}}/>
           </div>
           <div>

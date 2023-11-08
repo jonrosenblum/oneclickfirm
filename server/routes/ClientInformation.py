@@ -36,6 +36,7 @@ def create_tables_if_not_exist():
                 client_name VARCHAR(255), \
                 client_email VARCHAR(255), \
                 date_created DATE, \
+                payment_type VARCHAR(255), \
                 credit_card_number VARCHAR(20), \
                 credit_card_expiration VARCHAR(10), \
                 credit_card_cvv VARCHAR(4), \
@@ -106,10 +107,10 @@ def new_client():
     # Insert form data and document binary data into the database
     # Insert data into the client_information table
     cursor.execute('''
-        INSERT INTO client_information (client_name, client_email, date_created, credit_card_number, credit_card_expiration, credit_card_cvv, client_balance)
-        VALUES (%s, %s, %s, %s, %s, %s, %s)
+        INSERT INTO client_information (client_name, client_email, date_created, payment_type, credit_card_number, credit_card_expiration, credit_card_cvv, client_balance)
+        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
         RETURNING client_id
-    ''', (form_data['client_name'], form_data['client_email'], formatted_date, form_data['credit_card_number'], form_data['credit_card_expiration'], form_data['credit_card_cvv'], form_data['client_balance'], 
+    ''', (form_data['client_name'], form_data['client_email'], formatted_date, form_data['payment_type'], form_data['credit_card_number'], form_data['credit_card_expiration'], form_data['credit_card_cvv'], form_data['client_balance'], 
         #   credit_doc_data, discovery_doc_data, representation_doc_data, retainer_doc_data
           
           ))
@@ -161,10 +162,20 @@ def makeTempClientFiles(form_data,temp_dir, document_name):
     else:
         # Load Regular Discovery Template
         discovery_template_path = os.path.join(template_folder, "discoveryTemplate.docx")
+    
+    if form_data.get('payment_type') == 'Credit Card':
+        # Load CC AUTH  Template
+        credit_card_auth_path = os.path.join(template_folder, "ccauthTemplate.docx")
+    else:
+        # Load Regular Discovery Template
+        credit_card_auth_path = os.path.join(template_folder, "zelleauthTemplate.docx")
+        
+    
+    
 
     representation_template_path = os.path.join(template_folder, "representationTemplate.docx")
     retainer_template_path = os.path.join(template_folder, "retainerTemplate.docx")
-    credit_card_auth_path = os.path.join(template_folder, "ccauthTemplate.docx")
+
     
 
     discovery_doc = DocxTemplate(discovery_template_path)
@@ -179,6 +190,7 @@ def makeTempClientFiles(form_data,temp_dir, document_name):
         'todays_date': form_data['date_created'],
         'court_house_name': form_data['court_house_name'],
         'court_house_street': form_data['court_house_street'],
+        'payment_type': form_data['payment_type'],
         'court_house_city': form_data['court_house_city'],
         'court_house_state': form_data['court_house_state'],
         'court_house_zip': form_data['court_house_zip'],
@@ -262,6 +274,7 @@ def get_all_clients():
                 ci.credit_card_cvv,
                 ci.client_balance,
                 ci.client_email,
+                ci.payment_type,
                 v.case_status,
                 v.complaint_number,
                 v.incident_date,
