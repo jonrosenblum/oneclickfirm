@@ -90,7 +90,7 @@ export default function AllClients() {
                   <div className="mb-4">
                     <input
                     type="text"
-                    placeholder="Search by Client Name or County"
+                    placeholder="Search for clients"
                     value={searchInput}
                     onChange={(e)=> setSearchInput(e.target.value)}
                     className="p-2 w-1/6 mt-4 text-sm text-black border border-gray-300 rounded"/>

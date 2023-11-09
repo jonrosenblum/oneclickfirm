@@ -15,23 +15,20 @@ export default function EditClient() {
         return formattedDate;
       }
 
-
-
-
-    useEffect(() => {
-        // Fetch client data when the component mounts or when a client is selected
-        const fetchData = async () => {
-          try {
-            const response = await axios.get('/clients');
-            setClientData(response.data);
-          } catch (error) {
-            console.error('Error fetching client data', error);
-          }
-        };
-    
+    const fetchData = async () => {
+        try {
+          const response = await axios.get('/clients');
+          setClientData(response.data);
+        } catch (error) {
+          console.error('Error fetching client data', error);
+        }
+      };
+      
+      useEffect(() => {
+        // Fetch client data when the component mounts
         fetchData();
       }, [selectedClient]);
-      
+
     
     const handleClientClick = (client) => {
         setSelectedClient(client);
@@ -73,24 +70,26 @@ export default function EditClient() {
         }
     };
 
-
-    const addClientNote = () => {
+    const addClientNote = async () => {
         if (selectedClient && newClientNotes) {
-          // Send a POST request to add client notes
-          axios
-            .post('/client-notes', {
+          try {
+            // Send a POST request to add client notes
+            await axios.post('/client-notes', {
               client_id: selectedClient.client_id,
               client_notes: newClientNotes,
-            })
-            .then((response) => {
-            console.log('Client notes added successfully', response.data);
-              // Clear the input field
-              setNewClientNotes('');
-              // You can update the client notes list here or trigger a data reload.
-            })
-            .catch((error) => {
-              console.error('Error adding client notes', error);
             });
+      
+            console.log('Client notes added successfully');
+            
+            // Clear the input field
+            setNewClientNotes('');
+      
+            // Fetch client data after note addition
+            fetchData();
+            alert('Client note successfully');
+          } catch (error) {
+            console.error('Error adding client notes', error);
+          }
         }
       };
 
@@ -245,6 +244,7 @@ export default function EditClient() {
 
                             <div className='flex flex-col bg-gray-400 rounded-md'>
                                 <h1 className='title text-lg p-4'>Client Notes</h1>
+                                <p className='p-4'>{selectedClient.client_notes}</p>
                                 <textarea
                                 value={newClientNotes}
                                 onChange={(e)=> {setNewClientNotes(e.target.value)
