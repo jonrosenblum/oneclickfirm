@@ -42,7 +42,7 @@ useEffect(() => {
   };
 
   const handleAllClientsClick = () => {
-    navigate('/all-clients');
+    navigate('/edit-client');
   };
 
   const handlEditClientClick = () => {
