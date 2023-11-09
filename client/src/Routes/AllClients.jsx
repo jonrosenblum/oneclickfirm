@@ -6,6 +6,7 @@ import AlertDocumentDownload from "../Components/Pieces/AlertDocumentDownload";
 
 export default function AllClients() {
   const [clientInfo, setClientInfo] = useState([]);
+  const [searchInput, setSearchInput] = useState(""); // State variable for search input
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false); // State variable to control the alert visibility
 
@@ -52,6 +53,13 @@ export default function AllClients() {
     }
   };
 
+
+  const filteredClients = clientInfo.filter(
+    (client) =>
+      client.client_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+      client.court_house_county.toLowerCase().includes(searchInput.toLowerCase())
+  );
+
   return (
     <div>
       {clientInfo.length === 0 ? (
@@ -78,6 +86,14 @@ export default function AllClients() {
               <div className="flex flex-wrap">
                 <div className="p-4 relative w-full max-w-full flex-grow flex-1">
                   <h3 className="title text-2xl font-bold">All Clients</h3>
+                  <div className="mb-4">
+                    <input
+                    type="text"
+                    placeholder="Search by Client Name or County"
+                    value={searchInput}
+                    onChange={(e)=> setSearchInput(e.target.value)}
+                    className="p-2 w-1/6 mt-4 text-sm border border-gray-300 rounded"/>
+                  </div>
                 </div>
               </div>
             </div>
@@ -110,7 +126,7 @@ export default function AllClients() {
                     </tr>
                   </thead>
                   <tbody>
-                    {clientInfo.map((client) => (
+                    {filteredClients.map((client) => (
                       <tr
                         key={client.client_id}
                         className="hover:bg-gray-800 transition duration-150 ease-in-out"
