@@ -131,6 +131,7 @@ export default function GenerateDocuments() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    console.log(formData)
 
     try {
       const response = await axios.post("/new-client", formData, {
@@ -172,7 +173,7 @@ export default function GenerateDocuments() {
                   onChange={(e) =>
                     setFormData({ ...formData, todays_date: e.target.value })
                   }
-                  required
+                  // required
                   />
               </div>
 
@@ -184,7 +185,7 @@ export default function GenerateDocuments() {
                   onChange={(e) =>
                     setFormData({ ...formData, client_name: e.target.value })
                   }
-                  required
+                  // required
                   />
               </div>
 
@@ -227,7 +228,7 @@ export default function GenerateDocuments() {
                         })
                       }
                       value={formData.incident_date}
-                      required
+                      // required
                     />
                   </div>
                   <div className="flex flex-col m-2">
@@ -235,7 +236,7 @@ export default function GenerateDocuments() {
                 <select
                   className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                   value={formData.dwi_status}
-                  required
+                  // required
                   onChange={(e) =>
                     setFormData({ ...formData, dwi_status: e.target.value })
                   }
@@ -253,7 +254,7 @@ export default function GenerateDocuments() {
                 onChange={(e) =>
                   setFormData({ ...formData, fax_number: e.target.value })
                 }
-                required
+                // required
                 value={formData.fax_number}
               />
             </div>
@@ -274,7 +275,7 @@ export default function GenerateDocuments() {
                         }
                         type="text"
                         value={formData.court_house_name}
-                        required
+                        // required
                       />
                   </div> 
                   <div className="flex flex-col m-2">
@@ -283,7 +284,7 @@ export default function GenerateDocuments() {
                       className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                       type="text"
                       value={formData.court_house_address}
-                      required
+                      // required
                       placeholder="1 Main Street"
                       onChange={(e) =>
                         setFormData({
@@ -300,7 +301,7 @@ export default function GenerateDocuments() {
                     <label className="text-sm mb-2">County</label>
                       <select
                         className="rounded-md border-2 text-sm p-1 border-gray-300 focus:outline-none focus:border-gray-500"
-                        required
+                        // required
                         value={formData.court_house_county}
                         onChange={(e) =>
                           setFormData({
@@ -324,7 +325,7 @@ export default function GenerateDocuments() {
                       className="rounded-md border-2 text-sm p-1 border-gray-300 focus:outline-none focus:border-gray-500"
                       type="text"
                       value={formData.court_house_city}
-                      required
+                      // required
                       name="cityInput"
                       onChange={(e) =>
                         setFormData({
@@ -348,7 +349,7 @@ export default function GenerateDocuments() {
                 <label className="text-sm mb-2"> State </label>
                 <select
                   disabled
-                  required
+                  // required
                   className="rounded-md border-2 text-sm p-1 border-gray-300 focus:outline-none focus:border-gray-500"
                   value={formData.court_house_state}
                   
@@ -376,7 +377,7 @@ export default function GenerateDocuments() {
                 className="w-1/2 rounded-md border-2 text-sm p-1 border-gray-300 focus:outline-none focus:border-gray-500"
                 type="text"
                 value={formData.court_house_zip}
-                required
+                // required
                 placeholder="07095"
                 onChange={(e) =>
                 setFormData({...formData, court_house_zip: e.target.value,
@@ -400,7 +401,7 @@ export default function GenerateDocuments() {
                     complaint_violation_ticket_numbers: e.target.value,
                   })
                 }
-                required
+                // required
               />
             </div>
             
@@ -420,35 +421,40 @@ export default function GenerateDocuments() {
                     type="text"
                     className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                     value={formData.payment_type}
-                    required
                     onChange={(e) => {
                       setFormData({ ...formData, payment_type: e.target.value });
                     }}
                   >
+                    <option value="">Select Payment Type</option>
                     <option value="Credit Card">Credit Card</option>
                     <option value="Zelle">Zelle</option>
                   </select>
-              </div>
-              <div className="flex flex-col m-2">
-                <label className="text-sm mb-1">Card Type</label>
-                <select
-                  type="text"
-                  className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                  placeholder="Visa, Mastercard, American Express"
-                  value={formData.credit_card_type}
-                  onChange={(e) => {
-                    setFormData({
-                      ...formData,
-                      credit_card_type: e.target.value,
-                    });
-                  }}
-                >
+                </div>
+
+                <div className="flex flex-col m-2">
+                  <label className="text-sm mb-1">Card Type</label>
+                  <select
+                    type="text"
+                    className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                    placeholder="Select Card Type"
+                    value={formData.credit_card_type}
+                    onChange={(e) => {
+                      setFormData({
+                        ...formData,
+                        credit_card_type: e.target.value,
+                      });
+                    }}
+                    disabled={formData.payment_type === "Zelle"}
+                  >
+                    <option value="">Select Card Type</option>
                     <option value="American Express">American Express</option>
                     <option value="Visa">Visa</option>
                     <option value="MasterCard">MasterCard</option>
                     <option value="Discover">Discover</option>
                   </select>
-              </div>
+                </div>
+
+
               <div className="flex flex-col m-2">
                 <label className="text-sm mb-1">
                   Credit Card Number
@@ -513,7 +519,7 @@ export default function GenerateDocuments() {
                   className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                   placeholder="$"
                   value={formData.client_balance}
-                  required
+                  // required
                   onChange={(e) => {
                     setFormData({
                       ...formData,
