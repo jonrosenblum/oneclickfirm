@@ -42,11 +42,11 @@ useEffect(() => {
   };
 
   const handleAllClientsClick = () => {
-    navigate('/edit-client');
+    navigate('/all-clients');
   };
 
   const handlEditClientClick = () => {
-    navigate('/all-clients');
+    navigate('/edit-client');
   };
 
 

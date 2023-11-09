@@ -368,31 +368,45 @@ def download_documents(client_id):
 
 
 @client_information_bp.route('/client-notes', methods=['POST'])
-def add_client_notes():
+def add_or_update_client_notes():
     try:
         form_data = request.get_json()
-        client_id = form_data.get('client_id')  # Assuming you have the client_id as part of the form data
+        client_id = form_data.get('client_id')
         client_notes = form_data.get('client_notes')
-        print(client_id, client_notes)
 
         if not client_id or not client_notes:
             return jsonify({"error": "Client ID and client notes are required fields."}), 400
 
         cursor = conn.cursor()
 
+        # Check if the client already has notes
         cursor.execute('''
-            INSERT INTO client_notes (client_id, client_notes)
-            VALUES (%s, %s)
-        ''', (client_id, client_notes))
+            SELECT * FROM client_notes
+            WHERE client_id = %s
+        ''', (client_id,))
+
+        existing_notes = cursor.fetchone()
+
+        if existing_notes:
+            # If notes exist, update them
+            cursor.execute('''
+                UPDATE client_notes
+                SET client_notes = %s
+                WHERE client_id = %s
+            ''', (client_notes, client_id))
+        else:
+            # If notes don't exist, insert a new record
+            cursor.execute('''
+                INSERT INTO client_notes (client_id, client_notes)
+                VALUES (%s, %s)
+            ''', (client_id, client_notes))
 
         conn.commit()
         cursor.close()
 
-        return jsonify({"message": "Client notes added successfully"})
+        return jsonify({"message": "Client notes added/updated successfully"})
 
     except Exception as e:
         return jsonify({"error": str(e)}, 500)
-
-
 
 

@@ -88,28 +88,29 @@ export default function EditClient() {
         }
     };
 
-    const addClientNote = async () => {
-        if (selectedClient && newClientNotes) {
-          try {
-            // Send a POST request to add client notes
-            await axios.post('/client-notes', {
-              client_id: selectedClient.client_id,
-              client_notes: newClientNotes,
-            });
-      
-            console.log('Client notes added successfully');
-            
-            // Clear the input field
-            setNewClientNotes('');
-      
-            // Fetch client data after note addition
-            // fetchData();
-            alert('Client note successfully');
-          } catch (error) {
-            console.error('Error adding client notes', error);
-          }
+    const addOrUpdateClientNote = async () => {
+      if (selectedClient && newClientNotes) {
+        try {
+          // Send a POST request to add or update client notes
+          await axios.post('/client-notes', {
+            client_id: selectedClient.client_id,
+            client_notes: newClientNotes,
+          });
+    
+          console.log('Client notes added/updated successfully');
+          
+          // Clear the input field
+          setNewClientNotes('');
+          
+          // Fetch client data after note addition/update
+          // fetchData();
+          alert('Client note added/updated successfully');
+        } catch (error) {
+          console.error('Error adding/updating client notes', error);
         }
-      };
+      }
+    };
+
 
     const updateClientEmail = () => {
         if (selectedClient && newClientEmail) {
@@ -164,26 +165,31 @@ export default function EditClient() {
 
 
     const handleClientDelete = () => {
-        if (selectedClient) {
-          const clientId = selectedClient.client_id;
+      console.log("TRYING TO DELETE")
+    };
+      //   if (selectedClient) {
+      //     const clientId = selectedClient.client_id;
       
-          // Send a DELETE request to the backend route for client deletion
-          axios.delete(`/clients/${clientId}`)
-            .then(() => {
-              // Client deleted successfully, you can perform any additional actions here
-              console.log('Client deleted successfully');
-              setSelectedClient(null);
+      //     // Send a DELETE request to the backend route for client deletion
+      //     axios.delete(`/clients/${clientId}`)
+      //       .then(() => {
+      //         // Client deleted successfully, you can perform any additional actions here
+      //         console.log('Client deleted successfully');
+      //         setSelectedClient(null);
 
               
-            })
-            .catch(error => {
-              console.error('Error deleting client', error);
-              // Handle the error, display a message, or take appropriate action
-            });
-        }
-      };
+      //       })
+      //       .catch(error => {
+      //         console.error('Error deleting client', error);
+      //         // Handle the error, display a message, or take appropriate action
+      //       });
+      //   }
+      // };
 
-
+    //   if (!selectedClient) {
+    //     // Redirect to client list or another page
+    //     return <Redirect to="/client-list" />;
+    // }
     
     return (
         <div className="bg-gradient-to-tr p-2 from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center h-full">
@@ -272,7 +278,7 @@ export default function EditClient() {
                                 className='bg-white text-black text-sm rounded-md p-2 m-4'
                                 placeholder="Enter new client notes"/>
                                 <div className='text-center'> 
-                                    <button onClick={addClientNote} className='button rounded-md bg-blue-500 px-3 m-4 py-2 w-1/2 text-sm'>+ New Note</button>
+                                    <button onClick={addOrUpdateClientNote} className='button rounded-md bg-blue-500 px-3 m-4 py-2 w-1/2 text-sm'>+ New Note</button>
                                 </div> 
                             </div>
 
