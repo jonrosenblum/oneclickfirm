@@ -92,7 +92,7 @@ export default function AllClients() {
                     placeholder="Search by Client Name or County"
                     value={searchInput}
                     onChange={(e)=> setSearchInput(e.target.value)}
-                    className="p-2 w-1/6 mt-4 text-sm border border-gray-300 rounded"/>
+                    className="p-2 w-1/6 mt-4 text-sm text-black border border-gray-300 rounded"/>
                   </div>
                 </div>
               </div>
