@@ -5,9 +5,8 @@ import { useAuthSelector } from "../services/useAuthSelector";
 export default function Root() {
   const navigate = useNavigate();
   const { isLoggedIn } = useAuthSelector();
-  // if user is not logged
 
-  console.log({ isLoggedIn });
+  
   if (isLoggedIn === false) {
     navigate("/login");
   }

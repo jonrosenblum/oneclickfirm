@@ -20,7 +20,6 @@ export default function NewClient() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
     setFormSubmitted(true);
 
     try {

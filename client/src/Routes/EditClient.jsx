@@ -45,14 +45,11 @@ export default function EditClient() {
             } else {
                 newStatus = 'OPEN';
             }
-    
-            // Send a PATCH request to update the case status
             axios.patch(`/clients/${selectedClient.client_id}`, {
                 case_status: newStatus
             })
             .then(() => {
-                setSelectedClient({ ...selectedClient, case_status: newStatus });
-                // Do nothing here because the useEffect will handle the data reload
+                setSelectedClient({ ...selectedClient, case_status: newStatus }); 
             })
             .catch(error => {
                 console.error('Error updating case status', error);
@@ -62,16 +59,13 @@ export default function EditClient() {
 
     const updateClientName = () => {
         if (selectedClient && newClientName) {
-            // Send a PATCH request to update the client name
             axios.patch(`/clients/${selectedClient.client_id}`, {
                 client_name: newClientName
             })
             .then(() => {
                 console.log('Updated client name', newClientName);
                 setSelectedClient({ ...selectedClient, client_name: newClientName });
-                // Clear the input field
                 setNewClientName('');
-        
             })
             .catch(error => {
                 console.error('Error updating client name', error);
@@ -256,20 +250,13 @@ export default function EditClient() {
                                 type='text'
                                 rows='5'
                                 className='bg-white text-black text-sm rounded-md p-2 m-4'
-                                placeholder="Enter new client notes"
-                                />
+                                placeholder="Enter new client notes"/>
                                 <div className='text-center'> 
-                                <button onClick={addClientNote} className='button rounded-md bg-blue-500 px-3 m-4 py-2 w-1/2 text-sm'>+ New Note</button>
-                                </div>
-                               
+                                    <button onClick={addClientNote} className='button rounded-md bg-blue-500 px-3 m-4 py-2 w-1/2 text-sm'>+ New Note</button>
+                                </div> 
                             </div>
 
-
-                           
-                            
-                         
-                        </div>)}
-                       
+                        </div>)}       
                 </div>
             </div>
         </div>

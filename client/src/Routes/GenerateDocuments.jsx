@@ -2,16 +2,40 @@ import { BiArrowBack } from "react-icons/bi";
 import {  useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-
-
 import { MdOutlineDocumentScanner } from "react-icons/md";
 import AlertClientAdded from "../Components/Pieces/Alert";
 
 
 export default function GenerateDocuments() {
   const navigate = useNavigate();
-  const [showAlert, setShowAlert] = useState(false); // State variable to control the alert visibility
-  const stateAbbreviations = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT', 'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
+  const [showAlert, setShowAlert] = useState(false);
+  const [formData, setFormData] = useState( {
+    client_name: "",
+    todays_date: "",
+    fax_number: "",
+    complaint_violation_ticket_numbers: "",
+    court_house_name: "",
+    court_house_address: "",
+    court_house_city: "",
+    court_house_state: "NJ",
+    court_house_zip: "",
+    court_house_county: "",
+    client_email: "",
+    incident_date: "",
+    case_status: "OPEN",
+    dwi_status: "No",
+    credit_card_number: "",
+    credit_card_expiration: "",
+    credit_card_cvv: "",
+    client_balance: "",
+    payment_type: "",
+    credit_card_type: "",
+  });
+
+  const stateAbbreviations = ['AL', 'AK', 'AZ', 'AR', 'CA', 'CO', 'CT',
+  'DE', 'FL', 'GA', 'HI', 'ID', 'IL', 'IN', 'IA', 'KS', 'KY', 'LA', 'ME', 'MD', 'MA', 
+  'MI', 'MN', 'MS', 'MO', 'MT', 'NE', 'NV', 'NH', 'NJ', 'NM', 'NY', 'NC', 'ND', 'OH', 
+  'OK', 'OR', 'PA', 'RI', 'SC', 'SD', 'TN', 'TX', 'UT', 'VT', 'VA', 'WA', 'WV', 'WI', 'WY'];
 
   const njCounties = [
     'Atlantic',
@@ -37,47 +61,16 @@ export default function GenerateDocuments() {
     'Warren',
   ];
 
-  // Define the initial state
-  const initialFormData = {
-    client_name: "",
-    todays_date: "",
-    fax_number: "",
-    complaint_violation_ticket_numbers: "",
-    court_house_name: "",
-    court_house_address: "",
-    court_house_city: "",
-    court_house_state: "NJ",
-    court_house_zip: "",
-    court_house_county: "",
-    client_email: "",
-    incident_date: "",
-    case_status: "OPEN",
-    dwi_status: "No",
-    credit_card_number: "",
-    credit_card_expiration: "",
-    credit_card_cvv: "",
-    client_balance: "",
-    payment_type: "",
-    credit_card_type: "",
-  };
-
-
-  const [formData, setFormData] = useState(initialFormData);
-
   const goHome = () => {
     navigate("/home");
   };
 
   const handleClearForm = () => {
-    // Reset the form data to the initial state
-    setFormData(initialFormData);
+    setFormData();
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const { target, currentTarget } = e;
-    console.log({ target, currentTarget });
-    console.log(formData);
 
     try {
       const response = await axios.post(
