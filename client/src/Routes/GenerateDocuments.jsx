@@ -2,7 +2,6 @@ import { BiArrowBack } from "react-icons/bi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import { MdOutlineDocumentScanner } from "react-icons/md";
 import AlertClientAdded from "../Components/Pieces/Alert";
 import njdataList from "./../njdata.json";
 
@@ -97,30 +96,6 @@ export default function GenerateDocuments() {
     "WY",
   ];
 
-  // const njCounties = [
-  //   "Atlantic",
-  //   "Bergen",
-  //   "Burlington",
-  //   "Camden",
-  //   "Cape May",
-  //   "Cumberland",
-  //   "Essex",
-  //   "Gloucester",
-  //   "Hudson",
-  //   "Hunterdon",
-  //   "Mercer",
-  //   "Middlesex",
-  //   "Monmouth",
-  //   "Morris",
-  //   "Ocean",
-  //   "Passaic",
-  //   "Salem",
-  //   "Somerset",
-  //   "Sussex",
-  //   "Union",
-  //   "Warren",
-  // ];
-
   const njCounties = [
     ...new Set(njdataList.map((item) => item.county_name_common)),
   ];
@@ -130,7 +105,28 @@ export default function GenerateDocuments() {
   };
 
   const handleClearForm = () => {
-    setFormData();
+    setFormData({
+      client_name: "",
+      todays_date: "",
+      fax_number: "",
+      complaint_violation_ticket_numbers: "",
+      court_house_name: "",
+      court_house_address: "",
+      court_house_city: "",
+      court_house_state: "NJ",
+      court_house_zip: "",
+      court_house_county: "",
+      client_email: "",
+      incident_date: "",
+      case_status: "OPEN",
+      dwi_status: "No",
+      credit_card_number: "",
+      credit_card_expiration: "",
+      credit_card_cvv: "",
+      client_balance: "",
+      payment_type: "",
+      credit_card_type: "",
+    });
   };
 
   const handleSubmit = async (e) => {
@@ -156,69 +152,102 @@ export default function GenerateDocuments() {
   };
 
   return (
-    <div className="text-white bg-gradient-to-tl from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
-      <form onSubmit={handleSubmit}>
-        <div className="bg-gradient-to-tr from-blue-800 to-green-400 w-10/12 mx-auto rounded-xl shadow-lg z-50 p-4">
-          <div className="form-content py-4 text-left px-6 mb-5 space-y-4">
-            <div className="flex flex-row justify-between items-center">
-              <div>
-                <h1 className="text-3xl font-bold">
-                  GENERATE CLIENT DOCUMENTS
-                </h1>
-                <p>Complete the form to generate legal documents</p>
-              </div>
-              <div className="text-9xl">
-                <MdOutlineDocumentScanner />
-              </div>
-            </div>
+    <div className="flex flex-row h-screen">
+        <div className="">
+          <form onSubmit={handleSubmit}>
+          <div className="p-10">
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div>
-                <label className="text-lg font-medium">Today&apos;s Date</label>
+            <div className="client-information flex flex-col bg-gray-100 m-1 p-2">
+              <h3>Client Information</h3>
+            <div className="border border-2 border-gray-300 p-2 mt-2">
+
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-4">
+
+              <div className="flex flex-col m-2">
+                <label className="text-sm mb-1">Today&apos;s Date</label>
                 <input
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="rounded-md border-2 p-1 text-xs border-gray-300 focus:outline-none focus:border-gray-500"
                   type="date"
                   value={formData.todays_date}
                   onChange={(e) =>
                     setFormData({ ...formData, todays_date: e.target.value })
                   }
                   required
-                />
+                  />
               </div>
 
-              <div>
-                <label className="text-lg font-medium">Client Name</label>
+               <div className="flex flex-col m-2">
+                <label className="text-sm mb-1">Client Name</label>
                 <input
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="rounded-md border-2 p-1 text-sm border-gray-300 focus:outline-none focus:border-gray-500"
                   placeholder="John Smith"
                   onChange={(e) =>
                     setFormData({ ...formData, client_name: e.target.value })
                   }
                   required
-                />
+                  />
               </div>
 
-              <div>
-                <label className="text-lg font-medium">Violation Date</label>
+
+              <div className="flex flex-col m-2">
+                <label className="text-sm mb-1">
+                  Email Address
+                </label>
                 <input
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-                  type="date"
+                  className="rounded-md border-2 text-sm p-1 border-gray-300 focus:outline-none focus:border-gray-500"
+                  type="email"
+                  value={formData.client_email}
+                  placeholder="example@gmail.com"
                   onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      incident_date: e.target.value,
-                    })
+                    setFormData({ ...formData, client_email: e.target.value })
                   }
-                  value={formData.incident_date}
-                  required
-                />
+                  />
               </div>
             </div>
+          </div>
+        </div>
 
-            <div>
-              <label className="text-lg font-medium">Fax Number</label>
+
+          <div className="violation-information flex flex-col bg-gray-100 p-2 m-1">
+            <h3>Violation Information</h3>      
+
+            <div className="border border-2 border-gray-300 p-2 mt-2">
+              <div className=" flex grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="flex flex-col">
+                  <div className="flex items-center">
+                    <div className="flex flex-col m-2">
+                      <label className="text-sm mb-1">Violation Date</label>
+                      <input
+                      className="rounded-md border-2 text-xs p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                      type="date"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          incident_date: e.target.value,
+                        })
+                      }
+                      value={formData.incident_date}
+                      required
+                    />
+                  </div>
+                  <div className="flex flex-col m-2">
+                  <label className="text-sm mb-2">DWI?</label>
+                <select
+                  className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                  value={formData.dwi_status}
+                  required
+                  onChange={(e) =>
+                    setFormData({ ...formData, dwi_status: e.target.value })
+                  }
+                >
+                  <option value="Yes">Yes</option>
+                  <option value="No">No</option>
+                </select>
+              </div>
+              <div className="flex flex-col m-2">
+              <label className="text-sm mb-2">Fax Number</label>
               <input
-                className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                 type="tel"
                 placeholder="(516) 404-8762"
                 onChange={(e) =>
@@ -228,104 +257,101 @@ export default function GenerateDocuments() {
                 value={formData.fax_number}
               />
             </div>
-
-            <div>
-              <label className="text-lg font-medium">
-                Violation Number(s) or Ticket Number(s)
-              </label>
-              <p className="text-xs font-light mb-2">
-                Please separate values by commas *
-              </p>
-              <textarea
-                className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-                placeholder="e.g. 1217E23006116"
-                type="text"
-                rows="3"
-                value={formData.complaint_violation_ticket_numbers}
-                onChange={(e) =>
-                  setFormData({
-                    ...formData,
-                    complaint_violation_ticket_numbers: e.target.value,
-                  })
-                }
-                required
-              />
+           
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div>
-                <label className="text-lg font-medium">Court House Name</label>
-                <input
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-                  placeholder="Woodbridge Municipal Court"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      court_house_name: e.target.value,
-                    })
-                  }
-                  type="text"
-                  value={formData.court_house_name}
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="text-lg font-medium">Address Line 1</label>
-                <input
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-                  type="text"
-                  value={formData.court_house_address}
-                  required
-                  placeholder="1 Main Street"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      court_house_address: e.target.value,
-                    })
-                  }
-                />
+                  <div className="flex items-center">
+                    <div className="flex flex-col m-2">
+                      <label className="text-sm mb-2">Court House Name</label>
+                      <input
+                        className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                        placeholder="Woodbridge Municipal Court"
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            court_house_name: e.target.value,
+                          })
+                        }
+                        type="text"
+                        value={formData.court_house_name}
+                        required
+                      />
+                  </div> 
+                  <div className="flex flex-col m-2">
+                    <label className="text-sm mb-2">Address Line 1</label>
+                    <input
+                      className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                      type="text"
+                      value={formData.court_house_address}
+                      required
+                      placeholder="1 Main Street"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          court_house_address: e.target.value,
+                        })
+                      }
+                    />
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div>
-                <label className="text-lg font-medium">City</label>
+              <div className="flex items-center">
+                  <div className="flex flex-col m-2">
+                    <label className="text-sm mb-2">County</label>
+                      <select
+                        className="rounded-md border-2 text-sm p-1 border-gray-300 focus:outline-none focus:border-gray-500"
+                        required
+                        value={formData.court_house_county}
+                        onChange={(e) =>
+                          setFormData({
+                            ...formData,
+                            court_house_county: e.target.value,
+                          })
+                        }
+                      >
+                        <option value="">Select a County</option>
+                        {njCounties.map((county, index) => (
+                          <option key={index} value={county}>
+                            {county}
+                          </option>
+                        ))}
+                      </select> 
+                  </div>
+                  
+                <div className="flex flex-col m-2">
+                  <label className="text-sm mb-2">City</label>
+                    <select
+                      className="rounded-md border-2 text-sm p-1 border-gray-300 focus:outline-none focus:border-gray-500"
+                      type="text"
+                      value={formData.court_house_city}
+                      required
+                      name="cityInput"
+                      onChange={(e) =>
+                        setFormData({
+                          ...formData,
+                          court_house_city: e.target.value,
+                        })
+                      }
+                    >
+                      <option value="">Select a City</option>
+                      {getUniqueCitiesInCounty(formData.court_house_county).map(
+                        (city) => (
+                          <option key={city} value={city}>
+                            {city}
+                          </option>
+                        )
+                      )}
+                    </select>
+                </div>
+                
+                 <div className="flex flex-col m-2">
+                <label className="text-sm mb-2"> State </label>
                 <select
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-                  type="text"
-                  value={formData.court_house_city}
-                  required
-                  placeholder="Woodbridge"
-                  name="cityInput"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      court_house_city: e.target.value,
-                    })
-                  }
-                >
-                  <option value="">Select a City</option>
-                  {/* make options from unique cities based on county selected */}
-                  {getUniqueCitiesInCounty(formData.court_house_county).map(
-                    (city) => (
-                      <option key={city} value={city}>
-                        {city}
-                      </option>
-                    )
-                  )}
-                </select>
-              </div>
-
-              <div className="flex flex-col">
-                <label className="text-md font-light mb-2">
-                  Select a State:
-                </label>
-                <select
-                  required
-                  className="rounded-lg w-1/4 text-center text-sm text-black p-2"
-                  value={formData.court_house_state}
                   disabled
+                  required
+                  className="rounded-md border-2 text-sm p-1 border-gray-300 focus:outline-none focus:border-gray-500"
+                  value={formData.court_house_state}
+                  
                   onChange={(e) =>
                     setFormData({
                       ...formData,
@@ -340,119 +366,96 @@ export default function GenerateDocuments() {
                     </option>
                   ))}
                 </select>
-              </div>
+              </div> 
 
-              <div>
-                <label className="text-lg font-medium">Zip Code</label>
+
+              </div>   
+              <div className="flex flex-col m-2">
+                <label className="text-sm mb-2">Zip Code</label>
                 <input
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-                  type="text"
-                  value={formData.court_house_zip}
-                  required
-                  placeholder="07095"
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      court_house_zip: e.target.value,
-                    })
-                  }
-                />
+                className="w-1/2 rounded-md border-2 text-sm p-1 border-gray-300 focus:outline-none focus:border-gray-500"
+                type="text"
+                value={formData.court_house_zip}
+                required
+                placeholder="07095"
+                onChange={(e) =>
+                setFormData({...formData, court_house_zip: e.target.value,
+                 })}/>
               </div>
             </div>
 
-            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-              <div className="flex flex-col">
-                <label className="text-md font-light mb-2">
-                  Select a County:{" "}
-                </label>
-                <select
-                  className="rounded-lg w-3/5 text-center text-sm text-black p-2"
-                  required
-                  value={formData.court_house_county}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      court_house_county: e.target.value,
-                    })
-                  }
-                >
-                  <option value="">-- Select County --</option>
-                  {njCounties.map((county, index) => (
-                    <option key={index} value={county}>
-                      {county}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <div className="flex flex-col m-2">
+                <label className="text-sm mb-1">Violation Number(s)
+              </label>
+                <p className="text-xs font-light mb-2"> Please separate values by commas * </p>
+              <textarea
+                className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                placeholder="e.g. 1217E23006116"
+                type="text"
+                rows="3"
+                value={formData.complaint_violation_ticket_numbers}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    complaint_violation_ticket_numbers: e.target.value,
+                  })
+                }
+                required
+              />
+            </div>
+            
 
-              <div>
-                <label className="text-lg font-medium">
-                  Client Email Address
-                </label>
-                <input
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-                  type="email"
-                  value={formData.client_email}
-                  placeholder="E-Mail"
-                  onChange={(e) =>
-                    setFormData({ ...formData, client_email: e.target.value })
-                  }
-                />
-              </div>
+            </div>    
+            
+           </div>
+           <div className="payment-information flex flex-col bg-gray-100 mt-3">
+            <h3>Payment Information</h3>
+            <div className="border border-2 border-gray-300 mt-3 p-2">
+              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+                <div className="flex items-center">
 
-              <div>
-                <label className="text-lg font-medium">DWI?</label>
+                <div className="flex flex-col m-2">
+                  <label className="text-sm mb-1">Payment Type</label>
+                  <select
+                    type="text"
+                    className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                    value={formData.payment_type}
+                    required
+                    onChange={(e) => {
+                      setFormData({ ...formData, payment_type: e.target.value });
+                    }}
+                  >
+                    <option value="Credit Card">Credit Card</option>
+                    <option value="Zelle">Zelle</option>
+                  </select>
+              </div>
+              <div className="flex flex-col m-2">
+                <label className="text-sm mb-1">Card Type</label>
                 <select
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-                  placeholder="07095"
-                  value={formData.dwi_status}
-                  required
-                  onChange={(e) =>
-                    setFormData({ ...formData, dwi_status: e.target.value })
-                  }
-                >
-                  <option value="Yes">Yes</option>
-                  <option value="No">No</option>
-                </select>
-              </div>
-              <div>
-                <label className="text-lg font-medium">Payment Type</label>
-                <input
                   type="text"
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-                  placeholder="Enter Credit Card or Zelle"
-                  value={formData.payment_type}
-                  required
-                  onChange={(e) => {
-                    setFormData({ ...formData, payment_type: e.target.value });
-                  }}
-                />
-              </div>
-              <div>
-                <label className="text-lg font-medium">
-                  Credit Card Company
-                </label>
-                <input
-                  type="text"
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                   placeholder="Visa, Mastercard, American Express"
                   value={formData.credit_card_type}
-                  // required
                   onChange={(e) => {
                     setFormData({
                       ...formData,
                       credit_card_type: e.target.value,
                     });
                   }}
-                />
+                >
+                    <option value="American Express">American Express</option>
+                    <option value="Visa">Visa</option>
+                    <option value="MasterCard">MasterCard</option>
+                    <option value="Discover">Discover</option>
+                  </select>
               </div>
-              <div>
-                <label className="text-lg font-medium">
+              <div className="flex flex-col m-2">
+                <label className="text-sm mb-1">
                   Credit Card Number
                 </label>
                 <input
                   type="text"
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                   placeholder="Credit Card Number"
                   value={formData.credit_card_number}
                   // required
@@ -463,14 +466,19 @@ export default function GenerateDocuments() {
                     });
                   }}
                 />
+
               </div>
-              <div>
-                <label className="text-lg font-medium">
-                  Credit Card Expiration
+                </div>
+
+              </div>
+              <div className="flex items-center">
+                <div className="flex flex-col m-2">
+                <label className="text-sm mb-1">
+                  Expiration
                 </label>
                 <input
                   type="text"
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                   placeholder="MM/YY"
                   value={formData.credit_card_expiration}
                   // required
@@ -481,13 +489,13 @@ export default function GenerateDocuments() {
                     });
                   }}
                 />
-              </div>
-              <div>
-                <label className="text-lg font-medium">Credit Card CVV</label>
+                </div>
+                <div className="flex flex-col m-2">
+                <label className="text-sm mb-1">CVV</label>
                 <input
                   type="text"
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-                  placeholder="XXX"
+                  className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
+                  placeholder="XXXX"
                   value={formData.credit_card_cvv}
                   // required
                   onChange={(e) => {
@@ -497,12 +505,12 @@ export default function GenerateDocuments() {
                     });
                   }}
                 />
-              </div>
-              <div>
-                <label className="text-lg font-medium">Client Balance</label>
+                </div>
+                <div className="flex flex-col m-2">
+                <label className="text-sm mb-1">Client Balance</label>
                 <input
                   type="text"
-                  className="w-full text-black border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
+                  className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
                   placeholder="$"
                   value={formData.client_balance}
                   required
@@ -513,8 +521,13 @@ export default function GenerateDocuments() {
                     });
                   }}
                 />
+                </div>
+                
               </div>
             </div>
+           </div>
+
+        </div>
 
             <div className="flex justify-between mt-8">
               <button
@@ -543,8 +556,8 @@ export default function GenerateDocuments() {
               </div>
             </div>
           </div>
-        </div>
-      </form>
+        </form>
+      </div>
       {showAlert && <AlertClientAdded />}
     </div>
   );
