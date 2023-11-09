@@ -13,7 +13,6 @@ flask-psycopg2 = "*"
 psycopg2-binary = "*"
 flask-jwt-extended = "*"
 python-decouple = "*"
-docx2pdf = "*"
 
 [dev-packages]
 

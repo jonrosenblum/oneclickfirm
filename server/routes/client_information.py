@@ -4,7 +4,6 @@ import zipfile
 import tempfile
 from docxtpl import DocxTemplate
 from datetime import datetime
-from docx2pdf import convert  # pydub's docx to PDF conversion library
 import os
 from os.path import expanduser
 import base64
@@ -87,10 +86,6 @@ def create_tables_if_not_exist():
 create_tables_if_not_exist()
 
 
-################ START OF THE ROUTES #################
-
-### THIS IS THE ROUTE THAT WILL ADD A NEW CLIENT TO THE DATABASE AND GENERATE THE DOCUMENTS FOR A NEW CLIENT AT THE SAME TIME ###
-
 @client_information_bp.route('/new-client', methods=['POST'])
 # @jwt_required()
 def new_client():
@@ -133,12 +128,6 @@ def new_client():
 
     return jsonify({"message": "Documents generated and data stored successfully"})
 
-### THIS IS THE ROUTE THAT WILL GET ALL CLIENTS IN THE DATABASE AND ALL THERE INFO ###
-
-
-def convert_docx_to_pdf(docx_path, pdf_path):
-    convert(docx_path, pdf_path)
-
 
 def makeTempClientFiles(form_data,temp_dir, document_name):
 
@@ -168,13 +157,9 @@ def makeTempClientFiles(form_data,temp_dir, document_name):
         # Load Regular Discovery Template
         credit_card_auth_path = os.path.join(template_folder, "zelleauthTemplate.docx")
         
-    
-    
 
     representation_template_path = os.path.join(template_folder, "representationTemplate.docx")
     retainer_template_path = os.path.join(template_folder, "retainerTemplate.docx")
-
-    
 
     discovery_doc = DocxTemplate(discovery_template_path)
     representation_doc = DocxTemplate(representation_template_path)
@@ -201,7 +186,7 @@ def makeTempClientFiles(form_data,temp_dir, document_name):
         'incident_date': form_data['incident_date'],
         'case_status': form_data['case_status'].upper(),
         'credit_card_number': form_data['credit_card_number'],
-        'credit_card_last4': form_data['credit_card_number'][-4:],  # Get the last 4 digits of the credit card number
+        'credit_card_last4': form_data['credit_card_number'][-4:], 
         'credit_card_expiration': form_data['credit_card_expiration'],
         'credit_card_cvv': form_data['credit_card_cvv'],
         'client_balance': form_data['client_balance'],
@@ -218,17 +203,6 @@ def makeTempClientFiles(form_data,temp_dir, document_name):
     representation_output_path_docx = os.path.join(tempClientFolder, f"{client_name}_representation.docx")
     retainer_output_path_docx = os.path.join(tempClientFolder, f"{client_name}_retainer.docx")
     credit_card_output_path_docx = os.path.join(tempClientFolder, f"{client_name}_creditcardauth.docx")
-    
-    # discovery_output_path_pdf = os.path.join(tempClientFolder, f"{client_name}_discovery.pdf")
-    # representation_output_path_pdf = os.path.join(tempClientFolder, f"{client_name}_representation.pdf")
-    # retainer_output_path_pdf = os.path.join(tempClientFolder, f"{client_name}_retainer.pdf")
-    # credit_card_output_path_pdf = os.path.join(tempClientFolder, f"{client_name}_creditcardauth.pdf")
-    
-    # Convert the filled-in DOCX files to PDF
-    # convert_docx_to_pdf(discovery_output_path_docx, discovery_output_path_pdf)
-    # convert_docx_to_pdf(representation_output_path_docx, representation_output_path_pdf)
-    # convert_docx_to_pdf(retainer_output_path_docx, retainer_output_path_pdf)
-    # convert_docx_to_pdf(credit_card_output_path_docx, credit_card_output_path_pdf)
 
     # Save the filled-in DOCX files
     discovery_doc.save(discovery_output_path_docx)
@@ -246,16 +220,8 @@ def makeTempClientFiles(form_data,temp_dir, document_name):
     
     with zipfile.ZipFile(os.path.join(temp_dir, document_name), 'w', zipfile.ZIP_DEFLATED) as zipf:
         for doc_name_key, doc_path in clientDocumentsDict.items():
-            
             doc_name = f"{client_name}_{doc_name_key}.docx"
-            
             zipf.write(doc_path, arcname=doc_name)
-            # Add the PDF files to the zip file
-        # zipf.write(discovery_output_path_pdf, arcname=f"{client_name}_discovery.pdf")
-        # zipf.write(representation_output_path_pdf, arcname=f"{client_name}_representation.pdf")
-        # zipf.write(retainer_output_path_pdf, arcname=f"{client_name}_retainer.pdf")
-        # zipf.write(credit_card_output_path_pdf, arcname=f"{client_name}_creditcardauth.pdf")
-            
 
 
 @client_information_bp.route('/clients', methods=['GET'])
