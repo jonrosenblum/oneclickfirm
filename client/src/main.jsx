@@ -1,10 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
-import {
-  createBrowserRouter,
-  Navigate,
-  RouterProvider,
-} from "react-router-dom";
+import { createHashRouter, Navigate, RouterProvider } from "react-router-dom";
 import "./index.css";
 import Root from "./Routes/Root";
 import Home from "./Routes/Home";
@@ -17,7 +13,7 @@ import { Provider } from "react-redux";
 import EditClient from "./Routes/EditClient";
 import "./axios";
 
-const router = createBrowserRouter([
+const router = createHashRouter([
   {
     path: "",
     element: <Root />,
