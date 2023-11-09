@@ -57,7 +57,8 @@ export default function AllClients() {
   const filteredClients = clientInfo.filter(
     (client) =>
       client.client_name.toLowerCase().includes(searchInput.toLowerCase()) ||
-      client.court_house_county.toLowerCase().includes(searchInput.toLowerCase())
+      client.court_house_county.toLowerCase().includes(searchInput.toLowerCase()) ||
+      client.court_house_name.toLowerCase().includes(searchInput.toLowerCase())
   );
 
   return (
