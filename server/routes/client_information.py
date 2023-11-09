@@ -165,12 +165,19 @@ def makeTempClientFiles(form_data,temp_dir, document_name):
     representation_doc = DocxTemplate(representation_template_path)
     retainer_doc = DocxTemplate(retainer_template_path)
     credit_card_doc = DocxTemplate(credit_card_auth_path)
+    
+    
+
+    # Format the date as "Month, Day Year"
+    formatted_incident_date = form_data['incident_date'].strftime("%B %d, %Y")
+    formatted_todays_date = form_data['date_created'].strftime("%B %d, %Y")
+   
 
 
     # Define the context dictionary using form data
     context = {
         'fax_number': form_data['fax_number'],
-        'todays_date': form_data['date_created'],
+        'todays_date': formatted_todays_date,
         'court_house_name': form_data['court_house_name'],
         'court_house_street': form_data['court_house_street'],
         'payment_type': form_data['payment_type'],
@@ -183,7 +190,7 @@ def makeTempClientFiles(form_data,temp_dir, document_name):
         'court_house_county': form_data['court_house_county'].upper(),
         'court_house_name_upper': form_data['court_house_name'].upper(),
         'complaint_number': form_data['complaint_number'].replace(",", " ").upper(),
-        'incident_date': form_data['incident_date'],
+        'incident_date': formatted_incident_date,
         'case_status': form_data['case_status'].upper(),
         'credit_card_number': form_data['credit_card_number'],
         'credit_card_last4': form_data['credit_card_number'][-4:], 

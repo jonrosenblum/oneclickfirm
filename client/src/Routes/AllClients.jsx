@@ -115,10 +115,10 @@ export default function AllClients() {
                         Client Documents
                       </th>
                       <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">
-                        County{" "}
+                        Court House{" "}
                       </th>
                       <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">
-                        State
+                        County{" "}
                       </th>
                       <th className="px-6 align-middle border border-solid py-3 text-xs uppercase border-l-0 border-r-0 whitespace-nowrap font-semibold text-left bg-gray-800 text-gray-300 border-gray-700">
                         Actions
@@ -180,10 +180,10 @@ export default function AllClients() {
                           </div>
                         </td>
                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          {client.court_house_county.toUpperCase()}
+                          {client.court_house_name.toUpperCase()}
                         </td>
                         <td className="border-t-0 px-6 align-middle border-l-0 border-r-0 text-xs whitespace-nowrap p-4">
-                          {client.court_house_state.toUpperCase()}
+                          {client.court_house_county.toUpperCase()}
                         </td>
                         <td className="border-t-0 px-2 align-middle items-center border-l-0 border-r-0 text-s whitespace-nowrap">
                           <div>
