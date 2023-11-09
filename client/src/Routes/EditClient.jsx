@@ -15,21 +15,39 @@ export default function EditClient() {
         return formattedDate;
       }
 
-    const fetchData = async () => {
-        try {
-          const response = await axios.get('/clients');
-          setClientData(response.data);
-        } catch (error) {
-          console.error('Error fetching client data', error);
-        }
-      };
-      
-      useEffect(() => {
-        // Fetch client data when the component mounts
-        fetchData();
-      }, [selectedClient]);
+        useEffect(() => {
+          // Fetch client data when the component mounts
+          const fetchDataOnMount = async () => {
+            try {
+              const response = await axios.get('/clients');
+              setClientData(response.data);
+            } catch (error) {
+              console.error('Error fetching client data', error);
+            }
+          };
+        
+          // Fetch data only on component mount
+          fetchDataOnMount();
+        }, []); // Empty dependency array ensures it only runs on mount
+        
+        useEffect(() => {
+          // Fetch client data when a client is selected
+          const fetchData = async () => {
+            try {
+              const response = await axios.get('/clients');
+              setClientData(response.data);
+            } catch (error) {
+              console.error('Error fetching client data', error);
+            }
+          };
+        
+          // Fetch data only if a client is selected
+          if (selectedClient) {
+            fetchData();
+          }
+        }, [selectedClient]);
 
-    
+        
     const handleClientClick = (client) => {
         setSelectedClient(client);
     };
@@ -85,7 +103,7 @@ export default function EditClient() {
             setNewClientNotes('');
       
             // Fetch client data after note addition
-            fetchData();
+            // fetchData();
             alert('Client note successfully');
           } catch (error) {
             console.error('Error adding client notes', error);
