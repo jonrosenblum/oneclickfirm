@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+/* eslint-disable react/prop-types */
 export default function AlertDocumentDownload({ onClose }) {
   const [showAlert, setShowAlert] = useState(true);
 
@@ -10,7 +10,7 @@ export default function AlertDocumentDownload({ onClose }) {
     }, 4000);
 
     return () => clearTimeout(alertTimeout);
-  }, []);
+  }, [onClose]);
 
   return showAlert ? (
     <div
