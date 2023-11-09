@@ -169,9 +169,9 @@ export default function EditClient() {
 
     
     return (
-        <div className="bg-gradient-to-tr p-2 from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
-            <div className="bg-gray-100 h-100 w-full flex p-3 gap-8 rounded-md">
-                <div className='flex flex-col border max-h-[800px] overflow-y-auto border-2 p-10'>
+        <div className="bg-gradient-to-tr p-2 from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center h-full">
+            <div className="bg-gray-100 h-100 w-full flex p-3 gap-8 rounded-md flex flex-row h-full">
+                <div className='client-sidebar flex flex-col border max-h-[800px] overflow-y-auto border-2 p-10'>
                     <div className=''>
                     <h1 className='bg-gray-400 title text-2xl font-medium'>All Clients</h1>
                     <p className='text-xs font-extralight'>Please select a client to update information</p>
@@ -189,9 +189,11 @@ export default function EditClient() {
                         </ul>
                     </div>
                 </div>
-                <div className='flex-1 flex-col border border-2'>
+                
+                
+                <div className='client-content-area flex-1  border border-2 flex flex-row justify-center'>
                     {selectedClient && (
-                        <div className='p-16'>
+                        <div className='p-16' style={{width:'clamp(700px,70%,750px)'}}>
                             <div className='flex'>
                                 <div className='flex flex-col'>
                                 <div>

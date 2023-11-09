@@ -136,8 +136,8 @@ def new_client():
 ### THIS IS THE ROUTE THAT WILL GET ALL CLIENTS IN THE DATABASE AND ALL THERE INFO ###
 
 
-# def convert_docx_to_pdf(docx_path, pdf_path):
-#     convert(docx_path, pdf_path)
+def convert_docx_to_pdf(docx_path, pdf_path):
+    convert(docx_path, pdf_path)
 
 
 def makeTempClientFiles(form_data,temp_dir, document_name):
@@ -224,7 +224,7 @@ def makeTempClientFiles(form_data,temp_dir, document_name):
     # retainer_output_path_pdf = os.path.join(tempClientFolder, f"{client_name}_retainer.pdf")
     # credit_card_output_path_pdf = os.path.join(tempClientFolder, f"{client_name}_creditcardauth.pdf")
     
-    # # Convert the filled-in DOCX files to PDF
+    # Convert the filled-in DOCX files to PDF
     # convert_docx_to_pdf(discovery_output_path_docx, discovery_output_path_pdf)
     # convert_docx_to_pdf(representation_output_path_docx, representation_output_path_pdf)
     # convert_docx_to_pdf(retainer_output_path_docx, retainer_output_path_pdf)
