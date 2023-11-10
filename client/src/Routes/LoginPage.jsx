@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import axios from "axios";
 import { useAuthSelector } from "../services/useAuthSelector";
 import { useNavigate } from "react-router-dom";
+import { GiInjustice } from "react-icons/gi";
 
 export default function LoginForm() {
   const auth = useAuthSelector();
@@ -56,9 +57,12 @@ export default function LoginForm() {
                   className={`flex items-center rounded w-full lg:w-6/12 bg-gradient-to-b from-[#30b5b1] to-blue-500`}
                 >
                   <div className="px-4 py-6 mx-6 text-white md:mx-6 md:p-12 ">
-                    <h4 className="mb-6 text-xl font-semibold">
-                      We are more than just a company
+                    <div className="flex gap-4">
+                    <GiInjustice className="text-3xl"/>
+                    <h4 className="mb-6 text-3xl font-semibold">
+                      Stabile Law Firm
                     </h4>
+                    </div>
                     <p className="text-sm">
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit,
                       sed do eiusmod tempor incididunt ut labore et dolore magna
