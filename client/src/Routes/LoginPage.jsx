@@ -89,7 +89,7 @@ export default function LoginForm() {
                             srcSet=""
                           />
                           <span className="text-xs md:text-[15px]">
-                            Continue With Google
+                            Continue with Google
                           </span>
                         </div>
                       </div>
@@ -102,11 +102,11 @@ export default function LoginForm() {
                             srcSet=""
                           />
                           <span className="text-xs md:text-[15px]">
-                            Continue With Apple
+                            Continue with Apple
                           </span>
                         </div>
                       </div>
-                      <p className="mb-4">Or</p>
+                      <p className="mb-4 font-md text-gray-500">Or</p>
                       <div className="relative mb-4">
                         <input
                           type="text"
@@ -124,7 +124,7 @@ export default function LoginForm() {
                           type="password"
                           className="peer h-12 block min-h-[auto] text-neutral-800 w-full rounded border bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none"
                           id="password"
-                          placeholder="Enter your password"
+                          placeholder="Password"
                           onChange={(e) =>
                             setFormData({ ...formData, password: e.target.value })
                           }
