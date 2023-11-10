@@ -56,14 +56,14 @@ export default function LoginForm() {
                 <div
                   className={`flex items-center rounded w-full lg:w-6/12 bg-gradient-to-b from-[#30b5b1] to-blue-500`}
                 >
-                  <div className="px-4 py-6 mx-6 text-white md:mx-6 md:p-12 ">
-                    <div className="flex gap-4">
+                  <div className="px-4 py-6 mx-6 text-white text-center md:mx-6 md:p-12 ">
+                    <div className="flex gap-4 justify-center" >
                     <GiInjustice className="text-3xl"/>
                     <h4 className="mb-6 text-3xl font-semibold">
-                      Stabile Law Firm
+                      <span className="font-extrabold">Stabile</span> Law Firm
                     </h4>
                     </div>
-                    <p className="text-sm">
+                    <p className="text-sm w-full sm:w-[85%] md:w-[75%] lg:w-[60%] mx-auto">
                       Lorem ipsum dolor sit amet, consectetur adipisicing elit,
                       sed do eiusmod tempor incididunt ut labore et dolore magna
                       aliqua. Ut enim ad minim veniam, quis nostrud exercitation
@@ -80,13 +80,13 @@ export default function LoginForm() {
             }}
             className="cursor-pointer hidden md:block absolute top-8 right-8"
           />
-                  <div className="p-6 md:mx-4 md:p-20 md:py-20">
+                  <div className="p-6 sm:p-20 md:mx-4 md:p-[90px] md:py-[90px]">
                     <form ref={formRef} onSubmit={handleSubmit}>
                       <div className="relative mb-4">
                       
                         <div className="peer cursor-pointer hover:shadow-sm border h-12 flex items-center text-neutral-800 min-h-[auto] w-full rounded  px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none">
                           <img
-                            className="w-6 h-6 mr-3"
+                            className="w-6 h-6 mr-[10%]"
                             src={google}
                             alt=""
                             srcSet=""
@@ -99,7 +99,7 @@ export default function LoginForm() {
                       <div className="relative mb-4">
                         <div className="peer border cursor-pointer hover:shadow-sm h-12 flex items-center text-neutral-800 min-h-[auto] w-full rounded  px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none">
                           <img
-                            className="w-6 h-6 mr-3"
+                            className="w-6 h-6 mr-[10%]"
                             src={apple}
                             alt=""
                             srcSet=""
@@ -140,12 +140,12 @@ export default function LoginForm() {
 
                       <div className="mb-5 pb-1 pt-1 ">
                         <button
-                          className="mb-3 h-12 text-center bg-yellow-500 inline-block w-full rounded-3xl px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgb(234 179 8)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
+                          className="mb-3 h-12 text-center bg-yellow-500 inline-block w-full rounded-3xl px-6 pb-2 pt-2.5 text-xs font-bold uppercase leading-normal text-neutral-800 shadow-[0_4px_9px_-4px_rgb(234 179 8)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
                           type="submit"
                           data-te-ripple-init
                           data-te-ripple-color="light"
                         >
-                          Log in
+                          Sign in
                         </button>
 
                         <a href="#!" className="text-left text-xs font-bold">
