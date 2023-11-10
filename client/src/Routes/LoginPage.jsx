@@ -1,3 +1,6 @@
+import google from "./../assets/google-icon-logo.svg";
+import apple from "./../assets/apple-logo.svg";
+import crossIcon from "./../assets/cross_icon.svg";
 import { useRef, useState } from "react";
 import axios from "axios";
 import { useAuthSelector } from "../services/useAuthSelector";
@@ -43,82 +46,121 @@ export default function LoginForm() {
   };
 
   return (
-    <div className="font-oswald bg-gradient-to-tr from-blue-800 to-green-400 px-10 py-20 rounded-3xl border-8 border-gray-200">
-      <h1 className="text-5xl text-white font-semibold">Stabile Law Firm</h1>
-      <p className="font-medium text-lg text-white mt-4">
-        Welcome back! Please enter your credentials.
-      </p>
-      <div className="mt-8">
-        <form ref={formRef} onSubmit={handleSubmit}>
-          <div>
-            <label className="text-white text-lg font-medium">Email</label>
-            <input
-              className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-              placeholder="Enter your email"
-              onChange={(e) =>
-                setFormData({ ...formData, username: e.target.value })
-              }
-            />
-          </div>
-          <div className="mt-2">
-            <label className="text-white text-lg font-medium">Password</label>
-            <input
-              className="w-full border-2 border-gray-300 rounded-md px-3 py-2 mt-1 focus:outline-none focus:border-blue-500"
-              placeholder="Enter your password"
-              type="password"
-              onChange={(e) =>
-                setFormData({ ...formData, password: e.target.value })
-              }
-            />
-          </div>
-          <div className="mt-8 flex justify-between items-center">
-            <div className="">
-              <input type="checkbox" id="remember" />
-              <label
-                className="ml-2 font-medium text-base text-white"
-                htmlFor="remember"
-              >
-                Remember for 30 days
-              </label>
+<section className="gradient-form h-screen bg-[#f6f8fc]">
+      <div className=" h-full ">
+        <div className="g-6 flex h-full flex-wrap items-center justify-center text-neutral-800">
+          <div className="w-full xl:px-48 lg:px-20 p-10">
+            <div className="block rounded-lg bg-white shadow-lg ">
+              <div className="g-0 lg:flex lg:flex-wrap">
+                <div
+                  className={`flex items-center rounded w-full lg:w-6/12 bg-gradient-to-b from-[#30b5b1] to-blue-500`}
+                >
+                  <div className="px-4 py-6 mx-6 text-white md:mx-6 md:p-12 ">
+                    <h4 className="mb-6 text-xl font-semibold">
+                      We are more than just a company
+                    </h4>
+                    <p className="text-sm">
+                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
+                      sed do eiusmod tempor incididunt ut labore et dolore magna
+                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
+                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    </p>
+                  </div>
+                </div>
+                <div className="relative px-4 md:px-0 lg:w-6/12">
+                <img
+            src={crossIcon}
+            alt="x"
+            onClick={() => {
+              
+            }}
+            className="cursor-pointer hidden md:block absolute top-8 right-8"
+          />
+                  <div className="p-6 md:mx-4 md:p-20 md:py-20">
+                    <form ref={formRef} onSubmit={handleSubmit}>
+                      <div className="relative mb-4">
+                      
+                        <div className="peer cursor-pointer hover:shadow-sm border h-12 flex items-center text-neutral-800 min-h-[auto] w-full rounded  px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none">
+                          <img
+                            className="w-6 h-6 mr-3"
+                            src={google}
+                            alt=""
+                            srcSet=""
+                          />
+                          <span className="text-sm md:text-base">
+                            Continue With Google
+                          </span>
+                        </div>
+                      </div>
+                      <div className="relative mb-4">
+                        <div className="peer border cursor-pointer hover:shadow-sm h-12 flex items-center text-neutral-800 min-h-[auto] w-full rounded  px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none">
+                          <img
+                            className="w-6 h-6 mr-3"
+                            src={apple}
+                            alt=""
+                            srcSet=""
+                          />
+                          <span className="text-sm md:text-base">
+                            Continue With Apple
+                          </span>
+                        </div>
+                      </div>
+                      <p className="mb-4">Or</p>
+                      <div className="relative mb-4">
+                        <input
+                          type="text"
+                          className="peer h-12 block border  text-neutral-800 min-h-[auto] w-full rounded  px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none"
+                          id="email"
+                          placeholder="Email Address"
+                          onChange={(e) =>
+                            setFormData({ ...formData, username: e.target.value })
+                          }
+                        />
+                      </div>
+
+                      <div className="relative mb-4" data-te-input-wrapper-init>
+                        <input
+                          type="password"
+                          className="peer h-12 block min-h-[auto] text-neutral-800 w-full rounded border bg-transparent px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none"
+                          id="password"
+                          placeholder="Enter your password"
+                          onChange={(e) =>
+                            setFormData({ ...formData, password: e.target.value })
+                          }
+                        />
+                      </div>
+                      <div className="flex items-center gap-2 mb-4">
+                        <input type="checkbox" id="password" />
+                        <p className="text-xs font-medium">Keep me signed in</p>
+                      </div>
+
+                      <div className="mb-5 pb-1 pt-1 ">
+                        <button
+                          className="mb-3 h-12 text-center bg-yellow-500 inline-block w-full rounded-3xl px-6 pb-2 pt-2.5 text-xs font-medium uppercase leading-normal text-white shadow-[0_4px_9px_-4px_rgb(234 179 8)] transition duration-150 ease-in-out hover:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)] focus:outline-none focus:ring-0 active:shadow-[0_8px_9px_-4px_rgba(0,0,0,0.1),0_4px_18px_0_rgba(0,0,0,0.2)]"
+                          type="button"
+                          data-te-ripple-init
+                          data-te-ripple-color="light"
+                        >
+                          Log in
+                        </button>
+
+                        <a href="#!" className="text-left text-xs font-bold">
+                          Forgot password?
+                        </a>
+                      </div>
+
+                      <div className="flex items-center justify-center">
+                        <p className="mb-0 mr-2 text-xs">Not a member yet?</p>
+                        <span className="mb-0 text-xs font-bold cursor-pointer">Sign Up</span>
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
             </div>
-            <button className="hover:bg-white hover:text-black p-2 rounded-xl font-medium text-base text-white">
-              Forgot password?
-            </button>
           </div>
-          <div className="mt-8 flex flex-col gap-y-4">
-            <button className="button active:scale-[.98] active:duration-75 hover:scale-[1.01] ease-in-out transition-all py-3 rounded-xl bg-white text-lg font-bold border-2">
-              Sign in
-            </button>
-            <button className="flex items-center justify-center gap-2 active:scale-[.98] active:duration-75 transition-all hover:scale-[1.01]  ease-in-out transform py-3 bg-white font-bold text-black  rounded-xl text-lg border-2 ">
-              <svg
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M5.26644 9.76453C6.19903 6.93863 8.85469 4.90909 12.0002 4.90909C13.6912 4.90909 15.2184 5.50909 16.4184 6.49091L19.9093 3C17.7821 1.14545 15.0548 0 12.0002 0C7.27031 0 3.19799 2.6983 1.24023 6.65002L5.26644 9.76453Z"
-                  fill="#EA4335"
-                />
-                <path
-                  d="M16.0406 18.0142C14.9508 18.718 13.5659 19.0926 11.9998 19.0926C8.86633 19.0926 6.21896 17.0785 5.27682 14.2695L1.2373 17.3366C3.19263 21.2953 7.26484 24.0017 11.9998 24.0017C14.9327 24.0017 17.7352 22.959 19.834 21.0012L16.0406 18.0142Z"
-                  fill="#34A853"
-                />
-                <path
-                  d="M19.8342 20.9978C22.0292 18.9503 23.4545 15.9019 23.4545 11.9982C23.4545 11.2891 23.3455 10.5255 23.1818 9.81641H12V14.4528H18.4364C18.1188 16.0119 17.2663 17.2194 16.0407 18.0108L19.8342 20.9978Z"
-                  fill="#4A90E2"
-                />
-                <path
-                  d="M5.27698 14.2663C5.03833 13.5547 4.90909 12.7922 4.90909 11.9984C4.90909 11.2167 5.03444 10.4652 5.2662 9.76294L1.23999 6.64844C0.436587 8.25884 0 10.0738 0 11.9984C0 13.918 0.444781 15.7286 1.23746 17.3334L5.27698 14.2663Z"
-                  fill="#FBBC05"
-                />
-              </svg>
-              Sign in with Google
-            </button>
-          </div>
-        </form>
+        </div>
       </div>
-    </div>
+    </section>
   );
 }
