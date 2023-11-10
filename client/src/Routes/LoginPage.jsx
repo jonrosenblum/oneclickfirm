@@ -64,10 +64,7 @@ export default function LoginForm() {
                     </h4>
                     </div>
                     <p className="text-sm w-full sm:w-[85%] md:w-[75%] lg:w-[60%] mx-auto">
-                      Lorem ipsum dolor sit amet, consectetur adipisicing elit,
-                      sed do eiusmod tempor incididunt ut labore et dolore magna
-                      aliqua. Ut enim ad minim veniam, quis nostrud exercitation
-                      ullamco laboris nisi ut aliquip ex ea commodo consequat.
+                    Best-in-class tools for legal client intake, workflow & marketing automation, legal billing, document management, and much more — all in one easy-to-use law practice software.
                     </p>
                   </div>
                 </div>
