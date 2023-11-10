@@ -77,8 +77,8 @@ export default function LoginForm() {
             }}
             className="cursor-pointer hidden md:block absolute top-8 right-8"
           />
-                  <div className="p-6 sm:p-20 md:mx-4 md:p-[90px] md:py-[90px]">
-                    <form ref={formRef} onSubmit={handleSubmit}>
+                  <div className="p-6 sm:p-[90px] md:p-[80px] ">
+                    <form ref={formRef} onSubmit={handleSubmit} className="w-9/12 mx-auto">
                       <div className="relative mb-4">
                       
                         <div className="peer cursor-pointer hover:shadow-sm border h-12 flex items-center text-neutral-800 min-h-[auto] w-full rounded  px-3 py-[0.32rem] leading-[1.6] outline-none transition-all duration-200 ease-linear focus:placeholder:opacity-100 data-[te-input-state-active]:placeholder:opacity-100 motion-reduce:transition-none">
@@ -88,7 +88,7 @@ export default function LoginForm() {
                             alt=""
                             srcSet=""
                           />
-                          <span className="text-sm md:text-base">
+                          <span className="text-xs md:text-[15px]">
                             Continue With Google
                           </span>
                         </div>
@@ -101,7 +101,7 @@ export default function LoginForm() {
                             alt=""
                             srcSet=""
                           />
-                          <span className="text-sm md:text-base">
+                          <span className="text-xs md:text-[15px]">
                             Continue With Apple
                           </span>
                         </div>
