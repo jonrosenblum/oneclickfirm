@@ -2,6 +2,8 @@ from flask import Flask
 from flask_cors import CORS 
 from routes import auth_bp, client_scraper_bp, client_information_bp
 from flask_jwt_extended import JWTManager
+from flask_bcrypt import Bcrypt
+
 
 
 app = Flask(__name__, static_folder="templates", static_url_path="/templates")
@@ -20,6 +22,7 @@ CORS(app, resources={
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
 app.config["JWT_ACCESS_TOKEN_EXPIRES"] = 3600
+bcrypt = Bcrypt(app)
 jwt = JWTManager(app)
 
 

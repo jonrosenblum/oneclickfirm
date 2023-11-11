@@ -6,10 +6,10 @@ export const useAuthSelector = () => {
   const auth = useSelector(
     (/** @type {import("./store").RootState} */ state) => state.auth
   );
-  const isLoggedIn = auth.token !== null;
+  const isLoggedIn = auth.token?.split(".")?.length === 3;
 
-  const doLogin = (user, token) => {
-    dispath(onLogin({ user, token }));
+  const doLogin = (user, token, refreshToken) => {
+    dispath(onLogin({ user, token, refreshToken }));
   };
 
   const doLogout = () => {

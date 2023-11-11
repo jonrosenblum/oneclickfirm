@@ -29,7 +29,7 @@ const router = createHashRouter([
       { path: "new-client", element: <NewClient /> },
       { path: "generate-documents", element: <GenerateDocuments /> },
       { path: "all-clients", element: <AllClients /> },
-      { path: "edit-client", element: <EditClient /> },
+      { path: "edit-client/:id?", element: <EditClient />  },
       // {path: '*', element: <div><>},
       // { path: "login", element: <LoginPage /> },
     ],

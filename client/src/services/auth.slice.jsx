@@ -12,6 +12,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   token: localStorage.getItem("token") || null,
   user: JSON.parse(localStorage.getItem("user")) || null,
+  refreshToken: localStorage.getItem("refreshToken") || null,
 };
 
 export const authSlice = createSlice({
@@ -34,12 +35,14 @@ export const authSlice = createSlice({
       state.user = action.payload.user;
       localStorage.setItem("token", action.payload.token);
       localStorage.setItem("user", JSON.stringify(action.payload.user));
+      localStorage.setItem("refreshToken", action.payload.refreshToken);
     },
     onLogout: (state, /** @type {PayloadAction} */ ) => {
       state.token = null;
       state.user = null;
       localStorage.removeItem("token");
       localStorage.removeItem("user");
+      localStorage.removeItem("refreshToken");
     },
   },
 });

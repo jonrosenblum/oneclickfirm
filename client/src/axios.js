@@ -2,7 +2,6 @@
 
 // const baseURL = import.meta.env.VITE_API_URL ?? "/";
 
-
 // axios.defaults.baseURL = baseURL;
 // // set base url for axios
 // const instance = axios.create({
@@ -11,10 +10,9 @@
 
 // export default instance;
 
+import axios from "axios";
 
-import axios from 'axios';
-
-const baseURL = import.meta.env.VITE_API_URL ?? '/';
+const baseURL = import.meta.env.VITE_API_URL ?? "/";
 
 const axiosInstance = axios.create({
   baseURL,
@@ -22,7 +20,10 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem('token');
+    if (config.headers?.skipInterceptor){
+      return config
+    }
+    const token = localStorage.getItem("token");
 
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
@@ -47,27 +48,29 @@ axiosInstance.interceptors.response.use(
       originalRequest._retry = true;
 
       try {
-        const refreshResponse = await axios.post(
-          '/refresh',  // Your refresh token endpoint
-          {
-            refresh_token: localStorage.getItem('refreshToken'),
-          },
+        const refresh_token = localStorage.getItem("refreshToken");
+       
+        const refreshResponse = await axiosInstance.post(
+          "/refresh", // Your refresh token endpoint
+          { refresh_token },
           {
             headers: {
-              'Content-Type': 'application/json',
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + refresh_token,
+              skipInterceptor: true
             },
           }
         );
 
         if (refreshResponse.status === 200) {
           // Update the access token and retry the original request
-          localStorage.setItem('token', refreshResponse.data.access_token);
+          localStorage.setItem("token", refreshResponse.data.access_token);
           originalRequest.headers.Authorization = `Bearer ${refreshResponse.data.access_token}`;
           return axios(originalRequest);
         }
       } catch (refreshError) {
         // Handle refresh error (e.g., redirect to login)
-        console.error('Failed to refresh token:', refreshError);
+        console.error("Failed to refresh token:", refreshError);
       }
     }
 

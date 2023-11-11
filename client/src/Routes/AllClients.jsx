@@ -5,20 +5,24 @@ import { useNavigate } from "react-router-dom";
 import AlertDocumentDownload from "../Components/Pieces/AlertDocumentDownload";
 
 export default function AllClients() {
-  const [clientInfo, setClientInfo] = useState([]);
+  const [clientInfo, setClientInfo] = useState(null);
   const [searchInput, setSearchInput] = useState(""); // State variable for search input
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false); // State variable to control the alert visibility
 
   useEffect(() => {
     // Fetch client information from your backend
+    if (clientInfo) {
+      return;
+    }
+
     axios
       .get("/clients")
       .then((response) => {
         setClientInfo(response.data);
       })
       .catch((error) => console.error(error));
-  }, []);
+  }, [clientInfo]);
 
   const downloadDocuments = (client) => {
     if (client) {
@@ -52,12 +56,16 @@ export default function AllClients() {
         });
     }
   };
-
+  if (clientInfo === null) {
+    return <div>Loading...</div>
+  }
 
   const filteredClients = clientInfo.filter(
     (client) =>
       client.client_name.toLowerCase().includes(searchInput.toLowerCase()) ||
-      client.court_house_county.toLowerCase().includes(searchInput.toLowerCase()) ||
+      client.court_house_county
+        .toLowerCase()
+        .includes(searchInput.toLowerCase()) ||
       client.court_house_name.toLowerCase().includes(searchInput.toLowerCase())
   );
 
@@ -89,11 +97,12 @@ export default function AllClients() {
                   <h3 className="title text-2xl font-bold">All Clients</h3>
                   <div className="mb-4">
                     <input
-                    type="text"
-                    placeholder="Search for clients"
-                    value={searchInput}
-                    onChange={(e)=> setSearchInput(e.target.value)}
-                    className="p-2 w-1/6 mt-4 text-sm text-black border border-gray-300 rounded"/>
+                      type="text"
+                      placeholder="Search for clients"
+                      value={searchInput}
+                      onChange={(e) => setSearchInput(e.target.value)}
+                      className="p-2 w-1/6 mt-4 text-sm text-black border border-gray-300 rounded"
+                    />
                   </div>
                 </div>
               </div>

@@ -11,7 +11,7 @@ import { useNavigate } from "react-router-dom"
 import { format } from 'date-fns';
 import { useAuthSelector } from "../services/useAuthSelector";
 import { useEffect, useState } from "react"
-import axios from "axios"
+import axiosInstance from "../axios"
 
 
 
@@ -25,7 +25,7 @@ const [clientCount, setClientCount] = useState(0);
 
 useEffect(() => {
   // Fetch the count of clients from your backend
-  axios.get('/clients')
+  axiosInstance.get('/clients')
     .then((response) => {
       setClientCount(response.data.length);
     })

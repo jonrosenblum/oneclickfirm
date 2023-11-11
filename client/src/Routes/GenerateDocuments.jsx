@@ -1,9 +1,9 @@
 import { BiArrowBack } from "react-icons/bi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import AlertClientAdded from "../Components/Pieces/Alert";
 import njdataList from "./../njdata.json";
+import axiosInstance from "../axios";
 
 /**
  *
@@ -134,7 +134,7 @@ export default function GenerateDocuments() {
     console.log(formData)
 
     try {
-      const response = await axios.post("/new-client", formData, {
+      const response = await axiosInstance.post("/new-client", formData, {
         headers: {
           "Content-Type": "application/json",
         },

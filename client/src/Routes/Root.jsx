@@ -1,14 +1,12 @@
-import { Outlet, useNavigate } from "react-router-dom";
+import { Navigate, Outlet } from "react-router-dom";
 import SideNav from "../Components/SideNav";
 import { useAuthSelector } from "../services/useAuthSelector";
 
 export default function Root() {
-  const navigate = useNavigate();
   const { isLoggedIn } = useAuthSelector();
 
-  
   if (isLoggedIn === false) {
-    navigate("/login");
+    return <Navigate to="/login" />;
   }
 
   return (

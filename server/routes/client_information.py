@@ -54,7 +54,7 @@ def create_tables_if_not_exist():
                 case_status VARCHAR(20), \
                 complaint_number VARCHAR(255), \
                 incident_date DATE, \
-                FOREIGN KEY (client_id) REFERENCES client_information(client_id) \
+                FOREIGN KEY (client_id) REFERENCES client_information(client_id) ON DELETE CASCADE \
             )")
 
             # Create the court_information table
@@ -68,13 +68,13 @@ def create_tables_if_not_exist():
                 court_house_state VARCHAR(255), \
                 court_house_zip VARCHAR(10), \
                 court_house_county VARCHAR(255), \
-                FOREIGN KEY (client_id) REFERENCES client_information(client_id) \
+                FOREIGN KEY (client_id) REFERENCES client_information(client_id) ON DELETE CASCADE \
             )")
             cursor.execute("CREATE TABLE IF NOT EXISTS client_notes (\
                 notes_id SERIAL PRIMARY KEY, \
                 client_id INT, \
                 client_notes TEXT, \
-                FOREIGN KEY (client_id) REFERENCES client_information(client_id) \
+                FOREIGN KEY (client_id) REFERENCES client_information(client_id) ON DELETE CASCADE \
             )")
             
             conn.commit()
@@ -87,6 +87,7 @@ create_tables_if_not_exist()
 
 
 @client_information_bp.route('/new-client', methods=['POST'])
+@jwt_required()
 # @jwt_required()
 def new_client():
     # create a new client
@@ -232,6 +233,7 @@ def makeTempClientFiles(form_data,temp_dir, document_name):
 
 
 @client_information_bp.route('/clients', methods=['GET'])
+@jwt_required()
 def get_all_clients():
     cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     
@@ -267,6 +269,7 @@ def get_all_clients():
             LEFT JOIN violations v ON ci.client_id = v.client_id
             LEFT JOIN court_information co ON ci.client_id = co.client_id
             LEFT JOIN client_notes cn ON ci.client_id = cn.client_id
+            order by ci.client_id asc
         """)
 
         client_data = cursor.fetchall()
@@ -284,6 +287,7 @@ def get_all_clients():
         return jsonify({"error": str(e)})
     
 @client_information_bp.route('/clients/<int:client_id>', methods=['DELETE'])
+@jwt_required()
 def delete_client(client_id):
     try:
         cursor = conn.cursor()
@@ -315,6 +319,7 @@ def delete_client(client_id):
     
 
 @client_information_bp.patch('/clients/<int:client_id>')
+@jwt_required()
 def update_client_info(client_id):
     cursor = conn.cursor()
     new_case_status = request.json.get('case_status')
@@ -338,6 +343,7 @@ def update_client_info(client_id):
 
 
 @client_information_bp.route('/download-documents/<int:client_id>', methods=['GET'])
+@jwt_required()
 def download_documents(client_id):
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
     cursor.execute("SELECT * FROM client_information WHERE client_id = %s", (client_id,))
@@ -368,6 +374,7 @@ def download_documents(client_id):
 
 
 @client_information_bp.route('/client-notes', methods=['POST'])
+@jwt_required()
 def add_or_update_client_notes():
     try:
         form_data = request.get_json()
