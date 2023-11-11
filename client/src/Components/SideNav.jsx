@@ -1,20 +1,23 @@
 import { useState } from "react";
 import {
   BsArrowLeftShort,
-  BsSearch,
   BsChevronDown,
   BsFillPeopleFill,
-  BsPerson,
+  BsFillEnvelopeFill,
 } from "react-icons/bs";
 import {
+  AiFillCalendar,
   AiOutlineFileText,
   AiOutlineLogout,
   AiOutlineSetting,
 } from "react-icons/ai";
 import { RiDashboardFill } from "react-icons/ri";
-import { GiInjustice } from "react-icons/gi";
 import { useNavigate } from "react-router-dom";
 import { useAuthSelector } from "../services/useAuthSelector";
+import { BiArchiveOut} from "react-icons/bi";
+import { MdNote } from 'react-icons/md';
+
+
 
 export default function SideNav() {
   const navigate = useNavigate();
@@ -43,11 +46,7 @@ export default function SideNav() {
           key:7,
           onAction: { onClick: () => navigate("/generate-documents") },
         },
-        // {
-        //   title: "View All Clients",
-        //   key: 8,
-        //   onAction: { onClick: () => navigate("/all-clients") },
-        // },
+       
       ],
     },
     {
@@ -58,24 +57,41 @@ export default function SideNav() {
     },
 
     {
-      title: "Profile",
+      title: "Open cases",
       key: 4,
       spacing: true,
-      icon: <BsPerson />,
-      // onAction: { onClick: () => navigate("/profile") },
+      icon: <BsFillEnvelopeFill />, 
     },
     {
-      title: "Settings",
+      title: "Archived cases",
       key: 5,
-      icon: <AiOutlineSetting />,
+      icon: <BiArchiveOut />,
       // onAction: { onClick: () => navigate("/settings") },
     },
     {
-      title: "Logout",
+      title: "Client notes",
       key: 6,
+      icon: <MdNote />
+    },
+    {
+      title: "Calendar",
+      key: 6,
+      icon: <AiFillCalendar/>
+    },
+  ];
+  const Menus1 = [
+    {
+      title: "Settings",
+      key: 1,
+      icon: <AiOutlineSetting />,
+    },
+    {
+      title: "Logout",
+      key: 2,
       icon: <AiOutlineLogout />,
       onAction: { onClick: doLogout },
     },
+    
   ];
 
   const toggleSidenavExpansion = () => {
@@ -89,63 +105,41 @@ export default function SideNav() {
       return newState;
     });
   };
+  const handleNewClientClick = () => {
+    navigate('/new-client');
+
+  }
 
   return (
-    <div className="flex">
+    <div className="flex w-fit">
       <div
-        className={`font-oswald bg-gradient-to-tr from-blue-800 to-green-400 f-screen p-5 pt-8 
+        className={`font-oswald bg-gradient-to-b from-s1 via-s2 to-s3 f-screen p-5 pt-6 h-fit
             ${sideNaveExpanded ? "w-72" : "w-20"} duration-300 relative`}
       >
+        <button onClick={handleNewClientClick} className="rounded-lg bg-yellow-300 flex justify-start gap-5 items-center p-3 w-full">
+        <svg className={sideNaveExpanded?",l-2":"ml-0 w-full"} xmlns="http://www.w3.org/2000/svg" height="1em" viewBox="0 0 640 512"><path d="M96 128a128 128 0 1 1 256 0A128 128 0 1 1 96 128zM0 482.3C0 383.8 79.8 304 178.3 304h91.4C368.2 304 448 383.8 448 482.3c0 16.4-13.3 29.7-29.7 29.7H29.7C13.3 512 0 498.7 0 482.3zM504 312V248H440c-13.3 0-24-10.7-24-24s10.7-24 24-24h64V136c0-13.3 10.7-24 24-24s24 10.7 24 24v64h64c13.3 0 24 10.7 24 24s-10.7 24-24 24H552v64c0 13.3-10.7 24-24 24s-24-10.7-24-24z"/></svg>
+       { sideNaveExpanded &&   <h3>Add new clients</h3>}
+        </button>
+
+        <button onClick={toggleSidenavExpansion} className="py-5 absolute right-0 top-[12.5rem] text-white gcursor-pointer rounded-l-full bg-hov">
         <BsArrowLeftShort
-          className={`bg-white text-3xl rounded-full 
-            absolute -right-3 top-9 border border-dark-purple cursor-pointer ${
+          className={` text-2xl 
+                 ${
               !sideNaveExpanded && "rotate-180"
             }`}
-          onClick={toggleSidenavExpansion}
+          
         />
-        <div className="inline-flex">
-          <GiInjustice
-            className={`bg-amber-300 text-4xl
-                rounded cursor-pointer block float-left mr-2 duration-500 ${
-                  sideNaveExpanded && "rotate-[360deg]"
-                }`}
-          />
-          <h1
-            className={`text-white origin-left font-medium text-2xl duration-300 
-                ${!sideNaveExpanded && "scale-0"}`}
-          >
-            Stabile Law Firm
-          </h1>
-        </div>
-        <div
-          className={`flex items-center rounded-md
-            bg-light-white mt-6 ${!sideNaveExpanded ? "px-4" : "px-2.5"} py-2`}
-        >
-          <BsSearch
-            className={`text-white text-lg block float-left cursor-pointer ${
-              sideNaveExpanded && "mr-2"
-            }`}
-          />
-          <input
-            type="{search}"
-            placeholder=""
-            className={`text-base bg-transparent 
-                w-full text-white focus:outline-none ${
-                  !sideNaveExpanded && "hidden"
-                }`}
-          />
-        </div>
+       </button>
+        <div className="all h-full justify-between">
 
-        <ul className="pt-2">
+        <ul className="pt-2 mb-10">
           {Menus.map((menu) => (
-            <div key={menu.key}>
+            <div key={menu.key} >
               <li
                 
                 {...{ ...menu.onAction }}
-                className={`text-white text-sm flex items-center 
-                    gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md ${
-                      menu.spacing ? "mt-9" : "mt-2"
-                    }`}
+                className={`text-white text-sm flex items-center  ${menu.title=='Dashboard' ? "bg-hov" : "" }
+                    gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-3`}
               >
                 <span className="text-2xl block float-left">
                   {menu.icon ? menu.icon : <RiDashboardFill />}
@@ -181,7 +175,55 @@ export default function SideNav() {
               )}
             </div>
           ))}
+
+        <hr className="text-white mt-[5rem]" />
         </ul>
+        <ul className="pt-2">
+          {Menus1.map((menu) => (
+            <div key={menu.key}>
+              <li
+                
+                {...{ ...menu.onAction }}
+                className={`text-white text-sm flex items-center  ${menu.title=='Dashboard' ? "bg-hov" : "" }
+                    gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-3`}
+              >
+                <span className="text-2xl block float-left">
+                  {menu.icon ? menu.icon : <RiDashboardFill />}
+                </span>
+                <span
+                  className={`text-base font-medium flex-1 duration-200 ${
+                    !sideNaveExpanded && "hidden"
+                  }`}
+                >
+                  {menu.title}
+                </span>
+                {menu.submenu && sideNaveExpanded && (
+                  <BsChevronDown
+                    className={`${submenuOpen && "rotate-180"}`}
+                    onClick={() => setSubmenuOpen(!submenuOpen)}
+                  />
+                )}
+              </li>
+
+              {menu.submenu && submenuOpen && sideNaveExpanded && (
+                <ul>
+                  {menu.submenuItems.map((submenuItem) => (
+                    <li
+                      key={submenuItem.key}
+                      {...{ ...submenuItem.onAction }}
+                      className="text-white mt-2 text-sm flex items-center gap-x-4
+                                cursor-pointer p-2 px-5 hover:bg-light-white rounded-md"
+                    >
+                      {submenuItem.title}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
+          
+        </ul>
+        </div>
       </div>
     </div>
   );
