@@ -79,7 +79,7 @@ export default function Dashboard() {
      
 
       <div onClick={handleAllClientsClick} className="relative group bg-white shadow-lg grid  h-fit py-6 px-4 space-y-2 items-center cursor-pointer rounded-md  grid-cols-2">
-       <div className="left flex flex-col justify-start">
+       <div className="left flex flex-col justify-start whitespace-nowrap">
        <p className="text-gray-400 text-xs">{clientCount} {clientCount === 1 ? 'Client' : 'Clients'}</p>
         <h5 className="text-black mt-1 font-bold capitalize text-left text-s"> ALL CLIENTS</h5>
         <p className="text-xs text-gray-300 pt-3">Some Text Will Go Here</p>
@@ -91,7 +91,7 @@ export default function Dashboard() {
         </div>
       </div>
       <div onClick={handleGenerateDocumentClick} className="relative group bg-white shadow-lg grid  h-fit py-6 px-4 space-y-2 items-center cursor-pointer rounded-md  grid-cols-2">
-       <div className="left flex flex-col justify-start">
+       <div className="left flex flex-col justify-start whitespace-nowrap">
         <p className=" text-gray-400 text-xs">Generate Client Documents </p>
         <h5 className="text-black mt-1 font-bold capitalize text-left text-s"> DOCUMENTS</h5>
         <p className="text-xs text-gray-300 pt-3">Some Text Will Go Here</p>
@@ -104,7 +104,7 @@ export default function Dashboard() {
        
       </div>
       <div onClick={handlEditClientClick} className="relative group bg-white shadow-lg grid  h-fit py-6 px-4 space-y-2 items-center cursor-pointer rounded-md  grid-cols-2">
-       <div className="left flex flex-col justify-start">
+       <div className="left flex flex-col justify-start whitespace-nowrap">
         <p className=" text-gray-400 text-xs">Update Client Information </p>
         <h5 className="text-black mt-1 font-bold capitalize text-left text-s"> EDIT CLIENT</h5>
         <p className="text-xs text-gray-300 pt-3">Some Text Will Go Here</p>
@@ -117,7 +117,7 @@ export default function Dashboard() {
         
       </div>
       <div  className="relative group bg-white shadow-lg grid  h-fit py-6 px-4 space-y-2 items-center cursor-pointer rounded-md  grid-cols-2">
-       <div className="left flex flex-col justify-start">
+       <div className="left flex flex-col justify-start whitespace-nowrap">
         <p className=" text-gray-400 text-xs">View Pending Cases</p>
         <h5 className="text-black mt-1 font-bold capitalize text-left text-s"> OPEN CASES</h5>
         <p className="text-xs text-gray-300 pt-3">Some Text Will Go Here</p>
@@ -130,7 +130,7 @@ export default function Dashboard() {
        
       </div>
       <div  className="relative group bg-white shadow-lg grid  h-fit py-6 px-4 space-y-2 items-center cursor-pointer rounded-md  grid-cols-2">
-       <div className="left flex flex-col justify-start">
+       <div className="left flex flex-col justify-start whitespace-nowrap">
         <p className=" text-gray-400 text-xs">View Closed Cases</p>
         <h5 className="text-black mt-1 font-bold capitalize text-left text-s"> ARCHIVED CASES</h5>
         <p className="text-xs text-gray-300 pt-3">Some Text Will Go Here</p>
@@ -144,7 +144,7 @@ export default function Dashboard() {
       </div>
 
       <div  className="relative group bg-white shadow-lg grid  h-fit py-6 px-4 space-y-2 items-center cursor-pointer rounded-md  grid-cols-2">
-       <div className="left flex flex-col justify-start">
+       <div className="left flex flex-col justify-start whitespace-nowrap">
         <p className=" text-gray-400 text-xs">Add Notes to a Client</p>
         <h5 className="text-black mt-1 font-bold capitalize text-left text-s"> CLIENT NOTES</h5>
         <p className="text-xs text-gray-300 pt-3">Some Text Will Go Here</p>
@@ -157,7 +157,7 @@ export default function Dashboard() {
         
       </div>
       <div  className="relative group bg-white shadow-lg grid  h-fit py-6 px-4 space-y-2 items-center cursor-pointer rounded-md  grid-cols-2">
-       <div className="left flex flex-col justify-start">
+       <div className="left flex flex-col justify-start whitespace-nowrap">
         <p className=" text-gray-400 text-xs">View Calander</p>
         <h5 className="text-black mt-1 font-bold capitalize text-left text-s"> APPOINTMENTS</h5>
         <p className="text-xs text-gray-300 pt-3">Some Text Will Go Here</p>
@@ -170,7 +170,7 @@ export default function Dashboard() {
        
       </div>
       <div  className="relative group bg-white shadow-lg grid  h-fit py-6 px-4 space-y-2 items-center cursor-pointer rounded-md  grid-cols-2">
-       <div className="left flex flex-col justify-start">
+       <div className="left flex flex-col justify-start whitespace-nowrap">
         <p className=" text-gray-400 text-xs">Email Documents</p>
         <h5 className="text-black mt-1 font-bold capitalize text-left text-s">SEND LEGAL DOCUMENTS</h5>
         <p className="text-xs text-gray-300 pt-3">Some Text Will Go Here</p>
@@ -183,7 +183,7 @@ export default function Dashboard() {
         
       </div>
       <div  className="relative group bg-white shadow-lg grid  h-fit py-6 px-4 space-y-2 items-center cursor-pointer rounded-md  grid-cols-2">
-       <div className="left flex flex-col justify-start">
+       <div className="left flex flex-col justify-start whitespace-nowrap">
         <p className=" text-gray-400 text-xs">Invoices and Client Payments</p>
         <h5 className="text-black mt-1 font-bold capitalize text-left text-s">LEGAL BILLING</h5>
         <p className="text-xs text-gray-300 pt-3">Some Text Will Go Here</p>
