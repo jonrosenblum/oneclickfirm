@@ -1,10 +1,17 @@
 import { createSlice } from "@reduxjs/toolkit";
+
 /** @typedef {import('@reduxjs/toolkit').PayloadAction} PayloadAction */
 
 /**
  * @typedef {{
  *  token: string | null;
- *  user: object | null;
+ *  user: {
+ *    username: string | null;
+ *    firstName: string | null;
+ *    lastName: string | null;
+ *    email: string | null;
+ *  } | null;
+ *  refreshToken: string | null;
  *}} AuthState
  */
 
@@ -19,17 +26,20 @@ export const authSlice = createSlice({
   name: "auth",
   initialState,
   reducers: {
-    setToken(state, /** @type {PayloadAction} */ action) {
+    setToken(state, /** @type {PayloadAction<string>} */ action) {
       state.token = action.payload;
       localStorage.setItem("token", action.payload);
     },
-    setUser: (state, /** @type {PayloadAction} */ action) => {
+    setUser: (
+      state,
+      /** @type {PayloadAction<{ username: string; firstName: string; lastName: string; email: string }>} */ action
+    ) => {
       state.user = action.payload;
       localStorage.setItem("user", JSON.stringify(action.payload));
     },
     onLogin: (
       state,
-      /** @type {PayloadAction<{payload:{user:object,token:string}}>} */ action
+      /** @type {PayloadAction<{ user: { username: string; firstName: string; lastName: string; email: string }; token: string; refreshToken: string }>} */ action
     ) => {
       state.token = action.payload.token;
       state.user = action.payload.user;

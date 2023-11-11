@@ -89,7 +89,7 @@ export default function AllClients() {
           </div>
         </div>
       ) : (
-        <div className="bg-gradient-to-tr font-oswald from-blue-800 to-green-400 w-full p-4 min-h-screen flex">
+        <div className="bg-gray-200 w-full p-4 min-h-screen flex">
           <div className="relative flex flex-col min-w-0 break-words w-full shadow-lg rounded-lg bg-gray-900 text-white">
             <div className="rounded-t mb-0 px-4">
               <div className="flex flex-wrap">

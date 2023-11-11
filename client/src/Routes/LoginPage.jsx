@@ -26,6 +26,7 @@ export default function LoginPage() {
 
       if (response.status === 200) {
         console.log("Request Success");
+        console.log(response.data)
         const { refresh_token, access_token } = response.data;
         auth.doLogin({ email: formData.email }, access_token, refresh_token);
         navigate("/home");
