@@ -15,8 +15,11 @@ CORS(app, resources={
     r"*": {"origins": "*"},
 })
 
+
+
 # Setup the Flask-JWT-Extended extension
 app.config["JWT_SECRET_KEY"] = "super-secret"  # Change this!
+app.config["JWT_ACCESS_TOKEN_EXPIRES"] = 3600
 jwt = JWTManager(app)
 
 

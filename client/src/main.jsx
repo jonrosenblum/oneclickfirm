@@ -12,6 +12,7 @@ import { store } from "./services/store";
 import { Provider } from "react-redux";
 import EditClient from "./Routes/EditClient";
 import "./axios";
+import SignupPage from "./Routes/SignupPage";
 
 const router = createHashRouter([
   {
@@ -34,6 +35,7 @@ const router = createHashRouter([
     ],
   },
   // keep login out of root so side nav doesn't show up
+  { path: "signup", element: <SignupPage /> },
   { path: "login", element: <LoginPage /> },
 ]);
 

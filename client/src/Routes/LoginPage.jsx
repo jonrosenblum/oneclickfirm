@@ -2,12 +2,12 @@ import google from "./../assets/google-icon-logo.svg";
 import apple from "./../assets/apple-logo.svg";
 import crossIcon from "./../assets/cross_icon.svg";
 import { useRef, useState } from "react";
-import axios from "axios";
 import { useAuthSelector } from "../services/useAuthSelector";
 import { useNavigate } from "react-router-dom";
 import { GiInjustice } from "react-icons/gi";
+import axiosInstance from "../axios";
 
-export default function LoginForm() {
+export default function LoginPage() {
   const auth = useAuthSelector();
   const navigate = useNavigate();
 
@@ -16,33 +16,30 @@ export default function LoginForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
 
     try {
-      const response = await axios.post(
-        "/login",
+      const response = await axiosInstance.post(
+        '/login',
         formData,
         {
           headers: {
-            "Content-Type": "application/json",
+            'Content-Type': 'application/json',
           },
         }
       );
 
       if (response.status === 200) {
-        console.log("Request Success");
-        auth.doLogin(
-          { username: formData.username },
-          response.data.access_token
-        );
-        // auth.setToken(response.data.token);
-        // auth.setuser(response.data.user)
-        navigate("/home");
+        console.log('Request Success');
+        auth.doLogin({
+          user: { email: formData.email },
+          token: response.data.access_token,
+        });
+        navigate('/home');
       } else {
-        console.error("Request Failed");
+        console.error('Request Failed');
       }
     } catch (error) {
-      console.error("Request Error:", error);
+      console.error('Request Error:', error);
     }
   };
 
@@ -60,7 +57,7 @@ export default function LoginForm() {
                     <div className="flex gap-4 justify-center" >
                     <GiInjustice className="text-3xl"/>
                     <h4 className="mb-6 text-3xl font-semibold">
-                      <span className="font-extrabold">Stabile</span> Law Firm
+                      <span className="font-extrabold">Legal</span> Street
                     </h4>
                     </div>
                     <p className="text-sm w-full sm:w-[85%] md:w-[75%] lg:w-[60%] mx-auto">
@@ -73,6 +70,8 @@ export default function LoginForm() {
             src={crossIcon}
             alt="x"
             onClick={() => {
+              
+
               
             }}
             className="cursor-pointer hidden md:block absolute top-8 right-8"
@@ -152,7 +151,7 @@ export default function LoginForm() {
 
                       <div className="flex items-center justify-center">
                         <p className="mb-0 mr-2 text-xs">Not a member yet?</p>
-                        <span className="mb-0 text-xs font-bold cursor-pointer">Sign Up</span>
+                        <span onClick={()=> {navigate('/signup')}} className="mb-0 text-xs font-bold cursor-pointer">Sign Up</span>
                       </div>
                     </form>
                   </div>
