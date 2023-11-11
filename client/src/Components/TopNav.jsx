@@ -1,16 +1,11 @@
-import { useEffect, useState } from 'react'
 import { useAuthSelector } from "../services/useAuthSelector";
 import UserIcon from "../assets/user-icon-svgrepo-com.png"
 import { GiInjustice } from "react-icons/gi";
 
 export default function Nav() {
     const auth = useAuthSelector();
-    const [username, setUsername] = useState('')
+    console.log(auth);
 
-    useEffect(() => {   
-        setUsername(auth.user.username)
-        console.log(username)
-    ,[]}) 
 
   return (
     <>
@@ -39,7 +34,7 @@ export default function Nav() {
              <a href="/">   <li className='flex justify-center items-center'>
                 <div className="flex items-center " >
               <img src={UserIcon} className="h-6 w-6 "/>
-              <h6 className="ml-3 flex">{auth.user.username} </h6>
+              <h6 className="ml-3 flex">{auth.user.email} </h6>
             </div>
                 </li></a>
             </ul>

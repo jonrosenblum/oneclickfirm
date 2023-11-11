@@ -6,7 +6,8 @@ import { BsFillCalendarFill, BsFillPeopleFill } from "react-icons/bs"
 import { BiEdit } from "react-icons/bi"
 import { MdCloudDone, MdDescription, MdPendingActions } from 'react-icons/md';
 import { FaStickyNote } from 'react-icons/fa';
-import axios from "axios";
+import axiosInstance from "../axios";
+
 
 
 
@@ -22,7 +23,7 @@ export default function Dashboard() {
   
   useEffect(() => {
     // Fetch the count of clients from your backend
-    axios.get('/clients')
+    axiosInstance.get('/clients')
       .then((response) => {
         setClientCount(response.data.length);
       })
