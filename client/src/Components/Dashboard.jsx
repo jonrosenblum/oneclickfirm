@@ -184,7 +184,7 @@ export default function Dashboard() {
       </div>
       <div  className="relative group bg-white shadow-lg grid  h-fit py-6 px-4 space-y-2 items-center cursor-pointer rounded-md  grid-cols-2">
        <div className="left flex flex-col justify-start">
-        <p className=" text-gray-400 text-xs">Invoice and Client Payment</p>
+        <p className=" text-gray-400 text-xs">Invoices and Client Payments</p>
         <h5 className="text-black mt-1 font-bold capitalize text-left text-s">LEGAL BILLING</h5>
         <p className="text-xs text-gray-300 pt-3">Some Text Will Go Here</p>
         </div>
