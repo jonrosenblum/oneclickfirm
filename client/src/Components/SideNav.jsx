@@ -113,7 +113,7 @@ export default function SideNav() {
   return (
     <div className="flex w-fit">
       <div
-        className={`font-oswald bg-gradient-to-b from-s1 via-s2 to-s3 f-screen p-5 pt-6 h-fit
+        className={`font-oswald bg-gradient-to-b from-s1 via-s2 to-s3 f-screen p-5 pt-6 h-[100%]
             ${sideNaveExpanded ? "w-72" : "w-20"} duration-300 relative`}
       >
         <button onClick={handleNewClientClick} className="rounded-lg bg-yellow-300 flex justify-start gap-5 items-center p-3 w-full">
@@ -130,7 +130,7 @@ export default function SideNav() {
           
         />
        </button>
-        <div className="all h-full justify-between">
+        <div className="all h-[90%] flex flex-col justify-between">
 
         <ul className="pt-2 mb-10">
           {Menus.map((menu) => (
@@ -176,9 +176,10 @@ export default function SideNav() {
             </div>
           ))}
 
-        <hr className="text-white mt-[5rem]" />
+        {/* <hr className="text-white mt-[5rem]" /> */}
         </ul>
-        <ul className="pt-2">
+        <ul className="pb-5">
+        <hr className="text-white mb-[5rem]" />
           {Menus1.map((menu) => (
             <div key={menu.key}>
               <li

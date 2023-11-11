@@ -13,7 +13,7 @@ export default function Root() {
   return (
     <>
     <TopNav/>
-    <div className="flex flex-row flex-100">
+    <div className="flex flex-row flex-100 h-[100%]">
       <SideNav />
       <div className="flex-1">
         <Outlet />
