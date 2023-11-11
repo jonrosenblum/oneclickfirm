@@ -2,9 +2,9 @@ import { BiArrowBack } from "react-icons/bi";
 import { AiOutlineSearch } from "react-icons/ai";
 import { useRef, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
 import ClientLegalInformation from "../Components/Pieces/ClientLegalInformation";
 import ClientAddConfirmInformation from "../Components/Pieces/ClientAddConfirmInformation";
+import axiosInstance from "../axios";
 
 export default function NewClient() {
   const [formData, setFormData] = useState({
@@ -23,7 +23,7 @@ export default function NewClient() {
     setFormSubmitted(true);
 
     try {
-      const response = await axios.post("/search", formData, {
+      const response = await axiosInstance.post("/search", formData, {
         headers: {
           "Content-Type": "application/json",
         },
