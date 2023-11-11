@@ -24,7 +24,7 @@ export default function Nav() {
             </svg>
             <input className='placeholder-white outline-0 bg-transparent' type="text" placeholder="Type to search" />
           </div>
-          <div className="flex justify-center items-center mr-2">
+          <div className="flex justify-center items-center mr-2 whitespace-nowrap">
             <ul className='flex justify-center items-center gap-5 font-light sm:text-[0.8rem]'>
               <a href="/"> <li className='flex justify-center items-center'> How it works</li></a>
               <a href="/"> <li className='flex justify-center items-center'>Pricing</li></a>
