@@ -8,14 +8,14 @@ export default function NewClient() {
     violation_date: "",
   });
   const formRef = useRef(null);
-  const [formSubmitted, setFormSubmitted] = useState(false);
+  const [searchFormSubmitted, setSearchFormSubmitted] = useState(false);
   const [responseData, setResponseData] = useState(null);
   const [loading, setLoading] = useState(false); // Add loading state
 
-  const handleSubmit = async (e) => {
+  const searchClient = async (e) => {
     e.preventDefault();
     console.log(searchData);
-    setFormSubmitted(true);
+    setSearchFormSubmitted(true);
     setLoading(true); // Set loading state when the request starts
 
     try {
@@ -48,24 +48,26 @@ export default function NewClient() {
             <button className="button rounded-md bg-gradient-to-r from-s via-cyan-500 to-emerald-500 text-xs p-2">View all</button>
           </div>
 
-          <div>
-            <form ref={formRef} onSubmit={handleSubmit}>
-              <div>
-                <label className="">Legal Name</label>
-                <input className=""
-                placeholder="e.g. John Smith"
-                type="text"
-                onChange={(e)=> setsearchData({...searchData, client_name: e.target.value})}/>
-              </div>
-              <div className="">
-                <label className="">Violation Date</label>
-                <input className=""
-                type="date"
-                onChange={(e)=> setsearchData({...searchData, violation_date: e.target.value})}/>
-              </div>
-              <button className="modal-action-button px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500">
-                  <span><AiOutlineSearch/></span>
+          <div className="m-2">
+            <form ref={formRef} onSubmit={searchClient}>
+              <div className="flex gap-2 items-center">
+                <div>
+                  <label className="">Legal Name</label>
+                  <input className=""
+                  placeholder="Enter client name"
+                  type="text"
+                  onChange={(e)=> setsearchData({...searchData, client_name: e.target.value})}/>
+                </div>
+                <div className="">
+                  <label className="">Violation Date</label>
+                  <input className=""
+                  type="date"
+                  onChange={(e)=> setsearchData({...searchData, violation_date: e.target.value})}/>
+                </div>
+                <button className="modal-action-button px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500">
+                    <span><AiOutlineSearch/></span>
                 </button>
+              </div>
             </form>
           </div>
 
@@ -73,38 +75,43 @@ export default function NewClient() {
             <div>Loading...</div>
           )}
 
-          {formSubmitted && responseData && !loading && (
-            <div className="flex">
-              <div>
-                <p>Client ID: {responseData.client_id}</p>
-                <p>Client Name: {responseData.client_info.client_name}</p>
-                <p>Client Age: {responseData.client_info.client_age}</p>
-                <p>Client Birth Place: {responseData.client_info.client_birth_place}</p>
-                <p>Court House Name: {responseData.court_info.court_house_name}</p>
-                <p>Court House Street: {responseData.court_info.court_house_street}</p>
-                <p>Court House City: {responseData.court_info.court_house_city}</p>
-                <p>Court House State: {responseData.court_info.court_house_state}</p>
-                <p>Court House Zip: {responseData.court_info.court_house_zip}</p>
-                <p>Phone Number: {responseData.court_info.phone_number}</p>
-                <p>Fax Number: {responseData.court_info.fax_number}</p>
-                <p>Violations: {responseData.violations.join(", ")}</p>
+          {searchFormSubmitted && responseData && !loading && (
+            <div className="p-12">
+              <div className="m-2">
+                <h1 className="text-2xl">Client Legal Information</h1>
               </div>
               <div>
                 <form>
-                  <div className="flex">
-                    <div>
-                      <h1>Client Information</h1>
-                      <label>Client Name</label>
-                      
-                    </div>
-                    <div>
-                      <h1>Violation Information</h1>
-                      <label>Court House Name</label>
-                      
+                  <div className="">
+                    <div className="bg-gray-300 p-5 m-2">
+                        <h1>Client Information</h1>
+                      <div className="m-2">
+                        <p>Client Name: {responseData.client_info.client_name}</p>
+                        <p>Client Age: {responseData.client_info.client_age}</p>
+                        <p>Client Birth Place: {responseData.client_info.client_birth_place}</p>
+                      </div>
                     </div>
 
-                    <div className="text-center">
-                      <h1>Payment Information</h1>
+                    <div className="bg-gray-300 p-5 m-2">
+                      <h1>Violation Information</h1>
+                      <div className="m-2">
+                        <p>Court House Name: {responseData.court_info.court_house_name}</p>
+                        <p>Court House Street: {responseData.court_info.court_house_street}</p>
+                        <p>Court House City: {responseData.court_info.court_house_city}</p>
+                        <p>Court House State: {responseData.court_info.court_house_state}</p>
+                        <p>Court House Zip: {responseData.court_info.court_house_zip}</p>
+                        <p>Phone Number: {responseData.court_info.phone_number}</p>
+                        <p>Fax Number: {responseData.court_info.fax_number}</p>
+                        <p>Violations: {responseData.violations.join(", ")}</p>
+                      </div>
+                    </div>
+
+                   
+                  </div>
+                  <div className="bg-gray-300 p-5 m-2">
+                      <h1 className="text-lg">Payment Information</h1>
+                      <div className="m-2">
+
                       <label>Payment Type</label>
                       <select
                         value={searchData.payment_type}
@@ -198,8 +205,8 @@ export default function NewClient() {
                           });
                         }}
                       />
+                      </div>
                     </div>
-                  </div>
                 </form>
               </div>
             </div>
