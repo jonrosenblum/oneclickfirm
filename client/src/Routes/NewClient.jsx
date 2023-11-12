@@ -72,20 +72,24 @@ export default function NewClient() {
 
           {formSubmitted && responseData && (
             <div>
-              {/* Display the received data */}
-              <p>Client ID: {responseData.client_id}</p>
-              <p>Client Name: {responseData.client_info.client_name}</p>
-              <p>Client Age: {responseData.client_info.client_age}</p>
-              <p>Client Birth Place: {responseData.client_info.client_birth_place}</p>
-              <p>Court House Name: {responseData.court_info.court_house_name}</p>
-              <p>Court House Street: {responseData.court_info.court_house_street}</p>
-              <p>Court House City: {responseData.court_info.court_house_city}</p>
-              <p>Court House State: {responseData.court_info.court_house_state}</p>
-              <p>Court House Zip: {responseData.court_info.court_house_zip}</p>
-              <p>Phone Number: {responseData.court_info.phone_number}</p>
-              <p>Fax Number: {responseData.court_info.fax_number}</p>
-              <p>Violations: {responseData.violations.join(", ")}</p>
+              <div>
+                <p>Client ID: {responseData.client_id}</p>
+                <p>Client Name: {responseData.client_info.client_name}</p>
+                <p>Client Age: {responseData.client_info.client_age}</p>
+                <p>Client Birth Place: {responseData.client_info.client_birth_place}</p>
+                <p>Court House Name: {responseData.court_info.court_house_name}</p>
+                <p>Court House Street: {responseData.court_info.court_house_street}</p>
+                <p>Court House City: {responseData.court_info.court_house_city}</p>
+                <p>Court House State: {responseData.court_info.court_house_state}</p>
+                <p>Court House Zip: {responseData.court_info.court_house_zip}</p>
+                <p>Phone Number: {responseData.court_info.phone_number}</p>
+                <p>Fax Number: {responseData.court_info.fax_number}</p>
+                <p>Violations: {responseData.violations.join(", ")}</p>
+              </div>
+              <div></div>
+        
             </div>
+            
           )}
         </div>
       </div>
