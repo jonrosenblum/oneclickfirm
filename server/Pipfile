@@ -16,6 +16,7 @@ python-decouple = "*"
 flask-bcrypt = "*"
 python-dateutil = "*"
 python-dotenv = "*"
+webdriver-manager = "*"
 
 [dev-packages]
 

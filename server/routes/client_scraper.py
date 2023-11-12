@@ -5,146 +5,14 @@ from selenium.webdriver.common.by import By
 from selenium.webdriver.firefox.options import Options
 import time
 import os
-from dotenv import load_dotenv
-import psycopg2 as pc
-
-load_dotenv()
 
 DATE_FORMAT = '%b %d, %Y'
 
 app = Flask(__name__)
-
-class DB:
-
-    def __init__(self) -> None:
-        username = os.getenv('DB_USERNAME')
-        password = os.getenv('DB_PASSWORD')
-        host = os.getenv('DB_HOST')
-        port = os.getenv('DB_PORT')
-        self.db_name = os.getenv('DB_NAME')
-        db_url = f'postgresql://{username}:{password}@{host}:{port}'
-        
-        try:
-            db_url_with_db_name = db_url + f'/{self.db_name}'
-            self.conn = pc.connect(db_url_with_db_name)
-            self.cursor = self.conn.cursor()
-            db_url = db_url_with_db_name  
-        except pc.OperationalError:
-            #if database does not exist, create database and reconnect
-            self.conn = pc.connect(db_url)
-            self.cursor = self.conn.cursor()
-            self.conn.autocommit = True
-            self.create_database()
-            self.conn.close()
-            self.__init__()
-        print(f'DB URL - {db_url}')
-
-        #create tables if not exists
-        self.create_templates_table()
-        self.create_clients_table() 
-        self.create_violations_table()
-
-    def drop_database(self) -> None:
-        sql = f'''
-        DROP DATABASE "{self.db_name}"
-        '''
-        self.cursor.execute(sql)
-        self.conn.commit()
-
-    def create_database(self) -> None:
-        print('CREATING DATABASE...')
-        sql = f'''
-        CREATE DATABASE  "{self.db_name}"
-        '''
-        self.cursor.execute(sql)
-        self.conn.commit()
-
-    def create_templates_table(self) -> None:
-        sql = '''
-        CREATE TABLE IF NOT EXISTS template (
-            template_id SERIAL PRIMARY KEY,
-            name VARCHAR,
-            pdf_data BYTEA
-        );
-        '''
-        self.cursor.execute(sql)
-        self.conn.commit()
-
-    def create_clients_table(self) -> None:
-        #NOT SAVING TODAYS DATE
-        sql = '''
-        CREATE TABLE IF NOT EXISTS client (
-            client_id SERIAL PRIMARY KEY,
-            fax_number VARCHAR,
-            phone_number VARCHAR,
-            court_house_name VARCHAR,
-            court_house_street VARCHAR,
-            court_house_city VARCHAR,
-            court_house_state VARCHAR,
-            court_house_zip VARCHAR,            
-            client_name VARCHAR,
-            client_age SMALLINT,
-            client_birth_place VARCHAR
-        );
-        '''
-        self.cursor.execute(sql)
-        self.conn.commit()
-
-    def create_violations_table(self) -> None:
-        sql = f'''
-        CREATE TABLE IF NOT EXISTS violation (
-            client_id INTEGER,
-            violation_number VARCHAR NOT NULL,
-            FOREIGN KEY(client_id) REFERENCES client(client_id)
-        );
-        '''
-        self.cursor.execute(sql)
-        self.conn.commit()
-
-    def get_client_id(self, data) -> int:
-        sql = '''
-        SELECT client_id
-        FROM "client"
-        WHERE client_name = %s
-            AND client_age = %s
-            AND client_birth_place = %s
-        '''
-        self.cursor.execute(sql, data)
-        result = self.cursor.fetchone()
-        if type(result) == tuple:
-            return result[0]
-        return None
-
-    def insert_client_info(self, data:dict) -> None:
-        sql = '''
-        INSERT INTO "client" ({})
-        VALUES ({})
-        '''
-
-        placeholders = ', '.join(['%s' for _ in data.values()])
-        values = tuple(data.values())
-        columns = ', '.join(data.keys())
-
-        query = sql.format(columns, placeholders)
-        self.cursor.execute(query, values)
-        self.conn.commit()
-        
-    def insert_violation(self, client_id:int, violation_number:str) -> None:
-        sql = '''
-        INSERT INTO "violation"(client_id, violation_number)
-        SELECT %s, %s
-        WHERE 
-            NOT EXISTS (
-                SELECT violation_number 
-                FROM "violation" 
-                WHERE violation_number = %s
-            ) 
-        '''
-        self.cursor.execute(sql, (client_id, violation_number, violation_number))
-        self.conn.commit()
-
-# Create Flask Blueprint
 client_scraper_bp = Blueprint('client_scraper', __name__)
+
+
+
 
 @client_scraper_bp.route('/client-scraper', methods=['GET'])
 def client_scraper():
@@ -152,6 +20,9 @@ def client_scraper():
 
 @client_scraper_bp.post('/search')
 def search():
+    
+    driver = None
+    
     try:
     
         data = request.json  # Get data from JSON request
@@ -164,15 +35,15 @@ def search():
         
         if client_name and violation_date:
             
-            # options = webdriver.FirefoxOptions()
-            # options.add_argument('--headless')
-            # options.add_argument('--disable-gpu')  # Required for headless mode on Linux
+            options = webdriver.FirefoxOptions()
+            options.add_argument('--headless')
+            options.add_argument('--disable-gpu')  # Required for headless mode on Linux
 
-            # # Set the environment variable for headless mode
-            # os.environ['MOZ_HEADLESS'] = '1'
+            # Set the environment variable for headless mode
+            os.environ['MOZ_HEADLESS'] = '1'
 
             # Initialize the WebDriver with the specified options
-            driver = webdriver.Firefox()
+            driver = webdriver.Firefox(options=options)
 
             # Navigate to the login page
             driver.get('https://secure.legalplex.com/Login')
@@ -249,12 +120,7 @@ def search():
                     time.sleep(3)
                     page.click()
     
-            #only instantiate class if there is records to save
-            if len(profile_urls) > 0:
-                db = DB()
-
             #loop through each match and collect data from page
-            print('#'*45)
             for profile_url in profile_urls:
                 print(f'Collecting data from: {profile_url}')
     
@@ -292,30 +158,10 @@ def search():
                     'client_age':client_age,
                     'client_birth_place':client_birth_place
                 }
-
-                client_id = db.get_client_id((
-                    context['client_name'],
-                    context['client_age'],
-                    context['client_birth_place']
-                ))
-
-                if client_id == None:
-                    db.insert_client_info(context)
-                    client_id = db.get_client_id((
-                        context['client_name'],
-                        context['client_age'],
-                        context['client_birth_place']
-                    ))
-
-                print(f'Client ID: {client_id}')
-                for violation_number in violation_numbers:
-                    print(f'INSERTING {violation_number} (IF NOT EXISTS)')
-                    db.insert_violation(client_id, violation_number)
-                print('#'*45)
             
         # Prepare data for JSON response
         scraped_data = {
-            "client_id": client_id,
+           
             "court_info": {
                 "fax_number": context['fax_number'],
                 "phone_number": context['phone_number'],
@@ -339,7 +185,8 @@ def search():
         return jsonify({"status": "error", "error": str(e)})
     
     finally:
-        driver.quit()
+        if driver is not None:
+            driver.quit()
 
 
 if __name__ == '__main__':
@@ -349,6 +196,4 @@ if __name__ == '__main__':
     # Run Flask app
     app.run(debug=True)
     # Initialize the database class
-    db = DB()
     # Call the search function
-    search()
