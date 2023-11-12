@@ -188,12 +188,3 @@ def search():
         if driver is not None:
             driver.quit()
 
-
-if __name__ == '__main__':
-    # Initialize Flask app with Blueprint
-    app.register_blueprint(client_scraper_bp)
-
-    # Run Flask app
-    app.run(debug=True)
-    # Initialize the database class
-    # Call the search function
