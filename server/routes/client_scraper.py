@@ -2,6 +2,7 @@ from flask import Flask, Blueprint, request, jsonify
 from dateutil import parser
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.firefox.options import Options
 import time
 import os
 from dotenv import load_dotenv
@@ -163,6 +164,14 @@ def search():
         
         if client_name and violation_date:
             
+            # options = webdriver.FirefoxOptions()
+            # options.add_argument('--headless')
+            # options.add_argument('--disable-gpu')  # Required for headless mode on Linux
+
+            # # Set the environment variable for headless mode
+            # os.environ['MOZ_HEADLESS'] = '1'
+
+            # Initialize the WebDriver with the specified options
             driver = webdriver.Firefox()
 
             # Navigate to the login page

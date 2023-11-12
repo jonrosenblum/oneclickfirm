@@ -3,21 +3,23 @@ import { useRef, useState } from "react";
 import axiosInstance from "../axios";
 
 export default function NewClient() {
-  const [formData, setFormData] = useState({
+  const [searchData, setsearchData] = useState({
     client_name: "",
     violation_date: "",
   });
   const formRef = useRef(null);
   const [formSubmitted, setFormSubmitted] = useState(false);
   const [responseData, setResponseData] = useState(null);
+  const [loading, setLoading] = useState(false); // Add loading state
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log(formData);
+    console.log(searchData);
     setFormSubmitted(true);
+    setLoading(true); // Set loading state when the request starts
 
     try {
-      const response = await axiosInstance.post("/search", formData, {
+      const response = await axiosInstance.post("/search", searchData, {
         headers: {
           "Content-Type": "application/json",
         },
@@ -31,6 +33,8 @@ export default function NewClient() {
       }
     } catch (error) {
       console.error("Request Error:", error);
+    } finally {
+      setLoading(false); // Reset loading state after the request is complete
     }
   };
 
@@ -51,27 +55,26 @@ export default function NewClient() {
                 <input className=""
                 placeholder="e.g. John Smith"
                 type="text"
-                onChange={(e)=> setFormData({...formData, client_name: e.target.value})}/>
+                onChange={(e)=> setsearchData({...searchData, client_name: e.target.value})}/>
               </div>
               <div className="">
                 <label className="">Violation Date</label>
                 <input className=""
                 type="date"
-                onChange={(e)=> setFormData({...formData, violation_date: e.target.value})}/>
+                onChange={(e)=> setsearchData({...searchData, violation_date: e.target.value})}/>
               </div>
               <button className="modal-action-button px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500">
                   <span><AiOutlineSearch/></span>
                 </button>
-              <button
-                className="modal-action-button px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500"
-              >
-                <span><AiOutlineSearch /></span>
-              </button>
             </form>
           </div>
 
-          {formSubmitted && responseData && (
-            <div>
+          {loading && (
+            <div>Loading...</div>
+          )}
+
+          {formSubmitted && responseData && !loading && (
+            <div className="flex">
               <div>
                 <p>Client ID: {responseData.client_id}</p>
                 <p>Client Name: {responseData.client_info.client_name}</p>
@@ -86,10 +89,120 @@ export default function NewClient() {
                 <p>Fax Number: {responseData.court_info.fax_number}</p>
                 <p>Violations: {responseData.violations.join(", ")}</p>
               </div>
-              <div></div>
-        
+              <div>
+                <form>
+                  <div className="flex">
+                    <div>
+                      <h1>Client Information</h1>
+                      <label>Client Name</label>
+                      
+                    </div>
+                    <div>
+                      <h1>Violation Information</h1>
+                      <label>Court House Name</label>
+                      
+                    </div>
+
+                    <div className="text-center">
+                      <h1>Payment Information</h1>
+                      <label>Payment Type</label>
+                      <select
+                        value={searchData.payment_type}
+                        onChange={(e) => {
+                          setsearchData({
+                            ...searchData,
+                            payment_type: e.target.value,
+                          });
+                        }}
+                        required
+                      >
+                        <option value="">Select Payment Type</option>
+                        <option value="Credit Card">Credit Card</option>
+                        <option value="Zelle">Zelle</option>
+                      </select>
+
+                      <label>Card Type</label>
+                      <select
+                        required
+                        value={searchData.credit_card_type}
+                        onChange={(e) => {
+                          setsearchData({
+                            ...searchData,
+                            credit_card_type: e.target.value,
+                          });
+                        }}
+                        disabled={searchData.payment_type === "Zelle"}
+                      >
+                        <option value="">Select Card Type</option>
+                        <option value="American Express">American Express</option>
+                        <option value="Visa">Visa</option>
+                        <option value="MasterCard">MasterCard</option>
+                        <option value="Discover">Discover</option>
+                      </select>
+
+                      <label>Credit Card Number</label>
+                      <input
+                        type="text"
+                        placeholder="Credit Card Number"
+                        value={searchData.credit_card_number}
+                        required
+                        onChange={(e) => {
+                          setsearchData({
+                            ...searchData,
+                            credit_card_number: e.target.value,
+                          });
+                        }}
+                        disabled={searchData.payment_type === "Zelle"}
+                      />
+
+                      <label>Expiration</label>
+                      <input
+                        type="text"
+                        placeholder="MM/YY"
+                        value={searchData.credit_card_expiration}
+                        required
+                        onChange={(e) => {
+                          setsearchData({
+                            ...searchData,
+                            credit_card_expiration: e.target.value,
+                          });
+                        }}
+                        disabled={searchData.payment_type === "Zelle"}
+                      />
+
+                      <label>CVV</label>
+                      <input
+                        type="text"
+                        placeholder="XXXX"
+                        value={searchData.credit_card_cvv}
+                        required
+                        onChange={(e) => {
+                          setsearchData({
+                            ...searchData,
+                            credit_card_cvv: e.target.value,
+                          });
+                        }}
+                        disabled={searchData.payment_type === "Zelle"}
+                      />
+
+                      <label>Client Balance</label>
+                      <input
+                        type="text"
+                        placeholder="$"
+                        value={searchData.client_balance}
+                        required
+                        onChange={(e) => {
+                          setsearchData({
+                            ...searchData,
+                            client_balance: e.target.value,
+                          });
+                        }}
+                      />
+                    </div>
+                  </div>
+                </form>
+              </div>
             </div>
-            
           )}
         </div>
       </div>

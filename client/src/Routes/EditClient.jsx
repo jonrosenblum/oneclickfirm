@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "./../axios";
-import { Link, NavLink, useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 // import { Navigate } from "react-router-dom";
 
 export default function EditClient() {
