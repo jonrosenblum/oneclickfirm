@@ -154,13 +154,13 @@ export default function GenerateDocuments() {
 
   return (
     <>
-      <div className="flex bg-gray-100 flex-row h-screen">
+      <div className="flex bg-gray-100 flex-row h-screen overflow-auto">
           <form onSubmit={handleSubmit} className="w-full">
             <div className="p-10">
-              <div className="client-information flex flex-col bg-gray-200 m-1 p-2 py-4 rounded-md">
+              <div className="client-information flex flex-col bg-gray-200 m-1 p-2 py-2 rounded-md">
                 <h3 className="font-medium">Client Information</h3>
                 <div className="bg-white shadow-sm ring-1 mt-2 ring-gray-900/5 sm:rounded-xl md:col-span-2">
-                  <div className="px-4 py-4">
+                  <div className="px-4 py-2">
                     <div className="grid grid-cols-1 gap-x-2 gap-y-6 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-12">
                       <div className="sm:col-span-full md:col-span-2 lg:col-span-4">
                         <label className="block text-sm font-base  text-gray-900">
@@ -230,12 +230,12 @@ export default function GenerateDocuments() {
                   </div>
                 </div>
               </div>
-              <div className="violation-information flex flex-col bg-gray-200 p-2 m-1 py-4 rounded-md">
+              <div className="violation-information flex flex-col bg-gray-200 p-2 m-2 py-2 rounded-md">
                 <h3 className="font-medium">Violation Information</h3>
                 <div className="bg-white shadow-sm ring-1 mt-2 ring-gray-900/5 sm:rounded-xl md:col-span-2">
-                  <div className="px-4 py-4">
+                  <div className="px-4 py-2">
                     <div className="flex lg:flex-row flex-col gap-2">
-                      <div className="grid w-full gap-x-2 gap-y-6 grid-cols-12 lg:grid-cols-12">
+                      <div className="grid w-full gap-x-2 grid-cols-12 lg:grid-cols-12">
                         <div className="col-span-full lg:col-span-4">
                           <label className="block text-sm font-base  text-gray-900">
                             Violation Date
@@ -471,10 +471,13 @@ export default function GenerateDocuments() {
                     </div>
                   </div>
                 </div>
-                <div className="payment-information flex flex-col bg-gray-200 mt-3 py-4 rounded-md">
+                
+              </div>
+              <div className="violation-information flex flex-col bg-gray-200 p-2 m-2 py-2 rounded-md">
+              <div className="payment-information flex flex-col bg-gray-200 mt-3 py-2 rounded-md">
                   <h3 className="font-medium">Payment Information</h3>
                   <div className="bg-white shadow-sm ring-1 mt-2 ring-gray-900/5 sm:rounded-xl md:col-span-2">
-                    <div className="px-4 py-4">
+                    <div className="px-4 py-2">
                       <div className="grid gap-x-2 gap-y-6 grid-cols-12">
                         <div className="col-span-full md:col-span-4 lg:col-span-2">
                           <label className="block text-sm font-base  text-gray-900">
@@ -748,7 +751,6 @@ export default function GenerateDocuments() {
                   </div> */}
                 </div>
               </div>
-
               <div className="flex justify-between mt-8">
                 <button
                   type="button"
