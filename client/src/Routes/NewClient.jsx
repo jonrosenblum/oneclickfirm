@@ -16,7 +16,7 @@ export default function NewClient() {
     e.preventDefault();
     console.log(searchData);
     setSearchFormSubmitted(true);
-    setLoading(true); // Set loading state when the request starts
+    setLoading(true); 
 
     try {
       const response = await axiosInstance.post("/search", searchData, {
@@ -72,7 +72,7 @@ export default function NewClient() {
           </div>
 
           {loading && (
-            <div>Loading...</div>
+            <div className="flex justify-center items-center">Loading...</div>
           )}
 
           {searchFormSubmitted && responseData && !loading && (
