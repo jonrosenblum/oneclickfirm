@@ -34,7 +34,7 @@ export default function GenerateDocuments() {
     client_email: "",
     incident_date: "",
     case_status: "OPEN",
-    dwi_status: "No",
+    dwi_status: "",
     credit_card_number: "",
     credit_card_expiration: "",
     credit_card_cvv: "",
@@ -119,7 +119,7 @@ export default function GenerateDocuments() {
       client_email: "",
       incident_date: "",
       case_status: "OPEN",
-      dwi_status: "No",
+      dwi_status: "",
       credit_card_number: "",
       credit_card_expiration: "",
       credit_card_cvv: "",
@@ -264,17 +264,17 @@ export default function GenerateDocuments() {
                           <div className="mt-2">
                             <select
                               className="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset  sm:leading-6"
-                              value={formData.dwi_status}
-                              required
                               onChange={(e) =>
                                 setFormData({
                                   ...formData,
                                   dwi_status: e.target.value,
                                 })
                               }
+                              value={formData.dwi_status}
+                              required
                             >
-                              <option value="Yes">Yes</option>
                               <option value="No">No</option>
+                              <option value="Yes">Yes</option>
                             </select>
                           </div>
                         </div>

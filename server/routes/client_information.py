@@ -52,6 +52,7 @@ def create_tables_if_not_exist():
                 violation_id SERIAL PRIMARY KEY, \
                 client_id INT, \
                 case_status VARCHAR(20), \
+                dwi_status VARCHAR(3), \
                 complaint_number VARCHAR(255), \
                 incident_date DATE, \
                 FOREIGN KEY (client_id) REFERENCES client_information(client_id) ON DELETE CASCADE \
@@ -113,9 +114,9 @@ def new_client():
 
     # Insert data into the violations table
     cursor.execute('''
-        INSERT INTO violations (client_id, case_status, complaint_number, incident_date)
-        VALUES (%s, %s, %s, %s)
-    ''', (client_id, form_data['case_status'], form_data['complaint_violation_ticket_numbers'], form_data['incident_date']))
+        INSERT INTO violations (client_id, case_status, dwi_status, complaint_number, incident_date)
+        VALUES (%s, %s, %s, %s, %s)
+    ''', (client_id, form_data['case_status'], form_data['dwi_status'], form_data['complaint_violation_ticket_numbers'], form_data['incident_date']))
 
     # Insert data into the court_information table
     cursor.execute('''
@@ -179,6 +180,7 @@ def makeTempClientFiles(form_data,temp_dir, document_name):
     context = {
         'fax_number': form_data['fax_number'],
         'todays_date': formatted_todays_date,
+        'dwi_status': form_data['dwi_status'],
         'court_house_name': form_data['court_house_name'],
         'court_house_street': form_data['court_house_street'],
         'payment_type': form_data['payment_type'],
@@ -251,6 +253,7 @@ def get_all_clients():
                 ci.payment_type,
                 ci.credit_card_type,
                 v.case_status,
+                v.dwi_status,
                 v.complaint_number,
                 v.incident_date,
                 co.fax_number,

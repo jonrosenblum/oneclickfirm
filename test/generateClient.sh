@@ -1,6 +1,7 @@
 curl 'http://localhost:5001/new-client' \
   -H 'Accept: application/json, text/plain, */*' \
   -H 'Accept-Language: en-US,en;q=0.9' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5OTkwMTQwOCwianRpIjoiYzJjNjdjZjItMzNjYy00ZjMyLTg4ZGQtNWQwMzM0NDQ3MjlkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Impvbi5tLnJvc2VuYmx1bUBnbWFpbC5jb20iLCJuYmYiOjE2OTk5MDE0MDgsImV4cCI6MTY5OTkwNTAwOH0.U0n78UeQuoQzDBmK_ht2bxgfREEBTAwyPmRTZIDnIDM' \
   -H 'Cache-Control: no-cache' \
   -H 'Connection: keep-alive' \
   -H 'Content-Type: application/json' \
@@ -14,5 +15,26 @@ curl 'http://localhost:5001/new-client' \
   -H 'sec-ch-ua: "Google Chrome";v="119", "Chromium";v="119", "Not?A_Brand";v="24"' \
   -H 'sec-ch-ua-mobile: ?0' \
   -H 'sec-ch-ua-platform: "macOS"' \
-  --data-raw '{"client_name":"Steven Stabile","todays_date":"2023-11-07","fax_number":"516 4048703","complaint_violation_ticket_numbers":"1217EGFHRKDS","court_house_name":"Woodbridge Municipal Court","court_house_address":"1 Main Street","court_house_city":"Woodbridge ","court_house_state":"NJ","court_house_zip":"07095","court_house_county":"Nassau","client_email":"jon.m.rosenblum@gmail.com","incident_date":"2023-11-08","case_status":"OPEN","dwi_status":"Yes","credit_card_number":"","credit_card_expiration":"","credit_card_cvv":"","client_balance":"456","payment_type":"Zelle","credit_card_type":""}' \
+  --data-raw '{"client_name":"Jonathan Rosenblum NO DWI","todays_date":"2023-11-13","fax_number":"516-404-8703","complaint_violation_ticket_numbers":"1217EGFHD","court_house_name":"Hewlett main Court","court_house_address":"1 Main Street","court_house_city":"Bogota Borough","court_house_state":"NJ","court_house_zip":"07095","court_house_county":"Bergen County","client_email":"jon@gmail.com","incident_date":"2023-10-13","case_status":"OPEN","dwi_status":"No","credit_card_number":"124321","credit_card_expiration":"12/12","credit_card_cvv":"122","client_balance":"122","payment_type":"Credit Card","credit_card_type":"Visa"}' \
+  --compressed
+
+
+  curl 'http://localhost:5001/new-client' \
+  -H 'Accept: application/json, text/plain, */*' \
+  -H 'Accept-Language: en-US,en;q=0.9' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5OTkwMTQwOCwianRpIjoiYzJjNjdjZjItMzNjYy00ZjMyLTg4ZGQtNWQwMzM0NDQ3MjlkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Impvbi5tLnJvc2VuYmx1bUBnbWFpbC5jb20iLCJuYmYiOjE2OTk5MDE0MDgsImV4cCI6MTY5OTkwNTAwOH0.U0n78UeQuoQzDBmK_ht2bxgfREEBTAwyPmRTZIDnIDM' \
+  -H 'Cache-Control: no-cache' \
+  -H 'Connection: keep-alive' \
+  -H 'Content-Type: application/json' \
+  -H 'Origin: http://localhost:5173' \
+  -H 'Pragma: no-cache' \
+  -H 'Referer: http://localhost:5173/' \
+  -H 'Sec-Fetch-Dest: empty' \
+  -H 'Sec-Fetch-Mode: cors' \
+  -H 'Sec-Fetch-Site: same-site' \
+  -H 'User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0.0.0 Safari/537.36' \
+  -H 'sec-ch-ua: "Google Chrome";v="119", "Chromium";v="119", "Not?A_Brand";v="24"' \
+  -H 'sec-ch-ua-mobile: ?0' \
+  -H 'sec-ch-ua-platform: "macOS"' \
+  --data-raw '{"client_name":"Jonathan Rosenblum DWI","todays_date":"2023-11-13","fax_number":"516-404-8703","complaint_violation_ticket_numbers":"1217EGFHD","court_house_name":"Hewlett main Court","court_house_address":"1 Main Street","court_house_city":"Bogota Borough","court_house_state":"NJ","court_house_zip":"07095","court_house_county":"Bergen County","client_email":"jon@gmail.com","incident_date":"2023-10-13","case_status":"OPEN","dwi_status":"Yes","credit_card_number":"124321","credit_card_expiration":"12/12","credit_card_cvv":"122","client_balance":"122","payment_type":"Credit Card","credit_card_type":"Visa"}' \
   --compressed
