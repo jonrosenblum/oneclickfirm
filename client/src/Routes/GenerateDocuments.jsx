@@ -461,6 +461,12 @@ export default function GenerateDocuments() {
                               rows="5"
                               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-3"
                               placeholder="e.g. 127E23006116"
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  complaint_violation_ticket_numbers: e.target.value,
+                                })
+                              }
                             ></textarea>
                           </div>
                           <p className="mt-3 text-xs leading-6 text-gray-600">
