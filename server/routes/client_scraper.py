@@ -164,6 +164,7 @@ def search():
            
             "court_info": {
                 "fax_number": context['fax_number'],
+                "violation_date": violation_date,
                 "phone_number": context['phone_number'],
                 "court_house_name": context['court_house_name'],
                 "court_house_street": context['court_house_street'],
