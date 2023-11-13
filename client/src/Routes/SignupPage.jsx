@@ -65,7 +65,7 @@ export default function SignupPage() {
                       <div className="p-2 sm:p-[30px] md:p-[20px] w-[100%]">
                         <div className="flex flex-col gap-2">
                           <GiInjustice className="text-4xl"/>
-                          <h1 className="text-3xl mb-4 "> Sign up </h1>
+                          <h1 className="text-4xl mb-4 mt-2"> Sign up </h1>
                         </div>
                         <p className="text-light mb-4 text-xs">Enter your details below to create your account and get started.</p>
                         <form ref={formRef} onSubmit={handleSubmit} className="w-full mx-auto">
