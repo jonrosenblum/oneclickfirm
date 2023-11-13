@@ -57,7 +57,7 @@ export default function AllClients() {
     }
   };
   if (clientInfo === null) {
-    return <div>Loading...</div>
+    return <div className="">Loading...</div>
   }
 
   const filteredClients = clientInfo.filter(

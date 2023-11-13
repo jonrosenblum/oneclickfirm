@@ -1,7 +1,7 @@
 curl 'http://localhost:5001/new-client' \
   -H 'Accept: application/json, text/plain, */*' \
   -H 'Accept-Language: en-US,en;q=0.9' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5OTkwMTQwOCwianRpIjoiYzJjNjdjZjItMzNjYy00ZjMyLTg4ZGQtNWQwMzM0NDQ3MjlkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Impvbi5tLnJvc2VuYmx1bUBnbWFpbC5jb20iLCJuYmYiOjE2OTk5MDE0MDgsImV4cCI6MTY5OTkwNTAwOH0.U0n78UeQuoQzDBmK_ht2bxgfREEBTAwyPmRTZIDnIDM' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5OTkwNTg0OSwianRpIjoiNmYyNTgzZDgtNzBlMS00ZmMyLTk5MTUtZThmNDljYzcwMTljIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Impvbi5tLnJvc2VuYmx1bUBnbWFpbC5jb20iLCJuYmYiOjE2OTk5MDU4NDksImV4cCI6MTY5OTkwOTQ0OX0.57unlSSBJfOO5Hapt5IL8QSkcRJVcIKgtK6JSmGmEOk' \
   -H 'Cache-Control: no-cache' \
   -H 'Connection: keep-alive' \
   -H 'Content-Type: application/json' \
@@ -22,7 +22,7 @@ curl 'http://localhost:5001/new-client' \
   curl 'http://localhost:5001/new-client' \
   -H 'Accept: application/json, text/plain, */*' \
   -H 'Accept-Language: en-US,en;q=0.9' \
-  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5OTkwMTQwOCwianRpIjoiYzJjNjdjZjItMzNjYy00ZjMyLTg4ZGQtNWQwMzM0NDQ3MjlkIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Impvbi5tLnJvc2VuYmx1bUBnbWFpbC5jb20iLCJuYmYiOjE2OTk5MDE0MDgsImV4cCI6MTY5OTkwNTAwOH0.U0n78UeQuoQzDBmK_ht2bxgfREEBTAwyPmRTZIDnIDM' \
+  -H 'Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJmcmVzaCI6ZmFsc2UsImlhdCI6MTY5OTkwNTg0OSwianRpIjoiNmYyNTgzZDgtNzBlMS00ZmMyLTk5MTUtZThmNDljYzcwMTljIiwidHlwZSI6ImFjY2VzcyIsInN1YiI6Impvbi5tLnJvc2VuYmx1bUBnbWFpbC5jb20iLCJuYmYiOjE2OTk5MDU4NDksImV4cCI6MTY5OTkwOTQ0OX0.57unlSSBJfOO5Hapt5IL8QSkcRJVcIKgtK6JSmGmEOk' \
   -H 'Cache-Control: no-cache' \
   -H 'Connection: keep-alive' \
   -H 'Content-Type: application/json' \

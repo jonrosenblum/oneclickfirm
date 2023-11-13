@@ -300,7 +300,7 @@ export default function GenerateDocuments() {
                             </div>
                           </div>
                         </div>
-                        <div className="col-span-full md:col-span-6">
+                        <div className="col-span-full md:col-span-6 mt-2">
                           <label className="block text-sm font-base  text-gray-900">
                             Court House Name
                           </label>
@@ -322,7 +322,7 @@ export default function GenerateDocuments() {
                             </div>
                           </div>
                         </div>
-                        <div className="col-span-full md:col-span-6">
+                        <div className="col-span-full md:col-span-6 mt-2">
                           <label className="block text-sm font-base  text-gray-900">
                             Address Line 1
                           </label>
@@ -344,7 +344,7 @@ export default function GenerateDocuments() {
                             </div>
                           </div>
                         </div>
-                        <div className="col-span-full md:col-span-6 lg:col-span-4">
+                        <div className="col-span-full md:col-span-6 lg:col-span-4 mt-2">
                           <label className="block text-sm font-base  text-gray-900">
                             County
                           </label>
@@ -369,7 +369,7 @@ export default function GenerateDocuments() {
                             </select>
                           </div>
                         </div>
-                        <div className="col-span-full md:col-span-6 lg:col-span-4">
+                        <div className="col-span-full md:col-span-6 lg:col-span-4 mt-2">
                           <label className="block text-sm font-base  text-gray-900">
                             City
                           </label>
@@ -397,7 +397,7 @@ export default function GenerateDocuments() {
                             </select>
                           </div>
                         </div>
-                        <div className="col-span-full md:col-span-6 lg:col-span-4">
+                        <div className="col-span-full md:col-span-6 lg:col-span-4 mt-2">
                           <label className="block text-sm font-base  text-gray-900">
                             State
                           </label>
@@ -423,7 +423,7 @@ export default function GenerateDocuments() {
                             </select>
                           </div>
                         </div>
-                        <div className="col-span-full md:col-span-6 lg:col-span-4">
+                        <div className="col-span-full md:col-span-6 lg:col-span-4 mt-2">
                           <label className="block text-sm font-base  text-gray-900">
                             Zip Code
                           </label>
@@ -535,7 +535,7 @@ export default function GenerateDocuments() {
                           </div>
                         </div>
                         <div className="col-span-full md:col-span-4 lg:col-span-2">
-                          <label className="block text-sm font-base  text-gray-900">
+                          <label className="block text-sm font-base  text-gray-900 whitespace-nowrap">
                             Credit Card Number
                           </label>
                           <div className="mt-2">
