@@ -90,22 +90,20 @@ export default function AllClients() {
           </div>
         </div>
       ) : (
-        <div className="bg-gray-200 w-full p-4 min-h-screen flex">
-          <div className="relative flex flex-col min-w-0 break-words w-full shadow-lg rounded-lg bg-gray-900 text-white">
+        <div className="bg-white w-full p-4 min-h-screen flex">
+          <div className="relative flex flex-col min-w-0 break-words w-full shadow-lg rounded-lg bg-gray-200  text-gray-900">
             <div className="rounded-t mb-0 px-4">
               <div className="flex flex-wrap">
-                <div className="p-4 relative w-full max-w-full flex-grow flex-1">
-                  <h3 className="title text-2xl font-bold">All Clients</h3>
-                  <div className="mb-4">
-                    <input
-                      type="text"
-                      placeholder="Search for clients"
-                      value={searchInput}
-                      onChange={(e) => setSearchInput(e.target.value)}
-                      className="p-2 w-1/6 mt-4 text-sm text-black border border-gray-300 rounded"
-                    />
-                  </div>
-                </div>
+              <div className="p-4 flex justify-between relative w-full max-w-full flex-grow flex-1">
+                <h3 className="title text-2xl font-bold">All Clients</h3>
+                <input
+                  type="text"
+                  placeholder="Search for clients"
+                  value={searchInput}
+                  onChange={(e) => setSearchInput(e.target.value)}
+                  className="p-2  text-sm text-black border border-gray-300 rounded"
+                />
+              </div>
               </div>
             </div>
             <div className="block w-full overflow-x-auto max-h-[800px] overflow-y-auto">
