@@ -2,7 +2,7 @@
 FROM ubuntu:22.04 AS prod_im
 
 # Install Python and pip
-RUN apt-get update && apt-get install -y python3.9 python3-pip
+RUN apt-get update && apt-get install -y python3.11 python3-pip
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
