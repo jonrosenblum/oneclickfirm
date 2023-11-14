@@ -15,7 +15,7 @@ export default function NewClient() {
   const [newClientForm, setnewClientForm] = useState({
     client_name: responseData?.client_info?.client_name ?? "",
     todays_date: "",
-    fax_number: "",
+    fax_number: responseData?.court_info?.fax_number ?? "",
     complaint_violation_ticket_numbers: "",
     court_house_name: "",
     court_house_address: "",
@@ -41,10 +41,11 @@ export default function NewClient() {
 
 
   useEffect(() => {
-    if (responseData && responseData.client_info) {
+    if (responseData && responseData.client_info && responseData.court_info) {
       setnewClientForm((prevForm) => ({
         ...prevForm,
         client_name: responseData.client_info.client_name ?? "",
+        fax_number: responseData.court_info.fax_number ?? "",
         // ... other properties
       }));
     }
@@ -127,25 +128,10 @@ export default function NewClient() {
                 <form>
                   <div className="">
                     <div className="bg-gray-300 p-5 m-2">
-                        <h1>Client Information</h1>
+                        <h1>Personal Information</h1>
                       <div className="m-2 flex items-center gap-8">
                         <div>
-                        <input
-                        className={`${
-                          isEditMode ? 'bg-white' : 'bg-gray-300'
-                        } m-2 p-2 rounded-lg`}
-                        type="text"
-                        value={newClientForm.client_name}
-                        placeholder={responseData.client_info.client_name}
-                        onChange={(e) => {
-                          setnewClientForm({
-                            ...newClientForm,
-                            client_name: e.target.value,
-                          });
-                        }}
-                        disabled={!isEditMode} 
-                        />
-                        <button type="button" onClick={handleToggleEditMode} className="ml-2 bg-blue-500 text-white px-2 py-1 rounded-md">{isEditMode ? "Confirm" : "Edit"}</button>
+                          <p>{responseData.client_info.client_name}</p>
                         </div>
                         <div>
                           <label>Email</label>
@@ -166,24 +152,26 @@ export default function NewClient() {
                         </div>
                       </div>
                       <div className="m-2">
-                        <p>Age: {responseData.client_info.client_age}</p>
-
-                        <p>From {responseData.client_info.client_birth_place}</p>
+                        <p>Age {responseData.client_info.client_age} from {responseData.client_info.client_birth_place}</p>
                       </div>
                     </div>
                         <div className="bg-gray-300 p-5 m-2">
                         <h1>Violation Information</h1>
-                        <div className="m-2">
-                        <p>Court House Name: {responseData.court_info.court_house_name}</p>
-                        <p>Court House Street: {responseData.court_info.court_house_street}</p>
-                        <p>Court House City: {responseData.court_info.court_house_city}</p>
-                        <p>Court House State: {responseData.court_info.court_house_state}</p>
-                        <p>Court House Zip: {responseData.court_info.court_house_zip}</p>
-                        <p>Phone Number: {responseData.court_info.phone_number}</p>
-                        <p>Fax Number: {responseData.court_info.fax_number}</p>
-                        <p>Violations: {responseData.violations.join(", ")}</p>
+                        <div className="m-4">
+                          <p>{responseData.violations.join(", ")}</p>
                         </div>
+                        <div className="m-2 flex items-center">
+                          <div className=""> 
+                            <p>{responseData.court_info.court_house_name}</p>
+                            <p>{responseData.court_info.court_house_street}</p>
+                            <p>{responseData.court_info.court_house_city}, {responseData.court_info.court_house_state} {responseData.court_info.court_house_zip}</p>
+                          </div>
+                          <div className="m-4">
+                            <p>Phone Number: {responseData.court_info.phone_number}</p>
+                            <p>Fax Number: {responseData.court_info.fax_number}</p>
+                          </div>
                         </div>
+                      </div>
 
 
                    

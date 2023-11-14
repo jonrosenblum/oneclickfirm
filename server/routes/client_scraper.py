@@ -12,11 +12,10 @@ app = Flask(__name__)
 client_scraper_bp = Blueprint('client_scraper', __name__)
 
 
-
-
 @client_scraper_bp.route('/client-scraper', methods=['GET'])
 def client_scraper():
     return "Web Crawler Backend"
+
 
 @client_scraper_bp.post('/search')
 def search():
@@ -119,11 +118,11 @@ def search():
                     page = pages[page_i].find_element(By.TAG_NAME, 'a')
                     time.sleep(3)
                     page.click()
-    
+
             #loop through each match and collect data from page
             for profile_url in profile_urls:
                 print(f'Collecting data from: {profile_url}')
-    
+
                 driver.get(profile_url)
                 content = driver.find_element(By.CLASS_NAME, 'content')
 
@@ -140,31 +139,30 @@ def search():
 
                 data = content.find_element(By.CLASS_NAME, 'caseItem').text
                 data = data.split('\n')
-                data = [col for col in data if col not in ['', 'Violation Information']]
+                data = [col for col in data if col != '']
                 court_info_start_index = data.index('Court Information')
+                violation_info_start_index = data.index('Violation Information')
 
-                violation_numbers = [violation.split(' ')[0] for violation in data[2: court_info_start_index]]
+                violation_numbers = data[violation_info_start_index +1: court_info_start_index]
 
-                i = court_info_start_index - 2
                 context = {
-                    'fax_number': data[8+i].split('Fax:')[-1],
-                    'phone_number':data[7+i].split('Phone:')[-1],
-                    'court_house_name': data[3+i],
-                    'court_house_street': data[5+i],
-                    'court_house_city': data[6+i].split(' ')[0],
-                    'court_house_state': data[6+i].split(' ')[1],
-                    'court_house_zip': data[6+i].split(' ')[-1],
+                    'fax_number': data[-2].split('Fax:')[-1],
+                    'phone_number':data[-3].split('Phone:')[-1],
+                    'court_house_name': data[-7],
+                    'court_house_street': data[-5],
+                    'court_house_city': ' '.join(data[-4].split(' ')[:-2]),
+                    'court_house_state': data[-4].split(' ')[-2],
+                    'court_house_zip': data[-4].split(' ')[-1],
                     'client_name': client_name,
                     'client_age':client_age,
                     'client_birth_place':client_birth_place
                 }
-            
+
         # Prepare data for JSON response
         scraped_data = {
-           
+            
             "court_info": {
                 "fax_number": context['fax_number'],
-                "violation_date": violation_date,
                 "phone_number": context['phone_number'],
                 "court_house_name": context['court_house_name'],
                 "court_house_street": context['court_house_street'],
@@ -181,11 +179,10 @@ def search():
         }
 
         return jsonify({"status": "success", "data": scraped_data})
-    
+        
     except Exception as e:
-        return jsonify({"status": "error", "error": str(e)}),500
+        return jsonify({"status": "error", "error": str(e)})
     
     finally:
         if driver is not None:
             driver.quit()
-
