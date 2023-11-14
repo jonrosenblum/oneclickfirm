@@ -9,7 +9,7 @@ run:
 	cd server && HOST=0.0.0.0 pipenv run python run.py
 
 docker-build-dev: 
-	@docker build -t stl_dev --target base_im -f Dockerfile .
+	@docker build -t stl_dev --target base_im -f Dockerfile.dev .
 
 
 docker-build-prod:

@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.11 AS prod_im
+FROM python:3.11 AS base_im
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -40,8 +40,7 @@ COPY . /app
 # Make port available to the world outside this container
 EXPOSE $PORT
 
-
-RUN make build
-
 # Run the application
 CMD cd server && HOST=0.0.0.0 PORT=$PORT pipenv run python run.py 
+
+
