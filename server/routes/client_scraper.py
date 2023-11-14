@@ -183,7 +183,7 @@ def search():
         return jsonify({"status": "success", "data": scraped_data})
     
     except Exception as e:
-        return jsonify({"status": "error", "error": str(e)})
+        return jsonify({"status": "error", "error": str(e)}),500
     
     finally:
         if driver is not None:
