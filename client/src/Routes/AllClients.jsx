@@ -3,7 +3,116 @@ import axios from "./../axios";
 import { useNavigate } from "react-router-dom";
 // import { AiOutlineDownload } from 'react-icons/ai';
 import AlertDocumentDownload from "../Components/Pieces/AlertDocumentDownload";
-
+const data=[
+  {
+    "case_status": "OPEN",
+    "ccauth_docx": null,
+    "client_balance": "122.00",
+    "client_email": "jon@gmail.com",
+    "client_id": 1,
+    "client_name": "Jonathan Rosenblum NO DWI",
+    "client_notes": "Hello",
+    "complaint_number": "1217EGFHD",
+    "court_house_city": "Bogota Borough",
+    "court_house_county": "Bergen County",
+    "court_house_name": "Hewlett main Court",
+    "court_house_state": "NJ",
+    "court_house_street": "1 Main Street",
+    "court_house_zip": "07095",
+    "credit_card_cvv": "122",
+    "credit_card_expiration": "12/12",
+    "credit_card_number": "124321",
+    "credit_card_type": "Visa",
+    "discovery_docx": null,
+    "dwi_status": "No",
+    "fax_number": "516-404-8703",
+    "incident_date": "Fri, 13 Oct 2023 00:00:00 GMT",
+    "payment_type": "Credit Card",
+    "representation_docx": null,
+    "retainer_docx": null
+  },
+  {
+    "case_status": "OPEN",
+    "ccauth_docx": null,
+    "client_balance": "122.00",
+    "client_email": "jon@gmail.com",
+    "client_id": 2,
+    "client_name": "Jonathan Rosenblum DWI",
+    "client_notes": null,
+    "complaint_number": "1217EGFHD",
+    "court_house_city": "Bogota Borough",
+    "court_house_county": "Bergen County",
+    "court_house_name": "Hewlett main Court",
+    "court_house_state": "NJ",
+    "court_house_street": "1 Main Street",
+    "court_house_zip": "07095",
+    "credit_card_cvv": "122",
+    "credit_card_expiration": "12/12",
+    "credit_card_number": "124321",
+    "credit_card_type": "Visa",
+    "discovery_docx": null,
+    "dwi_status": "Yes",
+    "fax_number": "516-404-8703",
+    "incident_date": "Fri, 13 Oct 2023 00:00:00 GMT",
+    "payment_type": "Credit Card",
+    "representation_docx": null,
+    "retainer_docx": null
+  },
+  {
+    "case_status": "OPEN",
+    "ccauth_docx": null,
+    "client_balance": "122.00",
+    "client_email": "jon@gmail.com",
+    "client_id": 2092,
+    "client_name": "Jonathan Rosenblum NO DWI",
+    "client_notes": null,
+    "complaint_number": "1217EGFHD",
+    "court_house_city": "Bogota Borough",
+    "court_house_county": "Bergen County",
+    "court_house_name": "Hewlett main Court",
+    "court_house_state": "NJ",
+    "court_house_street": "1 Main Street",
+    "court_house_zip": "07095",
+    "credit_card_cvv": "122",
+    "credit_card_expiration": "12/12",
+    "credit_card_number": "124321",
+    "credit_card_type": "Visa",
+    "discovery_docx": null,
+    "dwi_status": "No",
+    "fax_number": "516-404-8703",
+    "incident_date": "Fri, 13 Oct 2023 00:00:00 GMT",
+    "payment_type": "Credit Card",
+    "representation_docx": null,
+    "retainer_docx": null
+  },
+  {
+    "case_status": "OPEN",
+    "ccauth_docx": null,
+    "client_balance": "122.00",
+    "client_email": "jon@gmail.com",
+    "client_id": 2093,
+    "client_name": "Jonathan Rosenblum DWI",
+    "client_notes": null,
+    "complaint_number": "1217EGFHD",
+    "court_house_city": "Bogota Borough",
+    "court_house_county": "Bergen County",
+    "court_house_name": "Hewlett main Court",
+    "court_house_state": "NJ",
+    "court_house_street": "1 Main Street",
+    "court_house_zip": "07095",
+    "credit_card_cvv": "122",
+    "credit_card_expiration": "12/12",
+    "credit_card_number": "124321",
+    "credit_card_type": "Visa",
+    "discovery_docx": null,
+    "dwi_status": "Yes",
+    "fax_number": "516-404-8703",
+    "incident_date": "Fri, 13 Oct 2023 00:00:00 GMT",
+    "payment_type": "Credit Card",
+    "representation_docx": null,
+    "retainer_docx": null
+  }
+]
 export default function AllClients() {
   const [clientInfo, setClientInfo] = useState(null);
   const [searchInput, setSearchInput] = useState(""); // State variable for search input
@@ -12,6 +121,7 @@ export default function AllClients() {
 
   useEffect(() => {
     // Fetch client information from your backend
+    // setClientInfo(data)
     if (clientInfo) {
       return;
     }
@@ -107,7 +217,7 @@ export default function AllClients() {
               </div>
             </div>
             <div className="block w-full overflow-x-auto max-h-[800px] overflow-y-auto">
-              <div className="">
+              <div className="p-4">
                 {/* <table className="table-auto items-center w-full bg-transparent border-collapse">
                   <thead className="sticky top-0">
                     <tr>
@@ -260,8 +370,8 @@ export default function AllClients() {
 
                   <td className="px-6 py-4">
                     <button
-                      id="dropdownDefaultButton"
-                      data-dropdown-toggle="dropdown"
+                      id={`dropdownDefaultButton_${client.client_id}`}
+                      data-dropdown-toggle={`dropdown_${client.client_id}`}
                       className="  text-sm text-left inline-flex items-center font-medium relative text-blue-600 dark:text-blue-500 hover:underline"
                       type="button"
                     >
@@ -272,42 +382,38 @@ export default function AllClients() {
                     </button>
 
                     <div
-                      id="dropdown"
+                      id={`dropdown_${client.client_id}`}
                       className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40"
                     >
                       <ul
                         className="py-2 text-sm text-gray-700 "
-                        aria-labelledby="dropdownDefaultButton"
+                        aria-labelledby={`dropdownDefaultButton_${client.client_id}`}
                       >
                         <li>
                           <a
-                            href="#"
-                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600"
+                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600 cursor-pointer"
                           >
                             Dashboard
                           </a>
                         </li>
                         <li>
                           <a
-                            href="#"
-                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600"
+                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600 cursor-pointer"
                           >
                             Settings
                           </a>
                         </li>
                         <li>
                           <a
-                            href="#"
-                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600"
+                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600 cursor-pointer"
                           >
                             Earnings
                           </a>
                         </li>
                         <li>
                           <a
-                            href="javascript:;"
                             onClick={() => downloadDocuments(client)}
-                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600"
+                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600 cursor-pointer"
                           >
                             Download Documents
                           </a>
