@@ -34,7 +34,7 @@ export default function GenerateDocuments() {
     client_email: "",
     incident_date: "",
     case_status: "OPEN",
-    dwi_status: "No",
+    dwi_status: "",
     credit_card_number: "",
     credit_card_expiration: "",
     credit_card_cvv: "",
@@ -119,7 +119,7 @@ export default function GenerateDocuments() {
       client_email: "",
       incident_date: "",
       case_status: "OPEN",
-      dwi_status: "No",
+      dwi_status: "",
       credit_card_number: "",
       credit_card_expiration: "",
       credit_card_cvv: "",
@@ -154,13 +154,13 @@ export default function GenerateDocuments() {
 
   return (
     <>
-      <div className="flex bg-gray-100 flex-row h-screen">
+      <div className="flex bg-gray-100 flex-row h-screen overflow-auto">
           <form onSubmit={handleSubmit} className="w-full">
             <div className="p-10">
-              <div className="client-information flex flex-col bg-gray-200 m-1 p-2 py-4 rounded-md">
+              <div className="client-information flex flex-col bg-gray-200 m-1 p-2 py-2 rounded-md">
                 <h3 className="font-medium">Client Information</h3>
                 <div className="bg-white shadow-sm ring-1 mt-2 ring-gray-900/5 sm:rounded-xl md:col-span-2">
-                  <div className="px-4 py-4">
+                  <div className="px-4 py-2">
                     <div className="grid grid-cols-1 gap-x-2 gap-y-6 sm:grid-cols-2 md:grid-cols-6 lg:grid-cols-12">
                       <div className="sm:col-span-full md:col-span-2 lg:col-span-4">
                         <label className="block text-sm font-base  text-gray-900">
@@ -230,12 +230,12 @@ export default function GenerateDocuments() {
                   </div>
                 </div>
               </div>
-              <div className="violation-information flex flex-col bg-gray-200 p-2 m-1 py-4 rounded-md">
+              <div className="violation-information flex flex-col bg-gray-200 p-2 m-2 py-2 rounded-md">
                 <h3 className="font-medium">Violation Information</h3>
                 <div className="bg-white shadow-sm ring-1 mt-2 ring-gray-900/5 sm:rounded-xl md:col-span-2">
-                  <div className="px-4 py-4">
+                  <div className="px-4 py-2">
                     <div className="flex lg:flex-row flex-col gap-2">
-                      <div className="grid w-full gap-x-2 gap-y-6 grid-cols-12 lg:grid-cols-12">
+                      <div className="grid w-full gap-x-2 grid-cols-12 lg:grid-cols-12">
                         <div className="col-span-full lg:col-span-4">
                           <label className="block text-sm font-base  text-gray-900">
                             Violation Date
@@ -264,17 +264,17 @@ export default function GenerateDocuments() {
                           <div className="mt-2">
                             <select
                               className="block w-full rounded-md border-0 py-2 px-3 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset  sm:leading-6"
-                              value={formData.dwi_status}
-                              required
                               onChange={(e) =>
                                 setFormData({
                                   ...formData,
                                   dwi_status: e.target.value,
                                 })
                               }
+                              value={formData.dwi_status}
+                              required
                             >
-                              <option value="Yes">Yes</option>
                               <option value="No">No</option>
+                              <option value="Yes">Yes</option>
                             </select>
                           </div>
                         </div>
@@ -300,7 +300,7 @@ export default function GenerateDocuments() {
                             </div>
                           </div>
                         </div>
-                        <div className="col-span-full md:col-span-6">
+                        <div className="col-span-full md:col-span-6 mt-2">
                           <label className="block text-sm font-base  text-gray-900">
                             Court House Name
                           </label>
@@ -322,7 +322,7 @@ export default function GenerateDocuments() {
                             </div>
                           </div>
                         </div>
-                        <div className="col-span-full md:col-span-6">
+                        <div className="col-span-full md:col-span-6 mt-2">
                           <label className="block text-sm font-base  text-gray-900">
                             Address Line 1
                           </label>
@@ -344,7 +344,7 @@ export default function GenerateDocuments() {
                             </div>
                           </div>
                         </div>
-                        <div className="col-span-full md:col-span-6 lg:col-span-4">
+                        <div className="col-span-full md:col-span-6 lg:col-span-4 mt-2">
                           <label className="block text-sm font-base  text-gray-900">
                             County
                           </label>
@@ -369,7 +369,7 @@ export default function GenerateDocuments() {
                             </select>
                           </div>
                         </div>
-                        <div className="col-span-full md:col-span-6 lg:col-span-4">
+                        <div className="col-span-full md:col-span-6 lg:col-span-4 mt-2">
                           <label className="block text-sm font-base  text-gray-900">
                             City
                           </label>
@@ -397,7 +397,7 @@ export default function GenerateDocuments() {
                             </select>
                           </div>
                         </div>
-                        <div className="col-span-full md:col-span-6 lg:col-span-4">
+                        <div className="col-span-full md:col-span-6 lg:col-span-4 mt-2">
                           <label className="block text-sm font-base  text-gray-900">
                             State
                           </label>
@@ -423,7 +423,7 @@ export default function GenerateDocuments() {
                             </select>
                           </div>
                         </div>
-                        <div className="col-span-full md:col-span-6 lg:col-span-4">
+                        <div className="col-span-full md:col-span-6 lg:col-span-4 mt-2">
                           <label className="block text-sm font-base  text-gray-900">
                             Zip Code
                           </label>
@@ -461,6 +461,12 @@ export default function GenerateDocuments() {
                               rows="5"
                               className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset sm:text-sm sm:leading-6 p-3"
                               placeholder="e.g. 127E23006116"
+                              onChange={(e) =>
+                                setFormData({
+                                  ...formData,
+                                  complaint_violation_ticket_numbers: e.target.value,
+                                })
+                              }
                             ></textarea>
                           </div>
                           <p className="mt-3 text-xs leading-6 text-gray-600">
@@ -471,10 +477,13 @@ export default function GenerateDocuments() {
                     </div>
                   </div>
                 </div>
-                <div className="payment-information flex flex-col bg-gray-200 mt-3 py-4 rounded-md">
+                
+              </div>
+              <div className="violation-information flex flex-col bg-gray-200 p-2 m-2 py-2 rounded-md">
+              <div className="payment-information flex flex-col bg-gray-200 mt-3 py-2 rounded-md">
                   <h3 className="font-medium">Payment Information</h3>
                   <div className="bg-white shadow-sm ring-1 mt-2 ring-gray-900/5 sm:rounded-xl md:col-span-2">
-                    <div className="px-4 py-4">
+                    <div className="px-4 py-2">
                       <div className="grid gap-x-2 gap-y-6 grid-cols-12">
                         <div className="col-span-full md:col-span-4 lg:col-span-2">
                           <label className="block text-sm font-base  text-gray-900">
@@ -526,7 +535,7 @@ export default function GenerateDocuments() {
                           </div>
                         </div>
                         <div className="col-span-full md:col-span-4 lg:col-span-2">
-                          <label className="block text-sm font-base  text-gray-900">
+                          <label className="block text-sm font-base  text-gray-900 whitespace-nowrap">
                             Credit Card Number
                           </label>
                           <div className="mt-2">
@@ -620,135 +629,8 @@ export default function GenerateDocuments() {
                     </div>
                   </div>
 
-                  {/* Old Payment Information Section */}
-                  {/* <div className="border border-2 border-gray-300 mt-3 p-2">
-                    <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                      <div className="flex items-center">
-                        <div className="flex flex-col m-2">
-                          <label className="text-sm mb-1">Payment Type</label>
-                          <select
-                            required
-                            type="text"
-                            className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                            value={formData.payment_type}
-                            onChange={(e) => {
-                              setFormData({
-                                ...formData,
-                                payment_type: e.target.value,
-                              });
-                            }}
-                          >
-                            <option value="">Select Payment Type</option>
-                            <option value="Credit Card">Credit Card</option>
-                            <option value="Zelle">Zelle</option>
-                          </select>
-                        </div>
-
-                        <div className="flex flex-col m-2">
-                          <label className="text-sm mb-1">Card Type</label>
-                          <select
-                            required
-                            type="text"
-                            className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                            placeholder="Select Card Type"
-                            value={formData.credit_card_type}
-                            onChange={(e) => {
-                              setFormData({
-                                ...formData,
-                                credit_card_type: e.target.value,
-                              });
-                            }}
-                            disabled={formData.payment_type === "Zelle"}
-                          >
-                            <option value="">Select Card Type</option>
-                            <option value="American Express">
-                              American Express
-                            </option>
-                            <option value="Visa">Visa</option>
-                            <option value="MasterCard">MasterCard</option>
-                            <option value="Discover">Discover</option>
-                          </select>
-                        </div>
-
-                        <div className="flex flex-col m-2">
-                          <label className="text-sm mb-1">
-                            Credit Card Number
-                          </label>
-                          <input
-                            type="text"
-                            className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                            placeholder="Credit Card Number"
-                            value={formData.credit_card_number}
-                            required
-                            onChange={(e) => {
-                              setFormData({
-                                ...formData,
-                                credit_card_number: e.target.value,
-                              });
-                            }}
-                            disabled={formData.payment_type === "Zelle"}
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <div className="flex items-center">
-                      <div className="flex flex-col m-2">
-                        <label className="text-sm mb-1">Expiration</label>
-                        <input
-                          type="text"
-                          className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                          placeholder="MM/YY"
-                          value={formData.credit_card_expiration}
-                          required
-                          onChange={(e) => {
-                            setFormData({
-                              ...formData,
-                              credit_card_expiration: e.target.value,
-                            });
-                          }}
-                          disabled={formData.payment_type === "Zelle"}
-                        />
-                      </div>
-
-                      <div className="flex flex-col m-2">
-                        <label className="text-sm mb-1">CVV</label>
-                        <input
-                          type="text"
-                          className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                          placeholder="XXXX"
-                          value={formData.credit_card_cvv}
-                          required
-                          onChange={(e) => {
-                            setFormData({
-                              ...formData,
-                              credit_card_cvv: e.target.value,
-                            });
-                          }}
-                          disabled={formData.payment_type === "Zelle"}
-                        />
-                      </div>
-
-                      <div className="flex flex-col m-2">
-                        <label className="text-sm mb-1">Client Balance</label>
-                        <input
-                          type="text"
-                          className="rounded-md border-2 text-sm p-1 border-gray-300 rounded-md focus:outline-none focus:border-blue-500"
-                          placeholder="$"
-                          value={formData.client_balance}
-                          required
-                          onChange={(e) => {
-                            setFormData({
-                              ...formData,
-                              client_balance: e.target.value,
-                            });
-                          }}
-                        />
-                      </div>
-                    </div>
-                  </div> */}
                 </div>
               </div>
-
               <div className="flex justify-between mt-8">
                 <button
                   type="button"

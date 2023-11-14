@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "./../axios";
-import { Link, NavLink, useParams } from "react-router-dom";
-// import { Navigate } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 
 export default function EditClient() {
   const [clientsList, setClientsList] = useState([]);
@@ -9,8 +8,14 @@ export default function EditClient() {
   const [newClientName, setNewClientName] = useState("");
   const [newClientEmail, setNewClientEmail] = useState("");
   const [newClientNotes, setNewClientNotes] = useState(
-    selectedClient?.client_notes
+    ""
   );
+
+  useEffect(() => {
+    // Update newClientNotes when selectedClient changes
+    setNewClientNotes(selectedClient?.client_notes || "");
+  }, [selectedClient]);
+  
   const params = useParams();
 
   function formatDate(dateString) {
@@ -35,20 +40,8 @@ export default function EditClient() {
   };
 
   useEffect(() => {
-    // Fetch client data when the component mounts
-    // const fetchDataOnMount = async () => {
-    //   try {
-    //     const response = await axios.get("/clients");
-    //     setClientsData(response.data);
-    //   } catch (error) {
-    //     console.error("Error fetching client data", error);
-    //   }
     fetchClientsList();
-    // };
-
-    // // Fetch data only on component mount
-    // fetchDataOnMount();
-  }, []); // Empty dependency array ensures it only runs on mount
+  }, []); 
 
   if (params.id && clientsList && !selectedClient) {
     const foundClient = clientsList.find((c) => c.client_id + "" === params.id);
@@ -353,7 +346,7 @@ export default function EditClient() {
                   type="text"
                   rows="5"
                   className="bg-white text-black text-sm rounded-md p-2 m-4"
-                  placeholder="Enter new client notes"
+                  
                 />
                 <div className="text-center">
                   <button
