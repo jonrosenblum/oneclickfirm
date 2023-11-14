@@ -1,5 +1,5 @@
 
-install: 
+install:
 	cd server && pipenv install
 
 build: install
@@ -23,11 +23,18 @@ docker-prod:
 	@echo "visit app at http://localhost:$${PORT:-5001}"
 	@docker run --name stl_cp -p $${PORT:=5001}:5001 -p 5173:5173 -v $(PWD):/app stl_prod npm run dev
 
+docker-stop-prod:
+	make docker-stop container=stl_cp
 
-docker-stop:
+docker-stop-dev:
+	make docker-stop
+
+docker-stop: # with an input container=stl_cd or stl_cp
 	docker stop $${container:=stl_cd}
 	docker rm $${container:=stl_cd}
 
-docker-bash:
+docker-bash-dev:
 	docker exec -it $${container:stl_cd} bash
     
+docker-bash-prod:
+	make docker-bash-dev container=stl_cp
