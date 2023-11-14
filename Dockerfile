@@ -10,7 +10,7 @@ ENV PYTHONUNBUFFERED 1
 ENV PORT 8000
 
 # Install wget, make and Google Chrome
-RUN apt-get update && apt-get install -y wget make firefox-esr 
+RUN apt-get update && apt-get install -y wget make firefox
 # RUN    wget https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz \
 #     && tar -xvzf geckodriver-v0.30.0-linux64.tar.gz \
 #     && chmod +x geckodriver \
