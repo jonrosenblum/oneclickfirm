@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  flask:
+    container_name: stablel-flask
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod_im
+    image: prod
+    ports:
+      - "5001:5001"
+      - "5173:5173"
+    volumes:
+      - .:/app
+    depends_on:
+      - pgsql
+    command: npm run dev
+    mem_limit: 1g
+    cpus: 1
+
+  pgsql:
+    container_name: pgsql
+    image: postgres:latest
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=stl
+    volumes:
+      - ./data:/var/lib/postgresql/data
+
+
+  
