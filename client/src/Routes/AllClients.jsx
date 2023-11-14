@@ -361,8 +361,8 @@ export default function AllClients() {
                   </th>
                   <td className="px-6 py-4">
                     <div className="flex items-center">
-                      { client.case_status === "OPEN" && <><div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> <span>Online</span></>}
-                      { client.case_status != "OPEN" && <><div className="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div> <span>Offline</span></>}
+                      { client.case_status === "OPEN" && <><div className="h-2.5 w-2.5 rounded-full bg-green-500 me-2"></div> <span>{client.case_status}</span></>}
+                      { client.case_status != "OPEN" && <><div className="h-2.5 w-2.5 rounded-full bg-red-500 me-2"></div> <span>{client.case_status}</span></>}
                     </div>
                   </td>
                   <td className="px-6 py-4">{client.court_house_name.toUpperCase()}</td>
