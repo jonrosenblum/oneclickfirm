@@ -17,11 +17,11 @@ docker-build-prod:
 
 docker-dev:
 	@echo "visit app at http://localhost:$${PORT:-5001}"
-	@docker run --name stl_cd -p $${PORT:=5001}:5001 -p 5173:5173 -v $(PWD):/app stl_dev npm run dev
+	@docker run --cpus=1 -m=512m --name stl_cd -p $${PORT:=5001}:5001 -p 5173:5173 -v $(PWD):/app stl_dev npm run dev
 
 docker-prod:
 	@echo "visit app at http://localhost:$${PORT:-5001}"
-	@docker run --name stl_cp -p $${PORT:=5001}:5001 -p 5173:5173 -v $(PWD):/app stl_prod npm run dev
+	@docker run --cpus=1 -m=512m --name stl_cp -p $${PORT:=5001}:5001 -p 5173:5173 -v $(PWD):/app stl_prod npm run dev
 
 docker-stop-prod:
 	make docker-stop container=stl_cp

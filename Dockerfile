@@ -1,17 +1,13 @@
-# Use Ubuntu 22.04 as a parent image
-FROM ubuntu:22.04 AS prod_im
-
-# Install Python and pip
-RUN apt-get update && apt-get install -y python3.11 python3-pip
+# Use an official Python runtime as a parent image
+FROM python:3.11 AS prod_im
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
 ENV PORT 8000
-ENV LANG C.UTF-8
 
 # Install wget, make and Google Chrome
-RUN apt-get update && apt-get install -y wget make firefox
+RUN apt-get update && apt-get install -y wget make firefox-esr
 # RUN    wget https://github.com/mozilla/geckodriver/releases/download/v0.30.0/geckodriver-v0.30.0-linux64.tar.gz \
 #     && tar -xvzf geckodriver-v0.30.0-linux64.tar.gz \
 #     && chmod +x geckodriver \
