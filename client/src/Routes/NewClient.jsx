@@ -25,7 +25,7 @@ export default function NewClient() {
     client_name: responseData?.client_info?.client_name ?? "",
     todays_date: today,
     fax_number: responseData?.court_info?.fax_number ?? "",
-    complaint_violation_ticket_numbers: "",
+    complaint_violation_ticket_numbers: responseData?.violations ?? "",
     court_house_name: responseData?.court_info?.court_house_name ?? "",
     court_house_address: responseData?.court_info?.court_house_street ?? "",
     court_house_city: responseData?.court_info?.court_house_city ?? "",
@@ -35,7 +35,7 @@ export default function NewClient() {
     client_email: "",
     incident_date: searchData.violation_date,
     case_status: "OPEN",
-    dwi_status: "",
+    dwi_status: "No",
     credit_card_number: "",
     credit_card_expiration: "",
     credit_card_cvv: "",
@@ -48,7 +48,7 @@ export default function NewClient() {
     const { value } = e.target;
     const selectedDate = new Date(value);
   
-    const options = { month: 'short', day: '2-digit', year: 'numeric' };
+    const options = { month: 'short', day: 'numeric', year: 'numeric' };
     const formattedDate = selectedDate.toLocaleDateString('en-US', options);
   
     setsearchData({ ...searchData, violation_date: value });
@@ -84,9 +84,15 @@ export default function NewClient() {
         court_house_state: responseData.court_info.court_house_state ?? "",
         court_house_zip: responseData.court_info.court_house_zip ?? "",
         court_house_county: responseData.court_info.court_house_county ?? "",
-        // ... other properties
-      }));
-    }
+        complaint_violation_ticket_numbers: responseData.violations
+        .map((violation) => {
+          const match = violation.match(/^([^-]+)/);
+          return match ? match[1] : null;
+        })
+        .filter(Boolean)
+        .join(", "),
+    }));
+  }
   }, [responseData]);
 
 
@@ -135,7 +141,7 @@ export default function NewClient() {
       court_house_county: responseData?.court_info?.court_house_county ?? "",
       incident_date: searchData.violation_date,
       case_status: "OPEN",
-      dwi_status: "",
+      dwi_status: "No",
       credit_card_number: "",
       credit_card_expiration: "",
       credit_card_cvv: "",
@@ -221,6 +227,19 @@ export default function NewClient() {
                         <h1>Violation Information</h1>
                         <div className="m-4">
                           <p>{responseData.violations.join(", ")}</p>
+                          <div className="m-2 flex items-center">
+                            <label>DWI?</label>
+                            <input
+                              className="m-2 p-2 rounded-lg"
+                              type="checkbox"
+                              checked={newClientForm.dwi_status === "Yes"}
+                              onChange={(e) => {
+                                const status = e.target.checked ? "Yes" : "No";
+                                setnewClientForm({ ...newClientForm, dwi_status: status });
+                              }}
+                            />
+                            <span className="text-sm">Yes</span>
+                          </div>
                         </div>
                         <div className="m-2 flex items-center">
                           <div className=""> 
