@@ -86,15 +86,17 @@ jobs:
 
       - name: Pull Docker Images
         env:
-          ECR_URL: ${{ steps.CREATE-TAG.outputs.ecr_url }}
+          ECR_URL: 876746232048.dkr.ecr.us-east-1.amazonaws.com/stabilelf:dev-2
         run: |
           echo "${{secrets.SSH_PRIVATE_KEY}}" > private_key && chmod 600 private_key
           
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}<<EOF
-          
-          #Now we have got the access of EC2 and we will start the deploy .
+          # Login as root
+          sudo -i
+          #Now we have got the access of EC2 and we will start the deploy
           # Login to docker
           aws ecr get-login-password --region ${{secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com
+          
           echo "ECR : $ECR_URL"
           docker pull $ECR_URL
           EOF
@@ -106,7 +108,8 @@ jobs:
           echo "${{secrets.SSH_PRIVATE_KEY}}" > private_key && chmod 600 private_key
           
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}<<EOF
-          
+          # Login as root
+          sudo -i
           #Now we have got the access of EC2 and we will start the deploy .
           # Login to docker
           aws ecr get-login-password --region ${{secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com
