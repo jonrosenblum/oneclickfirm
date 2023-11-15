@@ -84,8 +84,8 @@ export default function AllClients() {
   if (loading) {
     return <div className="w-full min-h-screen flex items-center justify-center">Loading...</div>
   }
-
-  const filteredClients = clientInfo.filter(
+  
+  const filteredClients = clientInfo && clientInfo.filter(
     (client) =>
       client.client_name.toLowerCase().includes(searchInput.toLowerCase()) ||
       client.court_house_county
@@ -97,8 +97,8 @@ export default function AllClients() {
 
   return (
     <>
-    <div onClick={()=>{ShowDropdown && setShowDropdown(false)}}>
-      {clientInfo.length === 0 ? (
+    <div >
+      {clientInfo && clientInfo.length === 0 ? (
         <div className="bg-white w-full min-h-screen flex flex-col items-center justify-center">
         <h1 className="title font-extralight text-2xl">
           NO CLIENTS AVAILABLE
@@ -154,7 +154,7 @@ export default function AllClients() {
                 </tr>
               </thead>
               <tbody>
-              {filteredClients.map((client) => (
+              {filteredClients && filteredClients.map((client) => (
                 <tr key={client.client_id} className="bg-white hover:bg-gray-50">
                   <th
                     scope="row"
@@ -184,8 +184,9 @@ export default function AllClients() {
                   <td className="px-6 py-4">{client.court_house_county.toUpperCase()}</td>
 
                   <td className="px-6 py-4">
+                    <div className="relative">
                     <button
-                    onClick={()=>setShowDropdown(client.client_id)}
+                    onClick={()=>{ShowDropdown == client.client_id ?setShowDropdown(false): setShowDropdown(client.client_id)}}
                       className="text-sm text-left inline-flex items-center font-medium relative text-blue-600 dark:text-blue-500 hover:underline"
                       type="button"
                     >
@@ -193,11 +194,11 @@ export default function AllClients() {
 
                     </button>
                     <div
-                      className={`z-10 ${ShowDropdown === client.client_id?'block':'hidden'}  absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-40`}
+                      className={`z-10 ${ShowDropdown === client.client_id?'block':'hidden'} right-4 absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-40`}
                     >
                     <ActionsDropdown client={client} onClick={(action)=>actionFunction(action,client)} />
                     </div>
-
+                    </div>
                   </td>
                 </tr>
               ))}
