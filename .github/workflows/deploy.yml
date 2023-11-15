@@ -83,3 +83,16 @@ jobs:
 
       - name: Push Docker Image to ECR
         run: docker push ${{ steps.CREATE-TAG.outputs.ecr_url }}
+
+      - name: Pull Docker Images
+        env:
+          ECR_URL: ${{ steps.CREATE-TAG.outputs.ecr_url }}
+        run: |
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > private_key && chmod 600 private_key
+          
+          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}<<EOF
+          
+          #Now we have got the access of EC2 and we will start the deploy .
+
+          docker pull $ECR_URL
+          EOF
