@@ -1,5 +1,5 @@
 # Use an official Python runtime as a parent image
-FROM python:3.11 AS prod_im
+FROM python:3.11 AS base_im
 
 # Set environment variables
 ENV PYTHONDONTWRITEBYTECODE 1
@@ -12,7 +12,6 @@ RUN apt-get update && apt-get install -y wget make firefox-esr
 #     && tar -xvzf geckodriver-v0.30.0-linux64.tar.gz \
 #     && chmod +x geckodriver \
 #     && mv geckodriver /usr/local/bin/
-
 
 # Set work directory
 WORKDIR /app
@@ -44,8 +43,7 @@ COPY . /app
 # Make port available to the world outside this container
 EXPOSE $PORT
 
-
-RUN make build
-
 # Run the application
 CMD cd server && HOST=0.0.0.0 PORT=$PORT pipenv run python run.py 
+
+
