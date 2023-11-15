@@ -1,19 +1,23 @@
 {
-  "name": "stabilelf",
-  "version": "1.0.0",
-  "description": "<p align=\"center\"> <!--     <a href=\"\"><img src=\"\" /></a>     <a href=\"\"><img src=\"\"/></a>     <a href=\"\"><img src=\"\" /></a>     <a href=\"\"><img src=\"\" /></a> -->     <br>     <a href=\"\"><img src=\"https://badgen.net/github/commits/jonrosenblum/StabileLF\" /></a> </p>",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "dev:client": "npm --prefix client run dev",
-    "dev:server": "cd server &&DEBUG=True PORT=5001 HOST=0.0.0.0 pipenv run python run.py",
-    "dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
-    "start:server": "cd server && DEBUG=False PORT=5001"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "concurrently": "^8.2.2",
-    "vite": "^4.5.0"
-  }
+	"name": "stabilelf",
+	"version": "1.0.0",
+	"description": "<p align=\"center\"> <!--     <a href=\"\"><img src=\"\" /></a>     <a href=\"\"><img src=\"\"/></a>     <a href=\"\"><img src=\"\" /></a>     <a href=\"\"><img src=\"\" /></a> -->     <br>     <a href=\"\"><img src=\"https://badgen.net/github/commits/jonrosenblum/StabileLF\" /></a> </p>",
+	"main": "index.js",
+	"scripts": {
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"dev:client": "npm --prefix client run dev",
+		"dev:server": "cd server &&DEBUG=True PORT=5001 HOST=0.0.0.0 pipenv run python run.py",
+		"dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
+		"start": "cd server && DEBUG=False HOST=0.0.0.0 PORT=5001 pipenv run python run.py",
+		"install:server": "cd server && pipenv install",
+		"install:client": "npm --prefix client install",
+		"build": "npm --prefix client run build",
+		"preinstall": "npm run install:client && npm run install:server"
+	},
+	"author": "",
+	"license": "ISC",
+	"devDependencies": {
+		"concurrently": "^8.2.2",
+		"vite": "^4.5.0"
+	}
 }

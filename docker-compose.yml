@@ -1,13 +1,13 @@
 version: '3.8'
 
 services:
-  stable-client:
-    container_name: stable-client-container
+  app_prod:
+    container_name: app_prod
     build:
       context: .
       dockerfile: Dockerfile
       target: prod_im
-    image: stl_prod
+    image: app_prod
     ports:
       - "5001:5001"
       - "5173:5173"
@@ -15,9 +15,51 @@ services:
       - .:/app
     depends_on:
       - pgsql
-    command: "npm run start:server"
+    command: "npm run start"
     mem_limit: 512m
     cpus: 0.5
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    profiles:
+      - "prod"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@pgsql:5432/stl
+    env_file:
+      - .env
+   
+  app_dev:
+    container_name: app_dev
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+      target: dev_im
+    image: app_dev
+    ports:
+      - "5001:5001"
+      - "5173:5173"
+    volumes:
+      - .:/app
+    depends_on:
+      - pgsql
+    command: "npm run dev"
+    mem_limit: 512m
+    cpus: 0.5
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@pgsql:5432/stl
+    env_file:
+      - .env
+    profiles:
+      - ""
+
+      
 
   pgsql:
     container_name: pgsql
