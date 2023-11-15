@@ -9,6 +9,26 @@ export default function AllClients() {
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false); // State variable to control the alert visibility
   const [dropdownOpen, setDropdownOpen] = useState({});
+  const [loading, setLoading] = useState(true); // State variable for loading state
+
+
+  useEffect(() => {
+    // Simulating a 2-second delay before fetching client information
+    const timer = setTimeout(() => {
+      axios
+        .get("/clients")
+        .then((response) => {
+          setClientInfo(response.data);
+          setLoading(false); // Set loading to false after data is fetched
+        })
+        .catch((error) => {
+          console.error(error);
+          setLoading(false); // Set loading to false in case of an error
+        });
+    }, 125); // 125ms delay before sending the request
+
+    return () => clearTimeout(timer); // Clear the timeout on unmount or before the next effect
+  }, []);
 
   useEffect(() => {
     // Fetch client information from your backend
@@ -56,8 +76,8 @@ export default function AllClients() {
         });
     }
   };
-  if (clientInfo === null) {
-    return <div className="">Loading...</div>
+  if (loading) {
+    return <div className="w-full min-h-screen flex items-center justify-center">Loading...</div>
   }
 
   const filteredClients = clientInfo.filter(
@@ -225,6 +245,7 @@ export default function AllClients() {
               </div>
             </div>
           </div>
+          
         </div>
       )}
       {showAlert && (
