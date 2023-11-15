@@ -4,6 +4,8 @@ import axiosInstance from "../axios";
 import ReactCreditCard from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import creditCardType from 'credit-card-type';
+import AlertClientAdded from "../Components/Pieces/Alert";
+
 
 export default function NewClient() {
   const [searchData, setsearchData] = useState({
@@ -14,6 +16,7 @@ export default function NewClient() {
   const [searchFormSubmitted, setSearchFormSubmitted] = useState(false);
   const [responseData, setResponseData] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false); // Add loading state
   const today = new Date().toLocaleDateString('en-US', {
     year: 'numeric',
@@ -96,9 +99,28 @@ export default function NewClient() {
   }, [responseData]);
 
 
-  const generateNewClient = () => {
-    console.log(newClientForm)
-  }
+  const generateNewClient = async (e) => {
+    e.preventDefault();
+    console.log(newClientForm);
+
+    try {
+      const response = await axiosInstance.post("/new-client", newClientForm, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status === 200) {
+        console.log("Request Success");
+        setShowAlert(true);
+      } else {
+        console.error("Request Failed");
+      }
+    } catch (error) {
+      console.error("Request Error:", error);
+      alert("Request Error");
+    }
+  };
 
   const searchClient = async (e) => {
     e.preventDefault();
@@ -155,9 +177,12 @@ export default function NewClient() {
       <div className="bg-white font-oswald flex-1 flex flex-col space-y-5 lg:space-y-0 lg:flex-row lg:space-x-10 max-w-6xl sm:my-2 sm:mx-4 sm:rounded-2xl pt-4 h-[100%]">
         <div className="bg-gray-200 flex-1 flex-col px-2 sm:px-0">
 
-          <div className="flex justify-between p-2">
-            <h1 className="title text-2xl">Add new client</h1>
-            <button className="button rounded-md bg-gradient-to-r from-s via-cyan-500 to-emerald-500 text-xs p-2">View all</button>
+          <div className="flex bg-white justify-between items-center p-4">
+            <div className="flex flex-col">
+              <h1 className="title text-2xl">Add new client</h1>
+              <p className="mt-2 text-sm font-light text-gray-500">Please use the search panel to search for clients</p>
+            </div>
+            <button className="button rounded-md bg-gradient-to-r from-s via-cyan-500 to-emerald-500 text-xs p-2">View all clients</button>
           </div>
 
           <div className="m-2 p-5">
@@ -373,6 +398,7 @@ export default function NewClient() {
                       </div>
                     </div>
                 </form>
+                {showAlert && <AlertClientAdded />}
               </div>
             </div>
           )}
