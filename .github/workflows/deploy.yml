@@ -83,10 +83,42 @@ jobs:
 
       - name: Push Docker Image to ECR
         run: docker push ${{ steps.CREATE-TAG.outputs.ecr_url }}
+      
+      - id: FIND-TAG
+        name: Find Previous Tag
+        run: |
+          ECR="${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.REPO_NAME}}"
 
+          BUILD_NUMBER=${{ env.ENVIRONMENT_NAME }}-$(expr ${{ github.run_number }} - 1)
+          
+          OLD_ECR_URL=$ECR:$BUILD_NUMBER
+          
+          echo "::set-output name=old_ecr_url::$OLD_ECR_URL"
+      
+      - name: Remove Images And Container 
+        env:
+          OLD_ECR_URL: ${{ steps.FIND-TAG.outputs.old_ecr_url }}
+        run: |
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > private_key && chmod 600 private_key
+          
+          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}<<EOF
+          # Login as root
+          sudo -i
+          # Now we have got the access of EC2 and we will start the deploy .
+
+          # Stop all running containers:
+          docker stop ${{ env.REPO_NAME }}-${{ github.run_number }} || true
+
+          # Remove all containers (both stopped and running)
+          docker rm -f ${{ env.REPO_NAME }}-${{ github.run_number }} || true
+          
+          # Delete old Docker images
+          docker rmi -f $OLD_ECR_URL || true
+          EOF
+      
       - name: Pull Docker Images
         env:
-          ECR_URL: 876746232048.dkr.ecr.us-east-1.amazonaws.com/stabilelf:dev-2
+          ECR_URL: ${{ steps.CREATE-TAG.outputs.ecr_url }}
         run: |
           echo "${{secrets.SSH_PRIVATE_KEY}}" > private_key && chmod 600 private_key
           
@@ -114,5 +146,12 @@ jobs:
           # Login to docker
           aws ecr get-login-password --region ${{secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com
 
-          docker run -e DATABASE_URL=${{secrets.DATABASE_URL}} -e DEBUG=${{secrets.DEBUG}} -e VITE_API_URL=${{secrets.VITE_API_URL}} -e SCRAPER_USERNAME=${{secrets.SCRAPER_USERNAME}} -e SCRAPER_PASSWORD=${{secrets.SCRAPER_PASSWORD}} -p 8000:8000 $ECR_URL -d 
+          docker run \
+            -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
+            -e DEBUG=${{ secrets.DEBUG }} \
+            -e VITE_API_URL=${{ secrets.VITE_API_URL }} \
+            -e SCRAPER_USERNAME=${{ secrets.SCRAPER_USERNAME }} \
+            -e SCRAPER_PASSWORD=${{ secrets.SCRAPER_PASSWORD }} \
+            -d -p 8000:8000 --name ${{ env.REPO_NAME }}-${{ github.run_number }} \
+            $ECR_URL
           EOF
