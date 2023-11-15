@@ -4,7 +4,7 @@ on:
   push:
   # keep only one branch, relative to the environment
     branches:
-      - main
+      - cicdPipeline
 
 env:
   ENVIRONMENT_NAME: dev
