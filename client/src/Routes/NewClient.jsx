@@ -11,6 +11,7 @@ export default function NewClient() {
   const [searchData, setsearchData] = useState({
     client_name: "",
     violation_date: "",
+    crime_type: "",
   });
   const formRef = useRef(null);
   const [searchFormSubmitted, setSearchFormSubmitted] = useState(false);
@@ -34,7 +35,7 @@ export default function NewClient() {
     court_house_city: responseData?.court_info?.court_house_city ?? "",
     court_house_state: responseData?.court_info?.court_house_state ?? "",
     court_house_zip: responseData?.court_info?.court_house_zip ?? "",
-    court_house_county: responseData?.court_info?.court_house_county ?? "",
+    court_house_county: responseData?.court_info?.court_county ?? "",
     client_email: "",
     incident_date: searchData.violation_date,
     case_status: "OPEN",
@@ -86,7 +87,7 @@ export default function NewClient() {
         court_house_city: responseData.court_info.court_house_city ?? "",
         court_house_state: responseData.court_info.court_house_state ?? "",
         court_house_zip: responseData.court_info.court_house_zip ?? "",
-        court_house_county: responseData.court_info.court_house_county ?? "",
+        court_house_county: responseData.court_info.court_county ?? "",
         complaint_violation_ticket_numbers: responseData.violations
         .map((violation) => {
           const match = violation.match(/^([^-]+)/);
@@ -160,7 +161,7 @@ export default function NewClient() {
       court_house_city: responseData?.court_info?.court_house_city ?? "",
       court_house_state: responseData?.court_info?.court_house_state ?? "",
       court_house_zip: responseData?.court_info?.court_house_zip ?? "",
-      court_house_county: responseData?.court_info?.court_house_county ?? "",
+      court_house_county: responseData?.court_info?.court_county ?? "",
       incident_date: searchData.violation_date,
       case_status: "OPEN",
       dwi_status: "No",
@@ -200,6 +201,14 @@ export default function NewClient() {
                   <input className="m-2 p-2 rounded-lg"
                   type="date"
                   onChange={handleViolationDateChange}/>
+                </div>
+                <div>
+                  <label className="font-medium">Violation Type</label>
+                  <select className="m-2 p-2 rounded-lg" onChange={(e)=> setsearchData({...searchData, crime_type: e.target.value})}>
+                    <option value="">Select violation type</option>
+                    <option value="NJ Traffic">NJ Traffic</option>
+                    <option value="Criminal">Criminal</option>
+                    </select>
                 </div>
                 <button type="submit" className="modal-action-button px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500">
                     <span><AiOutlineSearch/></span>
@@ -268,6 +277,7 @@ export default function NewClient() {
                         </div>
                         <div className="m-2 flex items-center">
                           <div className=""> 
+                            <p>{responseData.court_info.court_county}</p>
                             <p>{responseData.court_info.court_house_name}</p>
                             <p>{responseData.court_info.court_house_street}</p>
                             <p>{responseData.court_info.court_house_city}, {responseData.court_info.court_house_state} {responseData.court_info.court_house_zip}</p>
