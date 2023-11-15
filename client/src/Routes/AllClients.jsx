@@ -161,8 +161,8 @@ export default function AllClients() {
                   >
                     <img
                       className="w-10 h-10 rounded-full"
-                      src="https://demos.creative-tim.com/notus-js/assets/img/bootstrap.jpg"
-                      alt="Jese image "
+                      src="https://t3.ftcdn.net/jpg/05/14/18/46/360_F_514184651_W5rVCabKKRH6H3mVb62jYWfuXio8c8si.jpg"
+                      alt="User Icon"
                     />
                     <div className="ps-3">
                       <div className="text-base font-semibold">
