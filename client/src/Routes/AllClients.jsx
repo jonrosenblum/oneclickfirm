@@ -3,6 +3,7 @@ import axios from "./../axios";
 import { useNavigate } from "react-router-dom";
 // import { AiOutlineDownload } from 'react-icons/ai';
 import AlertDocumentDownload from "../Components/Pieces/AlertDocumentDownload";
+import Dropdwon from "../Components/dropdwon";
 const data=[
   {
     "case_status": "OPEN",
@@ -118,6 +119,7 @@ export default function AllClients() {
   const [searchInput, setSearchInput] = useState(""); // State variable for search input
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false); // State variable to control the alert visibility
+  const [ShowDropdown, setShowDropdown] = useState(false); // State variable to control the alert visibility
 
   useEffect(() => {
     // Fetch client information from your backend
@@ -166,6 +168,20 @@ export default function AllClients() {
         });
     }
   };
+  const actionFunction = (action, client)=>{
+    // action menu click is download
+    if(action === 'download')
+      downloadDocuments(client)
+
+    // YOU CAN PERFORM REMAINING ACTIONS HERE
+    if(action === 'dashboard')
+    {
+        // any action
+    }
+  
+  }
+
+
   if (clientInfo === null) {
     return <div className="">Loading...</div>
   }
@@ -181,7 +197,7 @@ export default function AllClients() {
 
   return (
     <>
-    <div>
+    <div onClick={()=>{ShowDropdown && setShowDropdown(false)}}>
       {clientInfo.length === 0 ? (
         <div className="bg-gradient-to-tr font-oswald from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
           <div className="overflow-y-auto max-h-[800px] text-white px-2 sm:px-0 text-center">
@@ -370,9 +386,8 @@ export default function AllClients() {
 
                   <td className="px-6 py-4">
                     <button
-                      id={`dropdownDefaultButton_${client.client_id}`}
-                      data-dropdown-toggle={`dropdown_${client.client_id}`}
-                      className="  text-sm text-left inline-flex items-center font-medium relative text-blue-600 dark:text-blue-500 hover:underline"
+                    onClick={()=>setShowDropdown(client.client_id)}
+                      className="text-sm text-left inline-flex items-center font-medium relative text-blue-600 dark:text-blue-500 hover:underline"
                       type="button"
                     >
                       Action
@@ -380,46 +395,12 @@ export default function AllClients() {
 <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="m1 1 4 4 4-4"/>
 </svg> */}
                     </button>
-
                     <div
-                      id={`dropdown_${client.client_id}`}
-                      className="z-10 hidden bg-white divide-y divide-gray-100 rounded-lg shadow w-40"
+                      className={`z-10 ${ShowDropdown === client.client_id?'block':'hidden'}  absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-40`}
                     >
-                      <ul
-                        className="py-2 text-sm text-gray-700 "
-                        aria-labelledby={`dropdownDefaultButton_${client.client_id}`}
-                      >
-                        <li>
-                          <a
-                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600 cursor-pointer"
-                          >
-                            Dashboard
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600 cursor-pointer"
-                          >
-                            Settings
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600 cursor-pointer"
-                          >
-                            Earnings
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            onClick={() => downloadDocuments(client)}
-                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600 cursor-pointer"
-                          >
-                            Download Documents
-                          </a>
-                        </li>
-                      </ul>
+                    <Dropdwon client={client} onClick={(action)=>actionFunction(action,client)} />
                     </div>
+
                   </td>
                 </tr>
               ))}
@@ -437,3 +418,5 @@ export default function AllClients() {
     </>
   );
 }
+
+
