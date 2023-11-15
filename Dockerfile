@@ -48,4 +48,4 @@ EXPOSE $PORT
 RUN make build
 
 # Run the application
-CMD cd server && HOST=0.0.0.0 PORT=$PORT pipenv run python run.py 
+CMD cd server && PORT=$PORT pipenv run python run.py 
