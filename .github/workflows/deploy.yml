@@ -29,7 +29,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  BUILD:
+  BUILD_DEPLOY:
     runs-on: ubuntu-latest
     steps:
       - id: checkout
@@ -93,6 +93,23 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}<<EOF
           
           #Now we have got the access of EC2 and we will start the deploy .
-
+          # Login to docker
+          aws ecr get-login-password --region ${{secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com
+          echo "ECR : $ECR_URL"
           docker pull $ECR_URL
+          EOF
+
+      - name: Run Docker Services
+        env:
+          ECR_URL: ${{ steps.CREATE-TAG.outputs.ecr_url }}
+        run: |
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > private_key && chmod 600 private_key
+          
+          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}<<EOF
+          
+          #Now we have got the access of EC2 and we will start the deploy .
+          # Login to docker
+          aws ecr get-login-password --region ${{secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com
+
+          docker run -e DATABASE_URL=${{secrets.DATABASE_URL}} -e DEBUG=${{secrets.DEBUG}} -e VITE_API_URL=${{secrets.VITE_API_URL}} -e SCRAPER_USERNAME=${{secrets.SCRAPER_USERNAME}} -e SCRAPER_PASSWORD=${{secrets.SCRAPER_PASSWORD}} -p 8000:8000 $ECR_URL -d 
           EOF
