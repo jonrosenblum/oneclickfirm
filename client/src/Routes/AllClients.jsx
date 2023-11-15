@@ -31,44 +31,29 @@ export default function AllClients() {
   }, []);
 
   useEffect(() => {
-    // Fetch client information from your backend
     if (clientInfo) {
       return;
     }
-
-    axios
-      .get("/clients")
+    axios.get("/clients")
       .then((response) => {
         setClientInfo(response.data);
       })
       .catch((error) => console.error(error));
   }, [clientInfo]);
 
+
   const downloadDocuments = (client) => {
     if (client) {
       const clientId = client.client_id;
-
-      // Construct the URL for the download route
-      const downloadURL = `/download-documents/${clientId}`;
-
-      // Send a GET request to the backend route to download the documents
-      axios
-        .get(downloadURL, { responseType: "blob" })
+      axios.get(`/download-documents/${clientId}`, { responseType: "blob" })
         .then((response) => {
-          // Create a blob from the response data
           const blob = new Blob([response.data], { type: "application/zip" });
-
-          // Create a URL for the blob
           const url = window.URL.createObjectURL(blob);
-
-          // Create an invisible anchor element to trigger the download
           const link = document.createElement("a");
           link.href = url;
           link.download = "client_documents.zip";
           link.click();
           setShowAlert(true);
-
-          // Release the URL object
           window.URL.revokeObjectURL(url);
         })
         .catch((error) => {
@@ -103,8 +88,7 @@ export default function AllClients() {
     <>
     <div>
       {clientInfo.length === 0 ? (
-        <div className="bg-gradient-to-tr font-oswald from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center">
-          <div className="overflow-y-auto max-h-[800px] text-white px-2 sm:px-0 text-center">
+        <div className="bg-white w-full min-h-screen flex flex-col items-center justify-center">
             <h1 className="title font-extralight text-2xl">
               NO CLIENTS AVAILABLE
             </h1>
@@ -117,7 +101,7 @@ export default function AllClients() {
             >
               Add New Client
             </button>
-          </div>
+          
         </div>
       ) : (
         <div className="bg-white w-full p-4 min-h-screen flex">
