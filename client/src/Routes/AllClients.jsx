@@ -2,16 +2,18 @@ import { useEffect, useState } from "react";
 import axios from "./../axios";
 import { useNavigate } from "react-router-dom";
 import AlertDocumentDownload from "../Components/Pieces/AlertDocumentDownload";
+import ActionsDropdown from "../Components/Pieces/ActionsDropdown";
 
 export default function AllClients() {
   const [clientInfo, setClientInfo] = useState(null);
   const [searchInput, setSearchInput] = useState(""); // State variable for search input
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false); // State variable to control the alert visibility
-  const [dropdownOpen, setDropdownOpen] = useState({});
+  const [ShowDropdown, setShowDropdown] = useState(false); // State variable to control the alert visibility
   const [loading, setLoading] = useState(true); // State variable for loading state
 
 
+  
   useEffect(() => {
     // Simulating a 2-second delay before fetching client information
     const timer = setTimeout(() => {
@@ -29,6 +31,8 @@ export default function AllClients() {
 
     return () => clearTimeout(timer); // Clear the timeout on unmount or before the next effect
   }, []);
+
+
 
   useEffect(() => {
     if (clientInfo) {
@@ -61,6 +65,22 @@ export default function AllClients() {
         });
     }
   };
+
+
+  const actionFunction = (action, client)=>{
+    // action menu click is download
+    if(action === 'download')
+      downloadDocuments(client)
+
+    // YOU CAN PERFORM REMAINING ACTIONS HERE
+    if(action === 'dashboard')
+    {
+        // any action
+    }
+  
+  }
+
+
   if (loading) {
     return <div className="w-full min-h-screen flex items-center justify-center">Loading...</div>
   }
@@ -74,35 +94,25 @@ export default function AllClients() {
       client.court_house_name.toLowerCase().includes(searchInput.toLowerCase())
   );
 
-
-  const toggleDropdown = (clientId) => {
-    setDropdownOpen((prevState) => ({
-      ...prevState,
-      [clientId]: !prevState[clientId],
-    }));
-  };
-
- 
-
   return (
     <>
-    <div>
+    <div onClick={()=>{ShowDropdown && setShowDropdown(false)}}>
       {clientInfo.length === 0 ? (
         <div className="bg-white w-full min-h-screen flex flex-col items-center justify-center">
-            <h1 className="title font-extralight text-2xl">
-              NO CLIENTS AVAILABLE
-            </h1>
-            <button
-              onClick={() => {
-                navigate("/generate-documents");
-              }}
-              className="px-4 mt-4 text-black font-medium py-2 bg-gray-300 rounded-md hover:bg-blue-300 focus:outline-none
-                            focus:shadow-outline-blue active:bg-blue-500"
-            >
-              Add New Client
-            </button>
-          
-        </div>
+        <h1 className="title font-extralight text-2xl">
+          NO CLIENTS AVAILABLE
+        </h1>
+        <button
+          onClick={() => {
+            navigate("/generate-documents");
+          }}
+          className="px-4 mt-4 text-black font-medium py-2 bg-gray-300 rounded-md hover:bg-blue-300 focus:outline-none
+                        focus:shadow-outline-blue active:bg-blue-500"
+        >
+          Add New Client
+        </button>
+
+      </div>
       ) : (
         <div className="bg-white w-full p-4 min-h-screen flex">
           <div className="relative flex flex-col min-w-0 break-words w-full shadow-lg rounded-lg bg-gray-200  text-gray-900">
@@ -174,53 +184,19 @@ export default function AllClients() {
 
                   <td className="px-6 py-4">
                     <button
-                      onClick={() => toggleDropdown(client.client_id)}
+                    onClick={()=>setShowDropdown(client.client_id)}
                       className="text-sm text-left inline-flex items-center font-medium relative text-blue-600 dark:text-blue-500 hover:underline"
                       type="button"
                     >
-                      View actions
-                    </button>
+                      View more
 
+                    </button>
                     <div
-                       className={`${
-                        dropdownOpen[client.client_id] ? "" : "hidden"
-                      } z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-40`}
+                      className={`z-10 ${ShowDropdown === client.client_id?'block':'hidden'}  absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-40`}
                     >
-                      <ul
-                        className="py-2 text-sm text-gray-700 "
-                        aria-labelledby={`dropdownDefaultButton_${client.client_id}`}
-                      >
-                        <li>
-                          <a
-                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600 cursor-pointer"
-                          >
-                            Dashboard
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600 cursor-pointer"
-                          >
-                            Settings
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600 cursor-pointer"
-                          >
-                            Earnings
-                          </a>
-                        </li>
-                        <li>
-                          <a
-                            onClick={() => downloadDocuments(client)}
-                            className="block px-4 py-2 hover:bg-gray-200 hover:text-gray-600 cursor-pointer"
-                          >
-                            Download Documents
-                          </a>
-                        </li>
-                      </ul>
+                    <ActionsDropdown client={client} onClick={(action)=>actionFunction(action,client)} />
                     </div>
+
                   </td>
                 </tr>
               ))}
@@ -229,7 +205,6 @@ export default function AllClients() {
               </div>
             </div>
           </div>
-          
         </div>
       )}
       {showAlert && (
@@ -239,3 +214,4 @@ export default function AllClients() {
     </>
   );
 }
+
