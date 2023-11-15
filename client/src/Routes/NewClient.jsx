@@ -12,19 +12,25 @@ export default function NewClient() {
   const [responseData, setResponseData] = useState(null);
   const [isEditMode, setIsEditMode] = useState(false);
   const [loading, setLoading] = useState(false); // Add loading state
+  const today = new Date().toLocaleDateString('en-US', {
+    year: 'numeric',
+    month: 'short',
+    day: 'numeric'
+  });
+
   const [newClientForm, setnewClientForm] = useState({
     client_name: responseData?.client_info?.client_name ?? "",
-    todays_date: "",
+    todays_date: today,
     fax_number: responseData?.court_info?.fax_number ?? "",
     complaint_violation_ticket_numbers: "",
-    court_house_name: "",
-    court_house_address: "",
-    court_house_city: "",
-    court_house_state: "NJ",
-    court_house_zip: "",
-    court_house_county: "",
+    court_house_name: responseData?.court_info?.court_house_name ?? "",
+    court_house_address: responseData?.court_info?.court_house_street ?? "",
+    court_house_city: responseData?.court_info?.court_house_city ?? "",
+    court_house_state: responseData?.court_info?.court_house_state ?? "",
+    court_house_zip: responseData?.court_info?.court_house_zip ?? "",
+    court_house_county: responseData?.court_info?.court_house_county ?? "",
     client_email: "",
-    incident_date: "",
+    incident_date: searchData.violation_date,
     case_status: "OPEN",
     dwi_status: "",
     credit_card_number: "",
@@ -34,6 +40,17 @@ export default function NewClient() {
     payment_type: "",
     credit_card_type: "",
   });
+
+  const handleViolationDateChange = (e) => {
+    const { value } = e.target;
+    const selectedDate = new Date(value);
+  
+    const options = { month: 'short', day: '2-digit', year: 'numeric' };
+    const formattedDate = selectedDate.toLocaleDateString('en-US', options);
+  
+    setsearchData({ ...searchData, violation_date: value });
+    setnewClientForm({ ...newClientForm, incident_date: formattedDate });
+  };
 
   const handleToggleEditMode = () => {
     setIsEditMode((prevMode) => !prevMode);
@@ -46,6 +63,12 @@ export default function NewClient() {
         ...prevForm,
         client_name: responseData.client_info.client_name ?? "",
         fax_number: responseData.court_info.fax_number ?? "",
+        court_house_name: responseData.court_info.court_house_name ?? "",
+        court_house_address: responseData.court_info.court_house_street ?? "",
+        court_house_city: responseData.court_info.court_house_city ?? "",
+        court_house_state: responseData.court_info.court_house_state ?? "",
+        court_house_zip: responseData.court_info.court_house_zip ?? "",
+        court_house_county: responseData.court_info.court_house_county ?? "",
         // ... other properties
       }));
     }
@@ -106,7 +129,7 @@ export default function NewClient() {
                   <label className="font-medium">Violation Date</label>
                   <input className="m-2 p-2 rounded-lg"
                   type="date"
-                  onChange={(e)=> setsearchData({...searchData, violation_date: e.target.value})}/>
+                  onChange={handleViolationDateChange}/>
                 </div>
                 <button type="submit" className="modal-action-button px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500">
                     <span><AiOutlineSearch/></span>
@@ -131,7 +154,7 @@ export default function NewClient() {
                         <h1>Personal Information</h1>
                       <div className="m-2 flex items-center gap-8">
                         <div>
-                          <p>{responseData.client_info.client_name}</p>
+                          <p>{responseData.client_info.client_name} ({responseData.court_info.crime_type}) </p>
                         </div>
                         <div>
                           <label>Email</label>

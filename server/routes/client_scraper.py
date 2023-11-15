@@ -17,6 +17,7 @@ def client_scraper():
     return "Web Crawler Backend"
 
 
+
 @client_scraper_bp.post('/search')
 def search():
     
@@ -25,6 +26,7 @@ def search():
     try:
     
         data = request.json  # Get data from JSON request
+        # data = {'client_name': 'john smith', 'violation_date': 'Oct 17, 2023'}
         client_name = data.get('client_name')
         violation_date = data.get('violation_date')
 
@@ -57,7 +59,7 @@ def search():
             login_button.click()
 
             values = ['NJ Traffic', 'NJ Criminal (DP)']
-            profile_urls = []
+            matches = []
 
             for value in values:
                 driver.get('https://secure.legalplex.com/searchcases')
@@ -105,8 +107,9 @@ def search():
                         if violation_date in date.text:
                             print('MATCH!')
                             profile_url = case.find_element(By.CLASS_NAME, 'name').get_attribute('href')
-                            if profile_url not in profile_urls:
-                                profile_urls.append(profile_url)
+                            if profile_url not in matches:
+                                matches.append({'profile_url': profile_url, 'crime_type': value})
+                                
 
                     #click through each page, if on last page don't try to click to next page
                     if last_page == page_i:
@@ -120,10 +123,10 @@ def search():
                     page.click()
 
             #loop through each match and collect data from page
-            for profile_url in profile_urls:
-                print(f'Collecting data from: {profile_url}')
+            for match in matches:
+                print(f'Collecting data from: {match["profile_url"]}')
 
-                driver.get(profile_url)
+                driver.get(match['profile_url'])
                 content = driver.find_element(By.CLASS_NAME, 'content')
 
                 client_name = content.find_element(By.ID, 'lblCaseTitle').text
@@ -155,7 +158,8 @@ def search():
                     'court_house_zip': data[-4].split(' ')[-1],
                     'client_name': client_name,
                     'client_age':client_age,
-                    'client_birth_place':client_birth_place
+                    'client_birth_place':client_birth_place,
+                    'crime_type': match['crime_type']
                 }
 
         # Prepare data for JSON response
@@ -169,6 +173,7 @@ def search():
                 "court_house_city": context['court_house_city'],
                 "court_house_state": context['court_house_state'],
                 "court_house_zip": context['court_house_zip'],
+                'crime_type': context['crime_type']
             },
             "client_info": {
                 "client_name": context['client_name'],
@@ -177,6 +182,7 @@ def search():
             },
             "violations": violation_numbers,  # Add more data as needed
         }
+        print(scraped_data)
 
         return jsonify({"status": "success", "data": scraped_data})
         
@@ -186,3 +192,5 @@ def search():
     finally:
         if driver is not None:
             driver.quit()
+
+
