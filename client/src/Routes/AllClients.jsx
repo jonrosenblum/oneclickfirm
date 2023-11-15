@@ -91,7 +91,8 @@ export default function AllClients() {
       client.court_house_county
         .toLowerCase()
         .includes(searchInput.toLowerCase()) ||
-      client.court_house_name.toLowerCase().includes(searchInput.toLowerCase())
+      client.court_house_name.toLowerCase().includes(searchInput.toLowerCase()) ||
+      client.client_id.toString().includes(searchInput.toLowerCase())
   );
 
   return (
@@ -169,7 +170,7 @@ export default function AllClients() {
                       {client.client_name}
                       </div>
                       <div className="font-normal text-gray-500">
-                      {client.client_id}
+                      Client ID: {client.client_id}
                       </div>
                     </div>
                   </th>
