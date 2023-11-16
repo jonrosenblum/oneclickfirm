@@ -141,6 +141,6 @@ jobs:
             -e VITE_API_URL=${{ secrets.VITE_API_URL }} \
             -e SCRAPER_USERNAME=${{ secrets.SCRAPER_USERNAME }} \
             -e SCRAPER_PASSWORD=${{ secrets.SCRAPER_PASSWORD }} \
-            -d -p 5001:5001 -p 80:8000 --name ${{ env.REPO_NAME }}-latest \
+            -d -p 5001:5001 -p 80:5173 --name ${{ env.REPO_NAME }}-latest \
             $ECR_URL
           EOF
