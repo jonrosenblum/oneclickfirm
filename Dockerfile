@@ -2,7 +2,7 @@
 FROM python:3.11 AS prod_im
 
 # Set environment variables
-ENV DATABASE_URL=DATABASE_URL
+ENV DATABASE_URL=postgres://jonrosenblum:Jnrsnblm1!@host.docker.internal:5432/jonrosenblum
 ENV DEBUG=DEBUG
 ENV SCRAPER_USERNAME=SCRAPER_USERNAME
 ENV SCRAPER_PASSWORD=SCRAPER_PASSWORD
