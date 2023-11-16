@@ -10,7 +10,7 @@
 		"dev": "concurrently \"npm run dev:client\" \"npm run dev:server\"",
 		"start": "cd server && DEBUG=False HOST=0.0.0.0 PORT=5001 pipenv run python run.py",
 		"install:server": "cd server && pipenv install",
-		"install:client": "npm --prefix client install",
+		"install:client": "npm --prefix client install --force",
 		"build": "npm --prefix client run build",
 		"preinstall": "npm run install:client && npm run install:server"
 	},
