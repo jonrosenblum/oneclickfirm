@@ -11,6 +11,8 @@ import psycopg2
 import psycopg2.extras
 from flask_jwt_extended import jwt_required
 
+
+
 client_information_bp = Blueprint('clientInformation', __name__)
 
 # Database configuration
@@ -287,8 +289,10 @@ def get_all_clients():
 
     except Exception as e:
         return jsonify({"error": str(e)})
+    
     finally:
-        cursor.close()  # Move cursor close to the end of the try-except block
+        if cursor:
+            cursor.close()  # Move cursor close to the end of the try-except block
     
 @client_information_bp.route('/clients/<int:client_id>', methods=['DELETE'])
 @jwt_required()
