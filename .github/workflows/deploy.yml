@@ -131,7 +131,7 @@ jobs:
           ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}<<EOF
           # Login as root
           sudo -i
-          #Now we have got the access of EC2 and we will start the deploy .
+          # Now we have got access to EC2 and will start the deploy.
           # Login to docker
           aws ecr get-login-password --region ${{secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com
 
@@ -142,5 +142,6 @@ jobs:
             -e SCRAPER_USERNAME=${{ secrets.SCRAPER_USERNAME }} \
             -e SCRAPER_PASSWORD=${{ secrets.SCRAPER_PASSWORD }} \
             -d -p 5001:5001 -p 80:5001 -p 5173:5173 --name ${{ env.REPO_NAME }}-latest \
+            --restart always \  # Add this line for container restart policy
             $ECR_URL
           EOF
