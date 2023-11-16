@@ -1,4 +1,4 @@
-from flask import Blueprint, request, jsonify, send_from_directory
+from flask import Blueprint, request, jsonify, send_from_directory, g
 from decouple import config 
 import zipfile
 import tempfile
@@ -234,14 +234,23 @@ def makeTempClientFiles(form_data,temp_dir, document_name):
         for doc_name_key, doc_path in clientDocumentsDict.items():
             doc_name = f"{client_name}_{doc_name_key}.docx"
             zipf.write(doc_path, arcname=doc_name)
+            
+            
 
+# Helper function to get the cursor
+def get_db_cursor():
+    if 'db_cursor' not in g:
+        g.db_cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    return g.db_cursor
 
 @client_information_bp.route('/clients', methods=['GET'])
 @jwt_required()
 def get_all_clients():
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    cursor = None
     
     try:
+        cursor = get_db_cursor()
+
         # Modify the SQL query to retrieve client information from multiple tables
         cursor.execute("""
             SELECT
@@ -289,10 +298,11 @@ def get_all_clients():
 
     except Exception as e:
         return jsonify({"error": str(e)})
-    
+
     finally:
         if cursor:
-            cursor.close()  # Move cursor close to the end of the try-except block
+            cursor.close()  # Close the cursor in the finally block
+            
     
 @client_information_bp.route('/clients/<int:client_id>', methods=['DELETE'])
 @jwt_required()
