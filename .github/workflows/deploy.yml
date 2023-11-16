@@ -72,7 +72,7 @@ jobs:
         run: |
           ECR="${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.REPO_NAME}}"
 
-          BUILD_NUMBER=${{ env.ENVIRONMENT_NAME }}-${{ github.run_number }}
+          BUILD_NUMBER=${{ env.ENVIRONMENT_NAME }}-latest
           
           ECR_URL=$ECR:$BUILD_NUMBER
           
@@ -84,20 +84,9 @@ jobs:
       - name: Push Docker Image to ECR
         run: docker push ${{ steps.CREATE-TAG.outputs.ecr_url }}
       
-      - id: FIND-TAG
-        name: Find Previous Tag
-        run: |
-          ECR="${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.REPO_NAME}}"
-
-          BUILD_NUMBER=${{ env.ENVIRONMENT_NAME }}-$(expr ${{ github.run_number }} - 1)
-          
-          OLD_ECR_URL=$ECR:$BUILD_NUMBER
-          
-          echo "::set-output name=old_ecr_url::$OLD_ECR_URL"
-      
       - name: Remove Images And Container 
         env:
-          OLD_ECR_URL: ${{ steps.FIND-TAG.outputs.old_ecr_url }}
+          OLD_ECR_URL: ${{ steps.CREATE-TAG.outputs.ecr_url }}
         run: |
           echo "${{secrets.SSH_PRIVATE_KEY}}" > private_key && chmod 600 private_key
           
@@ -107,10 +96,10 @@ jobs:
           # Now we have got the access of EC2 and we will start the deploy .
 
           # Stop all running containers:
-          docker stop ${{ env.REPO_NAME }}-$(expr ${{ github.run_number }} - 1) || true
+          docker stop ${{ env.REPO_NAME }}-latest || true
 
           # Remove all containers (both stopped and running)
-          docker rm -f ${{ env.REPO_NAME }}-$(expr ${{ github.run_number }} - 1) || true
+          docker rm -f ${{ env.REPO_NAME }}-latest || true
           
           # Delete old Docker images
           docker rmi -f $OLD_ECR_URL || true
@@ -152,6 +141,6 @@ jobs:
             -e VITE_API_URL=${{ secrets.VITE_API_URL }} \
             -e SCRAPER_USERNAME=${{ secrets.SCRAPER_USERNAME }} \
             -e SCRAPER_PASSWORD=${{ secrets.SCRAPER_PASSWORD }} \
-            -d -p 80:8000 --name ${{ env.REPO_NAME }}-${{ github.run_number }} \
+            -d -p 80:8000 --name ${{ env.REPO_NAME }}-latest \
             $ECR_URL
           EOF
