@@ -272,11 +272,10 @@ def get_all_clients():
             LEFT JOIN violations v ON ci.client_id = v.client_id
             LEFT JOIN court_information co ON ci.client_id = co.client_id
             LEFT JOIN client_notes cn ON ci.client_id = cn.client_id
-            order by ci.client_id asc
+            ORDER BY ci.client_id ASC
         """)
 
         client_data = cursor.fetchall()
-        cursor.close()
 
         # Convert bytea data to base64-encoded strings
         for client in client_data:
@@ -288,48 +287,52 @@ def get_all_clients():
 
     except Exception as e:
         return jsonify({"error": str(e)})
+    finally:
+        cursor.close()  # Move cursor close to the end of the try-except block
     
 @client_information_bp.route('/clients/<int:client_id>', methods=['DELETE'])
 @jwt_required()
 def delete_client(client_id):
     try:
         cursor = conn.cursor()
-        
+
         # Check if the client exists
         cursor.execute("SELECT * FROM client_information WHERE client_id = %s", (client_id,))
         client_data = cursor.fetchone()
+
         if client_data is None:
-            cursor.close()
             return jsonify({"error": "Client not found."}), 404
-        
-        # Delete associated data from other tables, if necessary
+
+        # Delete associated data from other tables
         cursor.execute("DELETE FROM violations WHERE client_id = %s", (client_id,))
         cursor.execute("DELETE FROM court_information WHERE client_id = %s", (client_id,))
 
         # Delete the client information from the client_information table
         cursor.execute("DELETE FROM client_information WHERE client_id = %s", (client_id,))
 
-
-
         conn.commit()
-        cursor.close()
 
         return jsonify({"message": "Client deleted successfully"})
 
-    except Exception as e:
+    except psycopg2.Error as e:
+        conn.rollback()  # Roll back changes if an error occurs
         return jsonify({"error": str(e)})
+
+    finally:
+        if cursor:
+            cursor.close()
     
     
 
 @client_information_bp.patch('/clients/<int:client_id>')
 @jwt_required()
 def update_client_info(client_id):
-    cursor = conn.cursor()
-    new_case_status = request.json.get('case_status')
-    new_client_name = request.json.get('client_name')
-    new_client_email = request.json.get('client_email')
-
     try:
+        cursor = conn.cursor()
+        new_case_status = request.json.get('case_status')
+        new_client_name = request.json.get('client_name')
+        new_client_email = request.json.get('client_email')
+
         if new_case_status:
             cursor.execute("UPDATE violations SET case_status = %s WHERE client_id = %s", (new_case_status, client_id))
         if new_client_name:
@@ -337,43 +340,55 @@ def update_client_info(client_id):
         if new_client_email:
             cursor.execute("UPDATE client_information SET client_email = %s WHERE client_id = %s", (new_client_email, client_id))
 
-
         conn.commit()
-        cursor.close()
         return jsonify({"message": "Client information updated successfully"})
+
     except Exception as e:
+        conn.rollback()  # Roll back changes if an error occurs
         return jsonify({"error": str(e)})
 
-
+    finally:
+        if cursor:
+            cursor.close()
+            
+            
 @client_information_bp.route('/download-documents/<int:client_id>', methods=['GET'])
 @jwt_required()
 def download_documents(client_id):
     cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    cursor.execute("SELECT * FROM client_information WHERE client_id = %s", (client_id,))
-    cursor.execute("""
-       SELECT  ci.*, v.*, co.*  
-        FROM client_information   ci
+
+    try:
+        cursor.execute("""
+            SELECT  ci.*, v.*, co.*  
+            FROM client_information ci
             LEFT JOIN violations v ON ci.client_id = v.client_id
             LEFT JOIN court_information co ON ci.client_id = co.client_id
-        WHERE ci.client_id = %s
-                   """, (client_id,))
-    client_data = cursor.fetchone()
-    cursor.close()
+            WHERE ci.client_id = %s
+        """, (client_id,))
+        
+        client_data = cursor.fetchone()
 
-    if client_data is None:
-        return jsonify({"error": "Client not found."}), 404
+        if client_data is None:
+            return jsonify({"error": "Client not found."}), 404
 
-    # Define the document name for download
-    client_name = client_data['client_name']
-    document_name = f"{client_name}_documents.zip"  # Creating a ZIP file to contain all documents
+        # Define the document name for download
+        client_name = client_data['client_name']
+        document_name = f"{client_name}_documents.zip"  # Creating a ZIP file to contain all documents
 
-    # Create a temporary directory to store the individual documents
-    temp_dir = tempfile.mkdtemp()
-    print({'temp_dir': temp_dir})
+        # Create a temporary directory to store the individual documents
+        temp_dir = tempfile.mkdtemp()
+        print({'temp_dir': temp_dir})
 
-    makeTempClientFiles( client_data ,temp_dir, document_name)
-    # Send the ZIP file containing all documents as a file attachment
-    return send_from_directory(temp_dir, document_name, as_attachment=True)
+        makeTempClientFiles(client_data, temp_dir, document_name)
+        # Send the ZIP file containing all documents as a file attachment
+        return send_from_directory(temp_dir, document_name, as_attachment=True)
+
+    except Exception as e:
+        return jsonify({"error": str(e)})
+
+    finally:
+        if cursor:
+            cursor.close()
 
 
 @client_information_bp.route('/client-notes', methods=['POST'])
@@ -389,34 +404,31 @@ def add_or_update_client_notes():
 
         cursor = conn.cursor()
 
-        # Check if the client already has notes
-        cursor.execute('''
-            SELECT * FROM client_notes
-            WHERE client_id = %s
-        ''', (client_id,))
-
-        existing_notes = cursor.fetchone()
-
-        if existing_notes:
-            # If notes exist, update them
+        try:
             cursor.execute('''
-                UPDATE client_notes
-                SET client_notes = %s
+                SELECT * FROM client_notes
                 WHERE client_id = %s
-            ''', (client_notes, client_id))
-        else:
-            # If notes don't exist, insert a new record
-            cursor.execute('''
-                INSERT INTO client_notes (client_id, client_notes)
-                VALUES (%s, %s)
-            ''', (client_id, client_notes))
+            ''', (client_id,))
 
-        conn.commit()
-        cursor.close()
+            existing_notes = cursor.fetchone()
+
+            if existing_notes:
+                cursor.execute('''
+                    UPDATE client_notes
+                    SET client_notes = %s
+                    WHERE client_id = %s
+                ''', (client_notes, client_id))
+            else:
+                cursor.execute('''
+                    INSERT INTO client_notes (client_id, client_notes)
+                    VALUES (%s, %s)
+                ''', (client_id, client_notes))
+
+            conn.commit()
+        finally:
+            cursor.close()
 
         return jsonify({"message": "Client notes added/updated successfully"})
 
     except Exception as e:
         return jsonify({"error": str(e)}, 500)
-
-
