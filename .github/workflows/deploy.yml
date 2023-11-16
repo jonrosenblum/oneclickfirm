@@ -142,6 +142,6 @@ jobs:
             -e SCRAPER_USERNAME=${{ secrets.SCRAPER_USERNAME }} \
             -e SCRAPER_PASSWORD=${{ secrets.SCRAPER_PASSWORD }} \
             -d -p 5001:5001 -p 80:5001 -p 5173:5173 --name ${{ env.REPO_NAME }}-latest \
-            -v $(PWD):/app \
+            -v $(pwd):/app \
             $ECR_URL
           EOF
