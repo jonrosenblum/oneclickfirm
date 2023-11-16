@@ -11,10 +11,39 @@ services:
     ports:
       - "5001:5001"
       - "5173:5173"
+      - "80:5001"
     volumes:
       - .:/app
     depends_on:
       - pgsql
+    command: "npm run start"
+    mem_limit: 512m
+    cpus: 0.5
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:5001"]
+      interval: 1m30s
+      timeout: 10s
+      retries: 3
+    profiles:
+      - "prod"
+    environment:
+      - DATABASE_URL=postgres://postgres:postgres@pgsql:5432/stl
+    env_file:
+      - .env
+  
+  aws_prod:
+    container_name: app_prod
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: prod_im
+    image: app_prod
+    ports:
+      - "5001:5001"
+      - "5173:5173"
+      - "80:5001"
+    volumes:
+      - .:/app
     command: "npm run start"
     mem_limit: 512m
     cpus: 0.5
