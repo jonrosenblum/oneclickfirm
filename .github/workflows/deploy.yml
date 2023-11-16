@@ -155,3 +155,159 @@ jobs:
             -d -p 80:8000 --name ${{ env.REPO_NAME }}-${{ github.run_number }} \
             $ECR_URL
           EOF
+
+name: Create build and push to ECR then deploy on EC2 
+
+on:
+  push:
+  # keep only one branch, relative to the environment
+    branches:
+      - cicdPipeline
+
+env:
+  ENVIRONMENT_NAME: prod
+  AWS_ACCOUNT_ID: ${{secrets.AWS_ACCOUNT_ID}}
+  AWS_REGION: ${{secrets.AWS_REGION}}
+  AWS_ACCESS_KEY_ID: ${{secrets.AWS_ACCESS_KEY_ID}}
+  AWS_SECRET_ACCESS_KEY: ${{secrets.AWS_SECRET_ACCESS_KEY}}
+  REPO_NAME: stabilelf
+  DATABASE_URL: ${{secrets.DATABASE_URL}}
+  DEBUG: ${{secrets.DEBUG}}
+  SCRAPER_USERNAME: ${{secrets.SCRAPER_USERNAME}}
+  SCRAPER_PASSWORD: ${{secrets.SCRAPER_PASSWORD}}
+  SSH_USERNAME: ${{secrets.SSH_USERNAME}}
+  SSH_HOST: ${{secrets.SSH_HOST}}
+  SSH_PRIVATE_KEY: ${{secrets.SSH_PRIVATE_KEY}}
+
+  
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  BUILD_DEPLOY:
+    runs-on: ubuntu-latest
+    steps:
+      - id: checkout
+        name: Checkout the source code.
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+
+      - name: Set up AWS credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ env.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ env.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{env.AWS_REGION}}
+
+      - name: Login to ECR
+        run: aws ecr get-login-password --region ${{env.AWS_REGION}} | docker login --username AWS --password-stdin ${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com
+
+      - id: CHECK-REPO
+        name: Check if ECR repository exists
+        run: |
+          set +e
+          aws ecr describe-repositories --repository-names ${{ env.REPO_NAME }}
+          RESULT=$?
+          set -e
+
+          if [ $RESULT -eq 0 ]; then
+            echo "::set-output name=is_exist::true"
+          else
+            echo "::set-output name=is_exist::false"
+          fi
+
+      - name: Create ECR repository if not exists
+        if: steps.CHECK-REPO.outputs.is_exist == 'false'
+        run: |
+          aws ecr create-repository --repository-name ${{ env.REPO_NAME }}
+
+      - id: CREATE-TAG
+        name: Create Tag
+        run: |
+          ECR="${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.REPO_NAME}}"
+
+          BUILD_NUMBER=${{ env.ENVIRONMENT_NAME }}-${{ github.run_number }}
+          
+          ECR_URL=$ECR:$BUILD_NUMBER
+          
+          echo "::set-output name=ecr_url::$ECR_URL"
+          
+      - name: Build Docker Image
+        run: docker build -t ${{ steps.CREATE-TAG.outputs.ecr_url }} .
+
+      - name: Push Docker Image to ECR
+        run: docker push ${{ steps.CREATE-TAG.outputs.ecr_url }}
+      
+      - id: FIND-TAG
+        name: Find Previous Tag
+        run: |
+          ECR="${{env.AWS_ACCOUNT_ID}}.dkr.ecr.${{env.AWS_REGION}}.amazonaws.com/${{env.REPO_NAME}}"
+
+          BUILD_NUMBER=${{ env.ENVIRONMENT_NAME }}-$(expr ${{ github.run_number }} - 1)
+          
+          OLD_ECR_URL=$ECR:$BUILD_NUMBER
+          
+          echo "::set-output name=old_ecr_url::$OLD_ECR_URL"
+      
+      - name: Remove Images And Container 
+        env:
+          OLD_ECR_URL: ${{ steps.FIND-TAG.outputs.old_ecr_url }}
+        run: |
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > private_key && chmod 600 private_key
+          
+          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}<<EOF
+          # Login as root
+          sudo -i
+          # Now we have got the access of EC2 and we will start the deploy .
+
+          # Stop all running containers:
+          docker stop ${{ env.REPO_NAME }}-$(expr ${{ github.run_number }} - 1) || true
+
+          # Remove all containers (both stopped and running)
+          docker rm -f ${{ env.REPO_NAME }}-$(expr ${{ github.run_number }} - 1) || true
+          
+          # Delete old Docker images
+          docker rmi -f $OLD_ECR_URL || true
+          EOF
+      
+      - name: Pull Docker Images
+        env:
+          ECR_URL: ${{ steps.CREATE-TAG.outputs.ecr_url }}
+        run: |
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > private_key && chmod 600 private_key
+          
+          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}<<EOF
+          # Login as root
+          sudo -i
+          #Now we have got the access of EC2 and we will start the deploy
+          # Login to docker
+          aws ecr get-login-password --region ${{secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com
+          
+          echo "ECR : $ECR_URL"
+          docker pull $ECR_URL
+          EOF
+
+      - name: Run Docker Services
+        env:
+          ECR_URL: ${{ steps.CREATE-TAG.outputs.ecr_url }}
+        run: |
+          echo "${{secrets.SSH_PRIVATE_KEY}}" > private_key && chmod 600 private_key
+          
+          ssh -o StrictHostKeyChecking=no -i private_key ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}<<EOF
+          # Login as root
+          sudo -i
+          #Now we have got the access of EC2 and we will start the deploy .
+          # Login to docker
+          aws ecr get-login-password --region ${{secrets.AWS_REGION}} | docker login --username AWS --password-stdin ${{secrets.AWS_ACCOUNT_ID}}.dkr.ecr.${{secrets.AWS_REGION}}.amazonaws.com
+
+          docker run \
+            -e DATABASE_URL=${{ secrets.DATABASE_URL }} \
+            -e DEBUG=${{ secrets.DEBUG }} \
+            -e SCRAPER_USERNAME=${{ secrets.SCRAPER_USERNAME }} \
+            -e SCRAPER_PASSWORD=${{ secrets.SCRAPER_PASSWORD }} \
+            -d -p 80:8000 --name ${{ env.REPO_NAME }}-${{ github.run_number }} \
+            $ECR_URL
+          EOF
