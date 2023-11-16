@@ -10,7 +10,7 @@ ENV VITE_API_URL=VITE_API_URL
 
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONUNBUFFERED 1
-ENV PORT 8000
+ENV PORT 5001
 
 # Install wget, make and Google Chrome
 RUN apt-get update && apt-get install -y wget make firefox-esr
@@ -49,9 +49,9 @@ COPY . /app
 
 # Make port available to the world outside this container
 EXPOSE $PORT
-
+EXPOSE 5173
 
 RUN make build
 
 # Run the application
-CMD cd server && HOST=0.0.0.0 PORT=$PORT pipenv run python run.py 
+CMD cd server && HOST=0.0.0.0 PORT=$PORT pipenv run python run.py && cd client && npm run dev
