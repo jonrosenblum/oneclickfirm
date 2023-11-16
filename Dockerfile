@@ -44,7 +44,7 @@ COPY . /app
 # Make port available to the world outside this container
 EXPOSE $PORT 5173 5000
 
-FROM base_im AS 
+FROM base_im AS prod_im
 
 RUN npm run build
 
