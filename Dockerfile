@@ -44,8 +44,9 @@ COPY . /app
 # Make port available to the world outside this container
 EXPOSE $PORT 5173 5000
 
-FROM base_im AS prod_im
+FROM base_im AS 
+
 RUN npm run build
 
 # Run the application
-CMD cd server && PORT=$PORT pipenv run python run.py 
+CMD cd server && HOST=0.0.0.0 PORT=$PORT pipenv run python run.py 
