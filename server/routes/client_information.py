@@ -98,7 +98,7 @@ def new_client():
     # and generate docs and save to db
     form_data = request.get_json()  # Get form data from the POST request
     
-    
+    cursor = None
     try: 
         cursor = conn.cursor()
     except psycopg2.InterfaceError as e:
