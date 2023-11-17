@@ -100,15 +100,17 @@ def get_db_cursor():
 
 @client_information_bp.route('/new-client', methods=['POST'])
 @jwt_required()
+# @jwt_required()
 def new_client():
+    # create a new client
+    # and generate docs and save to db
+    form_data = request.get_json()  # Get form data from the POST request
     
-    cursor = None
-    
-    try: 
-        cursor = get_db_cursor()
-        form_data = request.get_json()
-    
-    # Get the current date and time
+    try:
+        conn = psycopg2.connect(config('DATABASE_URL'))
+        cursor = conn.cursor()
+        
+        # Get the current date and time
         current_datetime = datetime.now()
 
         # Convert 'todays_date' to 'Month Day, Year' format for display in documents
@@ -138,14 +140,22 @@ def new_client():
 
         # Commit the transaction and close the cursor
         conn.commit()
+        # cursor.close()
+        # conn.close()
 
         return jsonify({"message": "Documents generated and data stored successfully"})
     
     except Exception as e:
         return jsonify({"error": str(e)})
-    finally:
-        if cursor:
+    
+    finally: 
+        if conn is not None:
+            conn.close()
+        if 'cursor' in locals() and cursor is not None:
             cursor.close()
+    
+
+
 
 def makeTempClientFiles(form_data,temp_dir, document_name):
 
