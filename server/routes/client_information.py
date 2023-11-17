@@ -397,7 +397,7 @@ def download_documents(client_id):
 
     try:
         conn = psycopg2.connect(config('DATABASE_URL'))
-        cursor = conn.cursor()
+        cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
         cursor.execute("""
             SELECT  ci.*, v.*, co.*  
             FROM client_information ci
