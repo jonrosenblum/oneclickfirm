@@ -89,21 +89,24 @@ def create_tables_if_not_exist():
 create_tables_if_not_exist()
 
 
+# Helper function to get the cursor
+def get_db_cursor():
+    if 'db_cursor' not in g:
+        conn = psycopg2.connect(config('DATABASE_URL'))
+        g.db_cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
+    return g.db_cursor
+
+
+
 @client_information_bp.route('/new-client', methods=['POST'])
 @jwt_required()
-# @jwt_required()
 def new_client():
     
-    # create a new client
-    # and generate docs and save to db
-    form_data = request.get_json()  # Get form data from the POST request
-    conn = None
     cursor = None
+    
     try: 
-        cursor = conn.cursor()
-    except psycopg2.InterfaceError as e:
-        conn = psycopg2.connect(config('DATABASE_URL'))
-        cursor = conn.cursor()
+        cursor = get_db_cursor()
+        form_data = request.get_json()
     
     # Get the current date and time
         current_datetime = datetime.now()
@@ -135,15 +138,14 @@ def new_client():
 
         # Commit the transaction and close the cursor
         conn.commit()
-        cursor.close()
 
         return jsonify({"message": "Documents generated and data stored successfully"})
     
+    except Exception as e:
+        return jsonify({"error": str(e)})
     finally:
-        if cursor is not None:
+        if cursor:
             cursor.close()
-        if conn is not None and not conn.closed:
-            conn.close()
 
 def makeTempClientFiles(form_data,temp_dir, document_name):
 
