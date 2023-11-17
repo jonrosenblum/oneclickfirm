@@ -97,7 +97,7 @@ def new_client():
     # create a new client
     # and generate docs and save to db
     form_data = request.get_json()  # Get form data from the POST request
-    
+    conn = None
     cursor = None
     try: 
         cursor = conn.cursor()
