@@ -6,6 +6,8 @@ import axiosInstance from "../axios";
 
 export default function SignupPage() {
   const [confirmEmail, setConfirmEmail] = useState('');
+  const [showSuccess, setShowSuccess] = useState(false);
+  const [showFailure, setShowFailure] = useState(false);
 
 
   const navigate = useNavigate();
@@ -36,18 +38,21 @@ export default function SignupPage() {
     }
 
     try {
-      // Make a POST request to your signup endpoint
       const response = await axiosInstance.post('/signup', formData);
-
-      // Handle the response, e.g., show a success message or redirect
       console.log(response.data);
-      navigate('/login');
+      setShowSuccess(true);
+      setTimeout(() => {
+        setShowSuccess(false);
+        navigate('/login');
+      }, 3000);
     } catch (error) {
-      // Handle errors, e.g., show an error message
+      setShowFailure(true);
+      setTimeout(() => {
+        setShowFailure(false)});
+
       console.error('Signup failed:', error.message);
     }
   };
-
   return (
     <section className="gradient-form h-screen bg-[#f6f8fc]">
           <div className=" h-full ">
@@ -162,6 +167,17 @@ export default function SignupPage() {
                             />
                           </div>
                         </div>
+                                {/* Display success message */}
+                        {showSuccess && (
+                          <div className="text-green-600 mb-4">
+                            Signup successful! Redirecting to login...
+                          </div>
+                        )}
+                        {showFailure && (
+                          <div className="text-red-600 mb-4">
+                           Signup failed! Please try again.
+                          </div>
+                        )}
                         
     
                           <div className="mb-5 pb-1 pt-1 ">
@@ -189,3 +205,4 @@ export default function SignupPage() {
         </section>
       );
     }
+    // {showAlert && <AlertSignup />}

@@ -1,7 +1,7 @@
 import { BiArrowBack } from "react-icons/bi";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AlertClientAdded from "../Components/Pieces/Alert";
+import AlertClientAdded from "../Components/Pieces/AlertClientAdded";
 import njdataList from "./../njdata.json";
 import axiosInstance from "../axios";
 

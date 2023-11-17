@@ -4,7 +4,7 @@ import axiosInstance from "../axios";
 import ReactCreditCard from 'react-credit-cards';
 import 'react-credit-cards/es/styles-compiled.css';
 import creditCardType from 'credit-card-type';
-import AlertClientAdded from "../Components/Pieces/Alert";
+import AlertClientAdded from "../Components/Pieces/AlertClientAdded";
 
 
 export default function NewClient() {
