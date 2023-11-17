@@ -43,20 +43,28 @@ export default function SideNav() {
         {
           title: "Add new client",
           key: 7,
-          onAction: { onClick: () => navigate("/generate-documents") },
+          onAction: { onClick: () => navigate("/new-client") },
         },
         {
           title: "Edit client",
           key: 8,
-          onAction: { onClick: () => navigate("/generate-documents") },
+          onAction: { onClick: () => navigate("/edit-client") },
         },
       ],
     },
     {
       title: "Documents",
       key: 3,
+      submenu: true,
       icon: <AiOutlineFileText />,
       onAction: { onClick: () => navigate("/generate-documents") },
+      submenuItems: [
+        {
+          title: "Generate Legal Documents",
+          key: 9,
+          onAction: { onClick: () => navigate("/generate-documents") },
+        },
+      ],
     },
     {
       title: "Cases",
