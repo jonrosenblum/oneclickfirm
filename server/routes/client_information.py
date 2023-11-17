@@ -240,6 +240,7 @@ def makeTempClientFiles(form_data,temp_dir, document_name):
 # Helper function to get the cursor
 def get_db_cursor():
     if 'db_cursor' not in g:
+        conn = psycopg2.connect(config('DATABASE_URL'))
         g.db_cursor = conn.cursor(cursor_factory=psycopg2.extras.RealDictCursor)
     return g.db_cursor
 
