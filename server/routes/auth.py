@@ -46,65 +46,88 @@ def getBcrypter():
 
 @auth_bp.route("/signup", methods=["POST"])
 def signup():
-    # Get user information from the request
-    first_name = request.json.get("first_name", None)
-    last_name = request.json.get("last_name", None)
-    username = request.json.get("username", None)
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
+    conn = None
+    cursor = None
+    try:
+        # Get user information from the request
+        first_name = request.json.get("first_name", None)
+        last_name = request.json.get("last_name", None)
+        username = request.json.get("username", None)
+        email = request.json.get("email", None)
+        password = request.json.get("password", None)
 
+        # Check if required fields are provided
+        if not first_name or not last_name or not username or not email or not password:
+            return jsonify({"msg": "All fields (First Name, Last Name, Username, Email, Password) are required"}), 400
 
-    # Check if required fields are provided
-    if not first_name or not last_name or not username or not email or not password:
-        return jsonify({"msg": "All fields (First Name, Last Name, Username, Email, Password) are required"}), 400
+        # Connect to the database
+        conn = psycopg2.connect(config('DATABASE_URL'))  # Replace with your actual database URI
+        cursor = conn.cursor()
 
-    # Check for uniqueness of both email and username
-    
-    cursor.execute("SELECT * FROM users WHERE email = %s OR username = %s", (email, username))
-    existing_user = cursor.fetchone()
+        # Check for uniqueness of both email and username
+        cursor.execute("SELECT * FROM users WHERE email = %s OR username = %s", (email, username))
+        existing_user = cursor.fetchone()
 
-    if existing_user:
-        return jsonify({"msg": "Email or Username already exists"}), 400
+        if existing_user:
+            return jsonify({"msg": "Email or Username already exists"}), 400
 
-    # Hash the password before storing it in the database
-    # hashed_password = password
-    hashed_password = getBcrypter().generate_password_hash(password).decode('utf-8')
+        # Hash the password before storing it in the database
+        hashed_password = getBcrypter().generate_password_hash(password).decode('utf-8')
 
-    cursor.execute("INSERT INTO users (first_name, last_name, username, email, password) VALUES (%s, %s, %s, %s, %s)", (first_name, last_name, username, email, hashed_password))
-    conn.commit()
+        cursor.execute("INSERT INTO users (first_name, last_name, username, email, password) VALUES (%s, %s, %s, %s, %s)", (first_name, last_name, username, email, hashed_password))
+        conn.commit()
 
-    # Generate access and refresh tokens
-    access_token = create_access_token(identity=email)
-    refresh_token = create_refresh_token(identity=email)
+        # Generate access and refresh tokens
+        access_token = create_access_token(identity=email)
+        refresh_token = create_refresh_token(identity=email)
 
-    return jsonify(access_token=access_token, refresh_token=refresh_token), 201
-
+        return jsonify(access_token=access_token, refresh_token=refresh_token), 201
+    except psycopg2.OperationalError as e:
+        print(f"An error occurred: {e}")
+        return jsonify({"msg": "An error occurred"}), 500
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None:
+            conn.close()
 
 
 @auth_bp.route("/login", methods=["POST"])
 def login():
-    email = request.json.get("email", None)
-    password = request.json.get("password", None)
+    conn = None
+    keyed_cursor = None
+    try:
+        email = request.json.get("email", None)
+        password = request.json.get("password", None)
 
-    keyed_cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
-    # cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
-    user_data = keyed_cursor.fetchone()
-    print("User data:", user_data)
-    # return jsonify(user_data=user_data), 200
-    
-    if user_data == None :
-        return jsonify({"msg": "email not found",'user_data':user_data}), 404
-    
-    # hash = user_data[5]
-    hash = user_data['password']
-    password_valid = getBcrypter().check_password_hash(hash, password)
+        conn = psycopg2.connect(config('DATABASE_URL'))  # Replace with your actual database URI
+        keyed_cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-    if user_data and password_valid:
-        access_token = create_access_token(identity=email)
-        refresh_token = create_refresh_token(identity=email)
-        return jsonify(access_token=access_token, refresh_token=refresh_token), 200
-    else:
-        return jsonify({"msg": "Bad password",'user_data':user_data,'hash':hash}), 401
+        keyed_cursor.execute("SELECT * FROM users WHERE email = %s", (email,))
+        user_data = keyed_cursor.fetchone()
+        print("User data:", user_data)
+
+        if user_data == None :
+            return jsonify({"msg": "email not found",'user_data':user_data}), 404
+
+        hash = user_data['password']
+        password_valid = getBcrypter().check_password_hash(hash, password)
+
+        if user_data and password_valid:
+            access_token = create_access_token(identity=email)
+            refresh_token = create_refresh_token(identity=email)
+            return jsonify(access_token=access_token, refresh_token=refresh_token), 200
+        else:
+            return jsonify({"msg": "Bad password",'user_data':user_data,'hash':hash}), 401
+    except Exception as e:
+        print(f"An error occurred: {e}")
+        return jsonify({"msg": "An error occurred"}), 500
+    finally:
+        if keyed_cursor is not None:
+            keyed_cursor.close()
+        if conn is not None:
+            conn.close()
+    
 
 @auth_bp.route("/refresh", methods=["POST"])
 @jwt_required(refresh=True)
