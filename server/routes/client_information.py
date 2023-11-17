@@ -394,9 +394,10 @@ def update_client_info(client_id):
 @client_information_bp.route('/download-documents/<int:client_id>', methods=['GET'])
 @jwt_required()
 def download_documents(client_id):
-    cursor = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
     try:
+        conn = psycopg2.connect(config('DATABASE_URL'))
+        cursor = conn.cursor()
         cursor.execute("""
             SELECT  ci.*, v.*, co.*  
             FROM client_information ci
@@ -425,10 +426,12 @@ def download_documents(client_id):
     except Exception as e:
         return jsonify({"error": str(e)})
 
-    finally:
-        if cursor:
+    finally: 
+        if conn is not None:
+            conn.close()
+        if 'cursor' in locals() and cursor is not None:
             cursor.close()
-
+    
 
 @client_information_bp.route('/client-notes', methods=['POST'])
 @jwt_required()
