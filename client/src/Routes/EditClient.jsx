@@ -226,7 +226,7 @@ export default function EditClient() {
 
           <div className="mt-3">
             <ul>
-              {clientsList.map((client, index) => (
+              {clientsList?.map((client, index) => (
                 <li
                   onClick={() => handleClientClick(client)}
                   className="w-full cursor-pointer bg-blue-400 hover:bg-gray-300 m-2 p-2 rounded-md"

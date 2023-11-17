@@ -154,7 +154,7 @@ export default function AllClients() {
                 </tr>
               </thead>
               <tbody>
-              {filteredClients && filteredClients.map((client) => (
+              {filteredClients && filteredClients?.map((client) => (
                 <tr key={client.client_id} className="bg-white hover:bg-gray-50">
                   <th
                     scope="row"
