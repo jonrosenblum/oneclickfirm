@@ -93,45 +93,57 @@ create_tables_if_not_exist()
 @jwt_required()
 # @jwt_required()
 def new_client():
+    
     # create a new client
     # and generate docs and save to db
     form_data = request.get_json()  # Get form data from the POST request
-    cursor = conn.cursor()
+    
+    
+    try: 
+        cursor = conn.cursor()
+    except psycopg2.InterfaceError as e:
+        conn = psycopg2.connect(config('DATABASE_URL'))
+        cursor = conn.cursor()
     
     # Get the current date and time
-    current_datetime = datetime.now()
+        current_datetime = datetime.now()
 
-    # Convert 'todays_date' to 'Month Day, Year' format for display in documents
-    formatted_date = current_datetime.strftime('%B %d, %Y')
+        # Convert 'todays_date' to 'Month Day, Year' format for display in documents
+        formatted_date = current_datetime.strftime('%B %d, %Y')
+        
+        # Insert form data and document binary data into the database
+        # Insert data into the client_information table
+        cursor.execute('''
+            INSERT INTO client_information (client_name, client_email, date_created, payment_type, credit_card_type, credit_card_number, credit_card_expiration, credit_card_cvv, client_balance)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            RETURNING client_id
+        ''', (form_data['client_name'], form_data['client_email'], formatted_date, form_data['payment_type'], form_data['credit_card_type'], form_data['credit_card_number'], form_data['credit_card_expiration'], form_data['credit_card_cvv'], form_data['client_balance']))
+
+        client_id = cursor.fetchone()[0]
+
+        # Insert data into the violations table
+        cursor.execute('''
+            INSERT INTO violations (client_id, case_status, dwi_status, complaint_number, incident_date)
+            VALUES (%s, %s, %s, %s, %s)
+        ''', (client_id, form_data['case_status'], form_data['dwi_status'], form_data['complaint_violation_ticket_numbers'], form_data['incident_date']))
+
+        # Insert data into the court_information table
+        cursor.execute('''
+            INSERT INTO court_information (client_id, fax_number, court_house_name, court_house_street, court_house_city, court_house_state, court_house_zip, court_house_county)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+        ''', (client_id, form_data['fax_number'], form_data['court_house_name'], form_data['court_house_address'], form_data['court_house_city'], form_data['court_house_state'], form_data['court_house_zip'], form_data['court_house_county']))
+
+        # Commit the transaction and close the cursor
+        conn.commit()
+        cursor.close()
+
+        return jsonify({"message": "Documents generated and data stored successfully"})
     
-    # Insert form data and document binary data into the database
-    # Insert data into the client_information table
-    cursor.execute('''
-        INSERT INTO client_information (client_name, client_email, date_created, payment_type, credit_card_type, credit_card_number, credit_card_expiration, credit_card_cvv, client_balance)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
-        RETURNING client_id
-    ''', (form_data['client_name'], form_data['client_email'], formatted_date, form_data['payment_type'], form_data['credit_card_type'], form_data['credit_card_number'], form_data['credit_card_expiration'], form_data['credit_card_cvv'], form_data['client_balance']))
-
-    client_id = cursor.fetchone()[0]
-
-    # Insert data into the violations table
-    cursor.execute('''
-        INSERT INTO violations (client_id, case_status, dwi_status, complaint_number, incident_date)
-        VALUES (%s, %s, %s, %s, %s)
-    ''', (client_id, form_data['case_status'], form_data['dwi_status'], form_data['complaint_violation_ticket_numbers'], form_data['incident_date']))
-
-    # Insert data into the court_information table
-    cursor.execute('''
-        INSERT INTO court_information (client_id, fax_number, court_house_name, court_house_street, court_house_city, court_house_state, court_house_zip, court_house_county)
-        VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
-    ''', (client_id, form_data['fax_number'], form_data['court_house_name'], form_data['court_house_address'], form_data['court_house_city'], form_data['court_house_state'], form_data['court_house_zip'], form_data['court_house_county']))
-
-    # Commit the transaction and close the cursor
-    conn.commit()
-    cursor.close()
-
-    return jsonify({"message": "Documents generated and data stored successfully"})
-
+    finally:
+        if cursor is not None:
+            cursor.close()
+        if conn is not None and not conn.closed:
+            conn.close()
 
 def makeTempClientFiles(form_data,temp_dir, document_name):
 
