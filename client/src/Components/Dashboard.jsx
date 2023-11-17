@@ -12,7 +12,6 @@ import axiosInstance from "../axios";
 import 'react-datepicker/dist/react-datepicker.css';
 import { FaCalendarAlt } from 'react-icons/fa'; // Import calendar icon
 import 'react-datepicker/dist/react-datepicker.css';
-import { useAuthSelector } from "../services/useAuthSelector";
 
 
 
@@ -22,10 +21,6 @@ import { useAuthSelector } from "../services/useAuthSelector";
 export default function Dashboard() {
   
   const navigate = useNavigate();
-  const auth = useAuthSelector();
-  console.log(auth.user.username);
-
-
 
   const currentDate = new Date();
   const formattedDate = format(currentDate, 'MMMM d, yyyy'); // Format the date as "Month Day, Year"
