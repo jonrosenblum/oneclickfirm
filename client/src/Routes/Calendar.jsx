@@ -73,7 +73,7 @@ export default function Calendar() {
                 </div>
 
             </div>
-            <div className="bg-white w-full">calender</div>
+            <div className="bg-white w-full">Calendar will render here</div>
         </div>
         </div>
     );
