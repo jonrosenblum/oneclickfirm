@@ -13,7 +13,7 @@ export default function Nav() {
           <Link to="/home" className="flex items-center">
             <GiInjustice className="bg-amber-300 text-2xl rounded cursor-pointer block float-left mr-2 duration-500" />
             <h1 className="text-white origin-left font-medium text-xl duration-300">
-              Legal <span className='font-light'>Street</span>
+              One-Click <span className='font-light'>Law</span>
             </h1>
           </Link>
         </div>
