@@ -333,6 +333,7 @@ def get_all_clients():
 @jwt_required()
 def delete_client(client_id):
     try:
+        conn = psycopg2.connect(config('DATABASE_URL'))
         cursor = conn.cursor()
 
         # Check if the client exists
@@ -357,10 +358,13 @@ def delete_client(client_id):
         conn.rollback()  # Roll back changes if an error occurs
         return jsonify({"error": str(e)})
 
-    finally:
-        if cursor:
+    finally: 
+        if conn is not None:
+            conn.close()
+        if 'cursor' in locals() and cursor is not None:
             cursor.close()
     
+
     
 
 @client_information_bp.patch('/clients/<int:client_id>')
