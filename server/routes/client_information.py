@@ -36,6 +36,7 @@ def create_tables_if_not_exist():
                 client_id SERIAL PRIMARY KEY, \
                 client_name VARCHAR(255), \
                 client_email VARCHAR(255), \
+                client_phone VARCHAR(255), \
                 date_created DATE, \
                 payment_type VARCHAR(255), \
                 credit_card_type VARCHAR(255), \
@@ -119,10 +120,10 @@ def new_client():
         # Insert form data and document binary data into the database
         # Insert data into the client_information table
         cursor.execute('''
-            INSERT INTO client_information (client_name, client_email, date_created, payment_type, credit_card_type, credit_card_number, credit_card_expiration, credit_card_cvv, client_balance)
-            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+            INSERT INTO client_information (client_name, client_email, client_phone, date_created, payment_type, credit_card_type, credit_card_number, credit_card_expiration, credit_card_cvv, client_balance)
+            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
             RETURNING client_id
-        ''', (form_data['client_name'], form_data['client_email'], formatted_date, form_data['payment_type'], form_data['credit_card_type'], form_data['credit_card_number'], form_data['credit_card_expiration'], form_data['credit_card_cvv'], form_data['client_balance']))
+        ''', (form_data['client_name'], form_data['client_email'], form_data['client_phone'], formatted_date, form_data['payment_type'], form_data['credit_card_type'], form_data['credit_card_number'], form_data['credit_card_expiration'], form_data['credit_card_cvv'], form_data['client_balance']))
 
         client_id = cursor.fetchone()[0]
 
@@ -286,6 +287,7 @@ def get_all_clients():
                 ci.credit_card_cvv,
                 ci.client_balance,
                 ci.client_email,
+                ci.client_phone,
                 ci.payment_type,
                 ci.credit_card_type,
                 v.case_status,
