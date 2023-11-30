@@ -7,6 +7,7 @@ export default function EditClient() {
   const [selectedClient, setSelectedClient] = useState(null);
   const [newClientName, setNewClientName] = useState("");
   const [newClientEmail, setNewClientEmail] = useState("");
+  const [newClientPhone, setNewClientPhone] = useState("");
   const [newClientNotes, setNewClientNotes] = useState(
     ""
   );
@@ -156,6 +157,29 @@ export default function EditClient() {
     }
   };
 
+  const updateClientPhone = () => {
+    if (selectedClient && newClientPhone) {
+      // Send a PATCH request to update the client name
+      axios
+        .patch(`/clients/${selectedClient.client_id}`, {
+          client_phone: newClientPhone,
+        })
+        .then(() => {
+          console.log("Updated client phone", newClientPhone);
+          setSelectedClient({
+            ...selectedClient,
+            client_phone: newClientPhone,
+          });
+          // Clear the input field
+          setNewClientPhone("");
+        })
+        .catch((error) => {
+          console.error("Error updating client phone", error);
+        });
+    }
+  };
+
+
   const downloadDocuments = () => {
     if (selectedClient) {
       const clientId = selectedClient.client_id;
@@ -207,6 +231,15 @@ export default function EditClient() {
         });
     }
   };
+
+  function formatPhoneNumber(phoneNumberString) {
+    const cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
+    if (match) {
+      return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+    }
+    return null;
+  }
 
   return (
     <div className="bg-gradient-to-tr p-2 from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center h-full">
@@ -304,7 +337,7 @@ export default function EditClient() {
                   {selectedClient.client_name}
                 </h1>
                 <input
-                  className="border border-2 border-gray-500 text-sm rounded-md p-2"
+                  className="border-2 border-gray-500 text-sm rounded-md p-2"
                   value={newClientName}
                   onChange={(e) => setNewClientName(e.target.value)}
                   placeholder="Enter new client name"
@@ -322,7 +355,7 @@ export default function EditClient() {
                   {selectedClient.client_email}
                 </h1>
                 <input
-                  className="border border-2 border-gray-500 text-sm rounded-md p-2"
+                  className="border-2 border-gray-500 text-sm rounded-md p-2"
                   value={newClientEmail}
                   onChange={(e) => setNewClientEmail(e.target.value)}
                   placeholder="Enter new client email"
@@ -334,6 +367,32 @@ export default function EditClient() {
                   Update
                 </button>
               </div>
+
+              <div className="flex gap-8 items-center">
+                <h1 className="title bg-black text-sm text-white rounded-md p-2">
+                  {formatPhoneNumber(selectedClient.client_phone)}
+                </h1>
+                <input
+                  className="border-2 border-gray-500 text-sm rounded-md p-2"
+                  value={newClientPhone}
+                  onChange={(e) => {
+                    const onlyNums = e.target.value.replace(/[^0-9]/g, '');
+                    if (onlyNums.length > 10) {
+                      alert('Phone number must be exactly 10 digits.');
+                      return;
+                    }
+                    setNewClientPhone(onlyNums);
+                  }}
+                  placeholder="Enter new client phone"
+                />
+                <button
+                  onClick={updateClientPhone}
+                  className="button rounded-md bg-blue-500 px-3 m-4 py-2 text-sm"
+                >
+                  Update
+                </button>
+              </div>
+
 
               <div className="flex flex-col bg-gray-400 rounded-md">
                 <h1 className="title text-lg p-4">Client Notes</h1>

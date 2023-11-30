@@ -377,6 +377,7 @@ def update_client_info(client_id):
         new_case_status = request.json.get('case_status')
         new_client_name = request.json.get('client_name')
         new_client_email = request.json.get('client_email')
+        new_client_phone = request.json.get('client_phone')
 
         if new_case_status:
             cursor.execute("UPDATE violations SET case_status = %s WHERE client_id = %s", (new_case_status, client_id))
@@ -384,6 +385,8 @@ def update_client_info(client_id):
             cursor.execute("UPDATE client_information SET client_name = %s WHERE client_id = %s", (new_client_name, client_id))
         if new_client_email:
             cursor.execute("UPDATE client_information SET client_email = %s WHERE client_id = %s", (new_client_email, client_id))
+        if new_client_phone:
+            cursor.execute("UPDATE client_information SET client_phone = %s WHERE client_id = %s", (new_client_phone, client_id))
 
         conn.commit()
         return jsonify({"message": "Client information updated successfully"})
