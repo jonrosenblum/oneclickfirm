@@ -13,6 +13,8 @@ import { Provider } from "react-redux";
 import EditClient from "./Routes/EditClient";
 import "./axios";
 import SignupPage from "./Routes/SignupPage";
+import Mail from "./Routes/Mail";
+import Calendar from "./Routes/Calendar";
 
 const router = createHashRouter([
   {
@@ -30,8 +32,8 @@ const router = createHashRouter([
       { path: "generate-documents", element: <GenerateDocuments /> },
       { path: "all-clients", element: <AllClients /> },
       { path: "edit-client/:id?", element: <EditClient />  },
-      // {path: '*', element: <div><>},
-      // { path: "login", element: <LoginPage /> },
+      { path: 'mail', element: <Mail/>},
+      { path: "calendar", element: <Calendar /> },
     ],
   },
   // keep login out of root so side nav doesn't show up

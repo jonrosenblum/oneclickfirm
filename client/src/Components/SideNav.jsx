@@ -87,12 +87,14 @@ export default function SideNav() {
     {
       title: "Email",
       key: 7,
-      icon: <AiOutlineMail />
+      icon: <AiOutlineMail />,
+      onAction: { onClick: () => navigate("/mail") },
     },
     {
       title: "Calendar",
       key: 8,
-      icon: <BsFillCalendarDateFill/>
+      icon: <BsFillCalendarDateFill/>,
+      onAction: { onClick: () => navigate("/calendar") },
     },
   ];
 

@@ -37,6 +37,8 @@ export default function NewClient() {
     court_house_zip: responseData?.court_info?.court_house_zip ?? "",
     court_house_county: responseData?.court_info?.court_county ?? "",
     client_email: "",
+    client_phone: "",
+    client_fax: "",
     incident_date: searchData.violation_date,
     case_status: "OPEN",
     dwi_status: "No",
@@ -246,6 +248,23 @@ export default function NewClient() {
                             setnewClientForm({
                               ...newClientForm,
                               client_email: e.target.value,
+                            });
+                          }}
+                          disabled={!isEditMode}
+                          />
+                          <button type="button" onClick={handleToggleEditMode} className="ml-2 bg-blue-500 text-white px-2 py-1 rounded-md">{isEditMode ? "Confirm" : "Edit"}</button>
+                        </div>
+                        <div>
+                          <label>Phone</label>
+                          <input 
+                          type="tel"
+                          className="m-2 p-2 rounded-lg"
+                          value={newClientForm.client_phone}
+                          placeholder="Enter email"
+                          onChange={(e) => {
+                            setnewClientForm({
+                              ...newClientForm,
+                              client_phone: e.target.value,
                             });
                           }}
                           disabled={!isEditMode}
