@@ -16,7 +16,8 @@ export default function NewClient() {
   const formRef = useRef(null);
   const [searchFormSubmitted, setSearchFormSubmitted] = useState(false);
   const [responseData, setResponseData] = useState(null);
-  const [isEditMode, setIsEditMode] = useState(false);
+  const [isEmailEditMode, setIsEmailEditMode] = useState(false);
+  const [isPhoneEditMode, setIsPhoneEditMode] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
   const [loading, setLoading] = useState(false); // Add loading state
   const today = new Date().toLocaleDateString('en-US', {
@@ -59,10 +60,6 @@ export default function NewClient() {
   
     setsearchData({ ...searchData, violation_date: value });
     setnewClientForm({ ...newClientForm, incident_date: formattedDate });
-  };
-
-  const handleToggleEditMode = () => {
-    setIsEditMode((prevMode) => !prevMode);
   };
 
 
@@ -250,9 +247,9 @@ export default function NewClient() {
                               client_email: e.target.value,
                             });
                           }}
-                          disabled={!isEditMode}
+                          disabled={!isEmailEditMode}
                           />
-                          <button type="button" onClick={handleToggleEditMode} className="ml-2 bg-blue-500 text-white px-2 py-1 rounded-md">{isEditMode ? "Confirm" : "Edit"}</button>
+                          <button type="button"  onClick={() => setIsEmailEditMode((prevMode) => !prevMode)} className="ml-2 bg-blue-500 text-white px-2 py-1 rounded-md">{isEmailEditMode ? "Confirm" : "Edit"}</button>
                         </div>
                         <div>
                           <label>Phone</label>
@@ -267,9 +264,9 @@ export default function NewClient() {
                               client_phone: e.target.value,
                             });
                           }}
-                          disabled={!isEditMode}
+                          disabled={!isPhoneEditMode}
                           />
-                          <button type="button" onClick={handleToggleEditMode} className="ml-2 bg-blue-500 text-white px-2 py-1 rounded-md">{isEditMode ? "Confirm" : "Edit"}</button>
+                          <button type="button" onClick={() => setIsPhoneEditMode((prevMode) => !prevMode)}  className="ml-2 bg-blue-500 text-white px-2 py-1 rounded-md">{isPhoneEditMode ? "Confirm" : "Edit"}</button>
                         </div>
                       </div>
                       <div className="m-2">
