@@ -10,7 +10,6 @@ import AlertClientAdded from "../Components/Pieces/AlertClientAdded";
 export default function NewClient() {
   const [searchData, setsearchData] = useState({
     client_name: "",
-    violation_date: "",
     crime_type: "",
   });
   const formRef = useRef(null);
@@ -51,16 +50,16 @@ export default function NewClient() {
     credit_card_type: "",
   });
 
-  const handleViolationDateChange = (e) => {
-    const { value } = e.target;
-    const selectedDate = new Date(value);
+  // const handleViolationDateChange = (e) => {
+  //   const { value } = e.target;
+  //   const selectedDate = new Date(value);
   
-    const options = { month: 'short', day: 'numeric', year: 'numeric' };
-    const formattedDate = selectedDate.toLocaleDateString('en-US', options);
+  //   const options = { month: 'short', day: 'numeric', year: 'numeric' };
+  //   const formattedDate = selectedDate.toLocaleDateString('en-US', options);
   
-    setsearchData({ ...searchData, violation_date: value });
-    setnewClientForm({ ...newClientForm, incident_date: formattedDate });
-  };
+  //   setsearchData({ ...searchData, violation_date: value });
+  //   setnewClientForm({ ...newClientForm, incident_date: formattedDate });
+  // };
 
 
   const handleCreditCardNumberChange = (e) => {
@@ -137,6 +136,7 @@ export default function NewClient() {
 
       if (response.status === 200) {
         console.log("Request Success");
+        console.log(response.data)
         setResponseData(response.data.data);
       } else {
         console.error("Request Failed");
@@ -195,18 +195,18 @@ export default function NewClient() {
                   type="text"
                   onChange={(e)=> setsearchData({...searchData, client_name: e.target.value})}/>
                 </div>
-                <div className="">
+                {/* <div className="">
                   <label className="font-medium">Violation Date</label>
                   <input className="m-2 p-2 rounded-lg"
                   type="date"
                   onChange={handleViolationDateChange}/>
-                </div>
+                </div> */}
                 <div>
                   <label className="font-medium">Violation Type</label>
                   <select className="m-2 p-2 rounded-lg" onChange={(e)=> setsearchData({...searchData, crime_type: e.target.value})}>
                     <option value="">Select violation type</option>
                     <option value="NJ Traffic">NJ Traffic</option>
-                    <option value="Criminal">Criminal</option>
+                    <option value="NJ Criminal (DP)"> NJ Criminal (DP)</option>
                     </select>
                 </div>
                 <button type="submit" className="modal-action-button px-4 py-2 bg-white text-black font-bold rounded-md hover:bg-blue-300 focus:outline-none focus:shadow-outline-blue active:bg-blue-500">

@@ -14,26 +14,16 @@ client_scraper_bp = Blueprint('client_scraper', __name__)
 
 @client_scraper_bp.post('/search')
 def search():
-    
-    driver = None
-    
+
     try:
-    
+        driver = None
+            
         data = request.json  # Get data from JSON request
-        # data = {
-        #     'client_name': 'Noah Cohen',
-        #     'violation_date': '05/22/2021',
-        #     'crime_type': 'NJ Traffic'
-        # }
+        # data = {'client_name': 'Noah Cohen', 'crime_type': 'NJ Traffic'}
         client_name = data.get('client_name')
-        violation_date = data.get('violation_date')
         crime_type = data.get('crime_type')
 
-        #format date so that it matches the format on legalplex 
-        parsed_date = parser.parse(violation_date)
-        violation_date = parsed_date.strftime(DATE_FORMAT)
-
-        if client_name and violation_date:
+        if client_name and crime_type:
             
             options = webdriver.FirefoxOptions()
             options.add_argument('--headless')
@@ -43,7 +33,7 @@ def search():
             os.environ['MOZ_HEADLESS'] = '1'
 
             # Initialize the WebDriver with the specified options
-            driver = webdriver.Firefox(options=options)
+            driver = webdriver.Firefox()
 
             # Navigate to the login page
             driver.get('https://secure.legalplex.com/Login')
@@ -58,6 +48,7 @@ def search():
             login_button.click()
 
             matches = []
+            datasets = []
 
             driver.get('https://secure.legalplex.com/searchcases')
             
@@ -100,14 +91,11 @@ def search():
                     cases = []
 
                 for case_i, case in enumerate(cases):
-                    date = case.find_element(By.XPATH, f'/html/body/form/div[3]/div[3]/div[2]/div[2]/div[2]/div[1]/table/tbody/tr[{case_i+1}]/td/div[1]/div[2]/h5[1]')
-                    if violation_date in date.text:
-                        print('MATCH!')
-                        profile_url = case.find_element(By.CLASS_NAME, 'name').get_attribute('href')
-                        if profile_url not in matches:
-                            matches.append(profile_url)
-                            break
-                            
+                    name = case.find_element(By.CLASS_NAME, 'name')
+                    profile_url = name.get_attribute('href')
+                    if profile_url not in matches:
+                        matches.append(profile_url)
+                        print(f'adding {profile_url} to matches...')                        
 
                 #click through each page, if on last page don't try to click to next page
                 if last_page == page_i:
@@ -117,7 +105,7 @@ def search():
                 pages_table = pages_container.find_element(By.TAG_NAME, 'table')
                 pages = pages_table.find_elements(By.TAG_NAME, 'td')
                 page = pages[page_i].find_element(By.TAG_NAME, 'a')
-                time.sleep(3)
+                time.sleep(1)
                 page.click()
 
             #loop through each match and collect data from page
@@ -131,6 +119,7 @@ def search():
                 age_and_birth_place = content.find_element(By.ID, 'lblText1').text
                 client_age = age_and_birth_place.split(' Year Old')[0] 
                 client_birth_place = age_and_birth_place.split('from ')[1]
+                violation_date = driver.find_element(By.ID, 'lblText2').text
 
                 try:
                     int(client_age)
@@ -168,7 +157,8 @@ def search():
                     'client_name': client_name,
                     'client_age':client_age,
                     'client_birth_place':' '.join([d for d in client_birth_place.split(' ') if '-' not in d]),
-                    'crime_type': crime_type
+                    'crime_type': crime_type,
+                    'violation_date': violation_date
                 }
 
                 # Prepare data for JSON response
@@ -183,18 +173,20 @@ def search():
                         "court_house_state": context['court_house_state'],
                         "court_house_zip": context['court_house_zip'],
                         "court_county": context["court_county"],
-                        'crime_type': context['crime_type']
+                        'crime_type': context['crime_type'],
                     },
                     "client_info": {
                         "client_name": context['client_name'],
                         "client_age": context['client_age'],
                         "client_birth_place": context['client_birth_place'],
+                        'violation_date': violation_date
                     },
                     "violations": violation_numbers,  # Add more data as needed
                 }
-                pprint(scraped_data)
-
-                return jsonify({"status": "success", "data": scraped_data})
+                # pprint(scraped_data)
+                datasets.append(scraped_data)
+                # print(datasets)
+            return jsonify({"status": "success", "data": datasets})
         
     except Exception as e:
         return jsonify({"status": "error", "error": str(e)})
