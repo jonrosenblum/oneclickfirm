@@ -32,6 +32,7 @@ export default function GenerateDocuments() {
     court_house_zip: "",
     court_house_county: "",
     client_email: "",
+    client_phone: "",
     incident_date: "",
     case_status: "OPEN",
     dwi_status: "",
@@ -117,6 +118,7 @@ export default function GenerateDocuments() {
       court_house_zip: "",
       court_house_county: "",
       client_email: "",
+      client_phone: "",
       incident_date: "",
       case_status: "OPEN",
       dwi_status: "",
@@ -223,6 +225,29 @@ export default function GenerateDocuments() {
                               required
                               className="block w-full border-0 bg-transparent py-1.5 px-3 text-gray-900 placeholder:text-gray-400  focus:ring-0 sm:text-sm sm:leading-6"
                             />
+                          </div>
+                          <div className="hidden">
+                          <label className="block text-sm font-base  text-gray-900">
+                          Phone Number
+                          </label>
+                          <div className="mt-2">
+                          <div className="flex rounded-md shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-2 focus-within:ring-inset  sm:max-w-md">
+                            <input
+                              type="text"
+                              value="5164048703"
+                              placeholder="(516) 404-8703"
+                              // onChange={(e) =>
+                              //   setFormData({
+                              //     ...formData,
+                              //     client_phone: e.target.value,
+                              //   })
+                              // }
+                              required
+                              className="block w-full border-0 bg-transparent py-1.5 px-3 text-gray-900 placeholder:text-gray-400  focus:ring-0 sm:text-sm sm:leading-6"
+                            />
+                          </div>
+
+                          </div>
                           </div>
                         </div>
                       </div>
