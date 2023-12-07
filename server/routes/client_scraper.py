@@ -17,11 +17,13 @@ def search():
 
     try:
         driver = None
-            
+                
         data = request.json  # Get data from JSON request
-        # data = {'client_name': 'Noah Cohen', 'crime_type': 'NJ Traffic'}
+        # data = {'client_name': 'John Smith', 'crime_type': 'NJ Traffic'}
         client_name = data.get('client_name')
         crime_type = data.get('crime_type')
+
+        print(f'SEARCHING - {client_name}, {crime_type}')
 
         if client_name and crime_type:
             
@@ -32,7 +34,7 @@ def search():
             # Set the environment variable for headless mode
             os.environ['MOZ_HEADLESS'] = '1'
 
-            # Initialize the WebDriver with the specified options
+            # # Initialize the WebDriver with the specified options
             driver = webdriver.Firefox()
 
             # Navigate to the login page
@@ -93,7 +95,7 @@ def search():
                 for case_i, case in enumerate(cases):
                     name = case.find_element(By.CLASS_NAME, 'name')
                     profile_url = name.get_attribute('href')
-                    if profile_url not in matches:
+                    if profile_url not in matches and 'casedetailscontacts' not in profile_url:
                         matches.append(profile_url)
                         print(f'adding {profile_url} to matches...')                        
 
@@ -113,10 +115,9 @@ def search():
                 print(f'Collecting data from: {match}')
 
                 driver.get(match)
-                content = driver.find_element(By.CLASS_NAME, 'content')
 
-                client_name = content.find_element(By.ID, 'lblCaseTitle').text
-                age_and_birth_place = content.find_element(By.ID, 'lblText1').text
+                client_name = driver.find_element(By.XPATH, f"//*[contains(@id, 'lblCaseTitle')]").text
+                age_and_birth_place = driver.find_element(By.ID, 'lblText1').text
                 client_age = age_and_birth_place.split(' Year Old')[0] 
                 client_birth_place = age_and_birth_place.split('from ')[1]
                 violation_date = driver.find_element(By.ID, 'lblText2').text
@@ -127,7 +128,7 @@ def search():
                     #Null value placeholder for records where age is not present
                     client_age = -1
 
-                data = content.find_element(By.CLASS_NAME, 'caseItem').text
+                data = driver.find_element(By.CLASS_NAME, 'caseItem').text
                 data = data.split('\n')
                 data = [col for col in data if col != '']
                 court_info_start_index = data.index('Court Information')
@@ -187,7 +188,7 @@ def search():
                 datasets.append(scraped_data)
                 # print(datasets)
             return jsonify({"status": "success", "data": datasets})
-        
+            
     except Exception as e:
         return jsonify({"status": "error", "error": str(e)})
 
