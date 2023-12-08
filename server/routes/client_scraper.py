@@ -277,7 +277,3 @@ def search():
     finally:
         if driver is not None:
             driver.quit()
-
-
-if __name__ == '__main__':
-    search()
