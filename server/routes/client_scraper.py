@@ -7,6 +7,128 @@ import time
 import os
 from pprint import pprint
 
+def searchcasedetails(driver: webdriver.Firefox):
+    client_name = driver.find_element(By.XPATH, f"//*[contains(@id, 'lblCaseTitle')]").text
+    age_and_birth_place = driver.find_element(By.ID, 'lblText1').text
+    client_age = age_and_birth_place.split(' Year Old')[0] 
+    client_birth_place = age_and_birth_place.split('from ')[1]
+    violation_date = driver.find_element(By.ID, 'lblText2').text
+
+    try:
+        int(client_age)
+    except:
+        #Null value placeholder for records where age is not present
+        client_age = -1
+
+    data = driver.find_element(By.CLASS_NAME, 'caseItem').text
+    data = data.split('\n')
+    data = [col for col in data if col != '']
+    court_info_start_index = data.index('Court Information')
+    
+    try:
+        violation_info_start_index = data.index('Violation Information') + 1
+    except:
+        violation_info_start_index = 0
+        for i, d in enumerate(data[:court_info_start_index][::-1]):
+            if ' - ' not in d:
+                violation_info_start_index = i
+                break
+
+    # [print(i, d) for i, d in enumerate(data)]
+
+    violation_numbers = data[violation_info_start_index: court_info_start_index]
+
+    context = {
+        'fax_number': data[-2].split('Fax:')[-1],
+        'phone_number':data[-3].split('Phone:')[-1],
+        'court_house_name': data[-7],
+        'court_house_street': data[-5],
+        'court_house_city': ' '.join(data[-4].split(' ')[:-2]),
+        'court_house_state': data[-4].split(' ')[-2],
+        'court_house_zip': data[-4].split(' ')[-1],
+        'court_county': data[-6],
+        'client_name': client_name,
+        'client_age':client_age,
+        'client_birth_place':' '.join([d for d in client_birth_place.split(' ') if '-' not in d]),
+        'violation_date': violation_date,
+        'violation_numbers': violation_numbers
+    }
+    return context
+
+
+def image_exists(driver: webdriver.Firefox, img: str):
+    images = driver.find_elements(By.TAG_NAME, 'img')
+    for image in images:
+        if img in image.get_attribute('src'):
+            return True
+    return False
+
+def get_image_by_src(driver: webdriver.Firefox, img: str):
+    images = driver.find_elements(By.TAG_NAME, 'img')
+    for image in images:    
+        if img in image.get_attribute('src'):
+            return image
+    return None
+
+def casedetailscontacts(driver: webdriver.Firefox):
+    client_name = driver.find_element(By.ID, 'ucCaseInformationControl1_lblCaseTitle').text
+    violation_date = driver.find_element(By.ID, 'ucCaseInformationControl1_lblTimeStamp').text
+    parsed_date = parser.parse(violation_date)
+    violation_date = parsed_date.strftime(DATE_FORMAT)
+    tables = driver.find_elements(By.CSS_SELECTOR, '.sup_perFirst.nobg')
+
+    client_phone_number = ''
+    phone_img = 'images/icons/caseDetails/mobile_14.png'
+    if image_exists(driver, phone_img):
+        client_phone_number = get_image_by_src(driver, phone_img).find_element(By.XPATH, '..').text
+
+    client_email = ''
+    email_img = 'images/icons/caseDetails/email_14.png'
+    if image_exists(driver, email_img):
+        client_email = get_image_by_src(driver, email_img).find_element(By.XPATH, '..').text
+
+    court_info_table = tables[-1]
+    court_data = court_info_table.find_elements(By.TAG_NAME, 'tr')
+    court_house_name = court_data[0].find_element(By.TAG_NAME, 'td').text.rstrip()
+    court_house_street = court_data[1].text
+
+    city_info = court_data[2].text.split(', ')
+    court_house_city = city_info[0]
+    court_house_state = city_info[1]
+    court_house_zip = city_info[2].replace('.', '')
+
+    court_county = court_data[3].text.split(' .')[0]
+    phone_number = court_data[4].text
+
+    menu = driver.find_element(By.ID, 'caseDetailsMenu')
+    menu.find_element(By.CLASS_NAME, 'iCharge').click()
+
+    charges_table = driver.find_element(By.ID, 'contentBody_gvCharges')
+    charges = charges_table.find_elements(By.CLASS_NAME, 'wrapText')
+    violation_numbers = []
+
+    for charge in charges:
+        violation_info = charge.find_element(
+            By.TAG_NAME, 'tr').find_element(By.TAG_NAME, 'td')
+        violation_number = violation_info.text.split('(')[0]
+        violation_numbers.append(violation_number)
+
+    context = {
+        'phone_number': phone_number,
+        'court_house_name': court_house_name,
+        'court_house_street': court_house_street,
+        'court_house_city':court_house_city,
+        'court_house_state': court_house_state,
+        'court_house_zip': court_house_zip,
+        'court_county': court_county,
+        'client_name': client_name,
+        'client_email': client_email,
+        'client_phone_number': client_phone_number,
+        'violation_date': '',
+        'violation_numbers': violation_numbers,
+    }
+    return context
+
 DATE_FORMAT = '%b %d, %Y'
 
 app = Flask(__name__)
@@ -19,7 +141,7 @@ def search():
         driver = None
                 
         data = request.json  # Get data from JSON request
-        # data = {'client_name': 'John Smith', 'crime_type': 'NJ Traffic'}
+        # data = {'client_name': 'RYAN GOODE', 'crime_type': 'NJ Traffic'}
         client_name = data.get('client_name')
         crime_type = data.get('crime_type')
 
@@ -92,10 +214,10 @@ def search():
                 except:
                     cases = []
 
-                for case_i, case in enumerate(cases):
+                for case in cases:
                     name = case.find_element(By.CLASS_NAME, 'name')
                     profile_url = name.get_attribute('href')
-                    if profile_url not in matches and 'casedetailscontacts' not in profile_url:
+                    if profile_url not in matches:
                         matches.append(profile_url)
                         print(f'adding {profile_url} to matches...')                        
 
@@ -116,82 +238,46 @@ def search():
 
                 driver.get(match)
 
-                client_name = driver.find_element(By.XPATH, f"//*[contains(@id, 'lblCaseTitle')]").text
-                age_and_birth_place = driver.find_element(By.ID, 'lblText1').text
-                client_age = age_and_birth_place.split(' Year Old')[0] 
-                client_birth_place = age_and_birth_place.split('from ')[1]
-                violation_date = driver.find_element(By.ID, 'lblText2').text
-
-                try:
-                    int(client_age)
-                except:
-                    #Null value placeholder for records where age is not present
-                    client_age = -1
-
-                data = driver.find_element(By.CLASS_NAME, 'caseItem').text
-                data = data.split('\n')
-                data = [col for col in data if col != '']
-                court_info_start_index = data.index('Court Information')
+                time.sleep(3)
+                if 'casedetailscontacts' in driver.current_url:
+                    context = casedetailscontacts(driver)
+                elif 'searchcasedetails' in driver.current_url:
+                    context = searchcasedetails(driver)
                 
-                try:
-                    violation_info_start_index = data.index('Violation Information') + 1
-                except:
-                    violation_info_start_index = 0
-                    for i, d in enumerate(data[:court_info_start_index][::-1]):
-                        if ' - ' not in d:
-                            violation_info_start_index = i
-                            break
-
-                # [print(i, d) for i, d in enumerate(data)]
-
-                violation_numbers = data[violation_info_start_index: court_info_start_index]
-
-                context = {
-                    'fax_number': data[-2].split('Fax:')[-1],
-                    'phone_number':data[-3].split('Phone:')[-1],
-                    'court_house_name': data[-7],
-                    'court_house_street': data[-5],
-                    'court_house_city': ' '.join(data[-4].split(' ')[:-2]),
-                    'court_house_state': data[-4].split(' ')[-2],
-                    'court_house_zip': data[-4].split(' ')[-1],
-                    'court_county': data[-6],
-                    'client_name': client_name,
-                    'client_age':client_age,
-                    'client_birth_place':' '.join([d for d in client_birth_place.split(' ') if '-' not in d]),
-                    'crime_type': crime_type,
-                    'violation_date': violation_date
-                }
 
                 # Prepare data for JSON response
                 scraped_data = {
-                    
                     "court_info": {
-                        "fax_number": context['fax_number'],
-                        "phone_number": context['phone_number'],
-                        "court_house_name": context['court_house_name'],
-                        "court_house_street": context['court_house_street'],
-                        "court_house_city": context['court_house_city'],
-                        "court_house_state": context['court_house_state'],
-                        "court_house_zip": context['court_house_zip'],
-                        "court_county": context["court_county"],
-                        'crime_type': context['crime_type'],
+                        "fax_number": context.get('fax_number'),
+                        "phone_number": context.get('phone_number'),
+                        "court_house_name": context.get('court_house_name'),
+                        "court_house_street": context.get('court_house_street'),
+                        "court_house_city": context.get('court_house_city'),
+                        "court_house_state": context.get('court_house_state'),
+                        "court_house_zip": context.get('court_house_zip'),
+                        "court_county": context.get("court_county"),
+                        'crime_type': crime_type,
                     },
                     "client_info": {
-                        "client_name": context['client_name'],
-                        "client_age": context['client_age'],
-                        "client_birth_place": context['client_birth_place'],
-                        'violation_date': violation_date
+                        "client_name": context.get('client_name'),
+                        "client_age": context.get('client_age'),
+                        "client_birth_place": context.get('client_birth_place'),
+                        "client_email": context.get('client_email'),
+                        'client_phone_number': context.get('client_phone_number'),
+                        'violation_date': context.get("violation_date")
                     },
-                    "violations": violation_numbers,  # Add more data as needed
+                    "violations": context.get("violation_numbers"),  # Add more data as needed
                 }
-                # pprint(scraped_data)
                 datasets.append(scraped_data)
-                # print(datasets)
             return jsonify({"status": "success", "data": datasets})
-            
+                
     except Exception as e:
         return jsonify({"status": "error", "error": str(e)})
 
     finally:
         if driver is not None:
             driver.quit()
+
+
+if __name__ == '__main__':
+    search()
