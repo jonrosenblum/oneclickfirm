@@ -257,7 +257,7 @@ export default function NewClient() {
                           type="tel"
                           className="m-2 p-2 rounded-lg"
                           value={newClientForm.client_phone}
-                          placeholder="Enter email"
+                          placeholder="Enter phone"
                           onChange={(e) => {
                             setnewClientForm({
                               ...newClientForm,

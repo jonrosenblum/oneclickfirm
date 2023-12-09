@@ -9,8 +9,8 @@ export default function AlertClientAdded() {
   useEffect(() => {
     const alertTimeout = setTimeout(() => {
         setShowAlert(false);
-        // Navigate to the /all-clients route after 1 second
-        navigate('/all-clients');
+        // Navigate to the /clients route after 1 second
+        navigate('/clients');
       }, 2000); // Hide the alert after 1 second
 
     return () => clearTimeout(alertTimeout);

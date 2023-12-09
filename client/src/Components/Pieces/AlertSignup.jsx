@@ -9,7 +9,7 @@ export default function AlertSignup() {
   useEffect(() => {
     const alertTimeout = setTimeout(() => {
         setShowAlert(false);
-        // Navigate to the /all-clients route after 1 second
+        // Navigate to the /clients route after 1 second
         navigate('/login');
       }, 2000); // Hide the alert after 1 second
 
