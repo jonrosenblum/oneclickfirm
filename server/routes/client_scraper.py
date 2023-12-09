@@ -2,6 +2,8 @@ from flask import Flask, Blueprint, request, jsonify
 from dateutil import parser
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
 from selenium.webdriver.firefox.options import Options
 import time
 import os
@@ -141,7 +143,7 @@ def search():
         driver = None
                 
         data = request.json  # Get data from JSON request
-        # data = {'client_name': 'RYAN GOODE', 'crime_type': 'NJ Traffic'}
+        # data = {'client_name': 'john smith', 'crime_type': 'NJ Traffic'}
         client_name = data.get('client_name')
         crime_type = data.get('crime_type')
 
@@ -196,7 +198,9 @@ def search():
 
             #get number of pages
             try:
-                pages_container = driver.find_element(By.CLASS_NAME, 'pgr')
+                pages_container = WebDriverWait(driver, 10).until(
+                    EC.presence_of_element_located((By.CLASS_NAME, 'pgr'))
+                )
                 pages = pages_container.find_elements(By.TAG_NAME, 'a')
                 last_page = int(pages[-1].text)
             except:
@@ -270,10 +274,11 @@ def search():
                 }
                 datasets.append(scraped_data)
             return jsonify({"status": "success", "data": datasets})
-                
+            
     except Exception as e:
         return jsonify({"status": "error", "error": str(e)})
 
     finally:
         if driver is not None:
             driver.quit()
+
