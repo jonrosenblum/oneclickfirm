@@ -8,15 +8,13 @@ export default function EditClient() {
   const [newClientName, setNewClientName] = useState("");
   const [newClientEmail, setNewClientEmail] = useState("");
   const [newClientPhone, setNewClientPhone] = useState("");
-  const [newClientNotes, setNewClientNotes] = useState(
-    ""
-  );
+  const [newClientNotes, setNewClientNotes] = useState("");
 
   useEffect(() => {
     // Update newClientNotes when selectedClient changes
     setNewClientNotes(selectedClient?.client_notes || "");
   }, [selectedClient]);
-  
+
   const params = useParams();
 
   function formatDate(dateString) {
@@ -42,7 +40,7 @@ export default function EditClient() {
 
   useEffect(() => {
     fetchClientsList();
-  }, []); 
+  }, []);
 
   if (params.id && clientsList && !selectedClient) {
     const foundClient = clientsList.find((c) => c.client_id + "" === params.id);
@@ -179,7 +177,6 @@ export default function EditClient() {
     }
   };
 
-
   const downloadDocuments = () => {
     if (selectedClient) {
       const clientId = selectedClient.client_id;
@@ -233,10 +230,10 @@ export default function EditClient() {
   };
 
   function formatPhoneNumber(phoneNumberString) {
-    const cleaned = ('' + phoneNumberString).replace(/\D/g, '');
+    const cleaned = ("" + phoneNumberString).replace(/\D/g, "");
     const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
     if (match) {
-      return '(' + match[1] + ') ' + match[2] + '-' + match[3];
+      return "(" + match[1] + ") " + match[2] + "-" + match[3];
     }
     return null;
   }
@@ -244,36 +241,6 @@ export default function EditClient() {
   return (
     <div className="bg-gradient-to-tr p-2 from-blue-800 to-green-400 w-full min-h-screen flex items-center justify-center h-full">
       <div className="bg-gray-100 h-100 w-full flex p-3 gap-8 rounded-md flex flex-row h-full">
-        <div className="client-sidebar flex flex-col border max-h-[800px] overflow-y-auto border-2 p-10">
-          <div className="">
-            <h1 className="bg-gray-400 title text-2xl font-medium">
-              All Clients
-            </h1>
-            <p className="text-xs font-extralight">
-              Please select a client to update information
-            </p>
-            <form className="mt-2">
-              <input placeholder="Search Client" />
-            </form>
-          </div>
-
-          <div className="mt-3">
-            <ul>
-              {clientsList?.map((client, index) => (
-                <li
-                  onClick={() => handleClientClick(client)}
-                  className="w-full cursor-pointer bg-blue-400 hover:bg-gray-300 m-2 p-2 rounded-md"
-                  key={index}
-                >
-                  <Link href={`/edit-client/${client.client_id}`}>
-                    {client.client_name}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        </div>
-
         <div className="client-content-area flex-1  border border-2 flex flex-row justify-center">
           {selectedClient && (
             <div className="p-16" style={{ width: "clamp(700px,70%,750px)" }}>
@@ -376,9 +343,9 @@ export default function EditClient() {
                   className="border-2 border-gray-500 text-sm rounded-md p-2"
                   value={newClientPhone}
                   onChange={(e) => {
-                    const onlyNums = e.target.value.replace(/[^0-9]/g, '');
+                    const onlyNums = e.target.value.replace(/[^0-9]/g, "");
                     if (onlyNums.length > 10) {
-                      alert('Phone number must be exactly 10 digits.');
+                      alert("Phone number must be exactly 10 digits.");
                       return;
                     }
                     setNewClientPhone(onlyNums);
@@ -393,7 +360,6 @@ export default function EditClient() {
                 </button>
               </div>
 
-
               <div className="flex flex-col bg-gray-400 rounded-md">
                 <h1 className="title text-lg p-4">Client Notes</h1>
                 <p className="p-4">{selectedClient.client_notes}</p>
@@ -405,7 +371,6 @@ export default function EditClient() {
                   type="text"
                   rows="5"
                   className="bg-white text-black text-sm rounded-md p-2 m-4"
-                  
                 />
                 <div className="text-center">
                   <button

@@ -43,7 +43,7 @@ export default function Dashboard() {
   };
 
   const handleAllClientsClick = () => {
-    navigate('/all-clients');
+    navigate('/clients');
   };
 
   const handlEditClientClick = () => {

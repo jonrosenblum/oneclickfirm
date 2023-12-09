@@ -38,7 +38,7 @@ export default function SideNav() {
       key: 2,
       submenu: true,
       icon: <BsFillPeopleFill />,
-      onAction: { onClick: () => navigate("/all-clients") },
+      onAction: { onClick: () => navigate("/clients") },
       submenuItems: [
         {
           title: "Add new client",
