@@ -36,21 +36,21 @@ export default function SideNav() {
     {
       title: "Clients",
       key: 2,
-      submenu: true,
+      submenu: false,
       icon: <BsFillPeopleFill />,
       onAction: { onClick: () => navigate("/clients") },
-      submenuItems: [
-        {
-          title: "Add new client",
-          key: 7,
-          onAction: { onClick: () => navigate("/new-client") },
-        },
-        {
-          title: "Edit client",
-          key: 8,
-          onAction: { onClick: () => navigate("/edit-client") },
-        },
-      ],
+      // submenuItems: [
+      //   {
+      //     title: "Add new client",
+      //     key: 7,
+      //     onAction: { onClick: () => navigate("/new-client") },
+      //   },
+      //   {
+      //     title: "Edit client",
+      //     key: 8,
+      //     onAction: { onClick: () => navigate("/edit-client") },
+      //   },
+      // ],
     },
     {
       title: "Documents",
