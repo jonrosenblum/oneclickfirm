@@ -16,13 +16,16 @@
 		"dc:dev:up": "docker compose up app_dev",
 		"dc:dev:build": "docker compose build app_dev",
 		"dc:dev:kill": "docker compose kill app_dev",
-		"dc:dev:bash":"docker compose exec app_dev bash",
-		"dc:dev:run":"docker compose run app_dev"
+		"dc:dev:bash": "docker compose exec app_dev bash",
+		"dc:dev:run": "docker compose run app_dev"
 	},
 	"author": "",
 	"license": "ISC",
 	"devDependencies": {
 		"concurrently": "^8.2.2",
 		"vite": "^4.5.0"
+	},
+	"dependencies": {
+		"react-spinners": "^0.13.8"
 	}
 }
