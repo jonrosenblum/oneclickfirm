@@ -160,7 +160,7 @@ export default function SideNav() {
               <div key={menu.key} >
                 <li
                   {...{ ...menu.onAction }}
-                  className={`text-white text-sm flex items-center  ${menu.title === 'Dashboard' ? "bg-hov" : "" }
+                  className={`text-white text-sm flex items-center 
                     gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-3`}
                 >
                   <span className="text-2xl block float-left">
