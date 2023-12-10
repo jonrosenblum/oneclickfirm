@@ -11,7 +11,6 @@ import { CustomModal } from "../Components/CustomModal";
 import { BiArrowBack } from "react-icons/bi";
 
 let PageSize = 10;
-
 export default function NewClient() {
   const [searchData, setsearchData] = useState({
     client_name: "",
@@ -263,9 +262,7 @@ export default function NewClient() {
                         <div className="mt-3  sm:mt-0">
                           <div className="mt-1 text-sm text-gray-600 sm:flex sm:flex-col sm:items-start">
                             <div ><span className="capitalize">{`${client.client_info.client_age} year old `}</span> from <span className="capitalize">{`${client.client_info.client_birth_place}`}</span></div>
-                            {client.violations.map((v) => v.split('/')[0]).length > 0 && <div>
-                            <div className="mt-1 sm:mt-0">{client.violations.map((v) => v.split('/')[0]).join(", ")}</div>
-                            </div> }
+                            {client.violations.map((v) => v.split('/')[0]).length > 0 && client.violations.map((v) => v.split('/')[0]).map((violationString, index) => <div className="mt-1 sm:mt-0" key={index}>{violationString}</div>)}
                             <div className="mt-1 sm:mt-0">{client.client_info.violation_date}</div>
                           </div>
                         </div>
@@ -281,7 +278,7 @@ export default function NewClient() {
                 {responseData.length > 10 && <Pagination
                   className="pagination-bar justify-center py-5"
                   currentPage={currentPage}
-                  totalCount={data.length}
+                  totalCount={responseData.length}
                   pageSize={PageSize}
                   onPageChange={page => setCurrentPage(page)}
                 />}
