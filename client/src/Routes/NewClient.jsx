@@ -10,7 +10,7 @@ import ClockLoader from "react-spinners/ClockLoader";
 import { CustomModal } from "../Components/CustomModal";
 import { BiArrowBack } from "react-icons/bi";
 
-let PageSize = 10;
+let PageSize = 1;
 export default function NewClient() {
   const [searchData, setsearchData] = useState({
     client_name: "",
@@ -21,6 +21,9 @@ export default function NewClient() {
   const [searchFormSubmitted, setSearchFormSubmitted] = useState(false);
   const [clientFormPopup, setClientFormPopup] = useState(false);
   const [selectClientData, setSelectClientData] = useState(null);
+  const [selectedOrder, setSelectedOrder] = useState('Recently Issued First');
+  const [showOptions, setShowOptions] = useState(false);
+  const [searchOptions, setSearchOptions] = useState(['Recently Issued First', 'Old Issued First']);
   const [responseData, setResponseData] = useState(null);
   const [isEmailEditMode, setIsEmailEditMode] = useState(false);
   const [isPhoneEditMode, setIsPhoneEditMode] = useState(false);
@@ -185,6 +188,24 @@ export default function NewClient() {
     });
   };
 
+  const searchOrder = (typedValue) => {
+    console.log(typedValue);
+    searchOptions.filter(res => res.includes(typedValue))
+    setSearchOptions(searchOptions)
+  }
+
+  const updateOrder= (option) =>{
+    setSelectedOrder(option); 
+    setShowOptions(false) 
+    if(option=='Recently Issued First')
+    {
+      responseData.sort((a,b) => new Date(b.client_info.violation_date).getTime() - new Date(a.client_info.violation_date).getTime());
+    }
+    else{
+      responseData.sort((a,b) => new Date(a.client_info.violation_date).getTime() - new Date(b.client_info.violation_date).getTime());
+    }
+  }
+
 
 
   return (
@@ -234,15 +255,46 @@ export default function NewClient() {
               </form>
             </div>
 
+
+
             {loading && (
               <div className="flex justify-center items-center py-5"><ClockLoader color="#36d7b7" /></div>
             )}
 
             {searchFormSubmitted && responseData && !loading && (
               <>
+                          <div className="flex bg-gray-50 justify-between items-center p-4 mx-4 rounded-md">
+              <div className="flex items-center gap-2">
+                <svg className="w-10 h-10" viewBox="0 -3.66 65.015 65.015" xmlns="http://www.w3.org/2000/svg" fill="#000000"><g id="SVGRepo_bgCarrier" strokeWidth="0"></g><g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g><g id="SVGRepo_iconCarrier"> <g id="Group_99" data-name="Group 99" transform="translate(-107.858 -217.309)"> <g id="Group_97" data-name="Group 97"> <path id="Path_247" data-name="Path 247" d="M158.251,220.766H133.473l-5.725-3.457H114.226a2.911,2.911,0,0,0-2.912,2.912v30.934a2.911,2.911,0,0,0,2.912,2.912h44.025a2.911,2.911,0,0,0,2.911-2.912V223.676A2.911,2.911,0,0,0,158.251,220.766Z" fill="#1e40af"></path> <path id="Path_248" data-name="Path 248" d="M161.162,242.6V227.133a2.914,2.914,0,0,0-2.911-2.914H114.226a2.914,2.914,0,0,0-2.912,2.914V242.6Z" fill="#1e40af"></path> <path id="Path_249" data-name="Path 249" d="M158.251,220.766H133.473l-5.725-3.457H114.226a2.911,2.911,0,0,0-2.912,2.912V221.6a2.911,2.911,0,0,1,2.912-2.912h13.522l5.725,3.455h24.778a2.913,2.913,0,0,1,2.911,2.912v-1.383A2.911,2.911,0,0,0,158.251,220.766Z" fill="#4ade80" opacity="0.5" ></path> <path id="Path_250" data-name="Path 250" d="M161.707,226.293H110.771a2.913,2.913,0,0,0-2.913,2.913l3.456,30.933a2.911,2.911,0,0,0,2.912,2.912h44.025a2.911,2.911,0,0,0,2.911-2.912l3.455-30.933A2.912,2.912,0,0,0,161.707,226.293Z" fill="#4ade80"></path> <path id="Path_251" data-name="Path 251" d="M110.771,227.676h50.936a2.911,2.911,0,0,1,2.83,2.254l.08-.724a2.912,2.912,0,0,0-2.91-2.913H110.771a2.913,2.913,0,0,0-2.913,2.913l.081.724A2.911,2.911,0,0,1,110.771,227.676Z" fill="#4ade80" opacity="0.5" ></path> </g> <path id="Path_252" data-name="Path 252" d="M161.162,260.139l.592-5.3a14.7,14.7,0,1,0-27.687,8.211h24.184A2.911,2.911,0,0,0,161.162,260.139Z" fill="#8c93a1" opacity="0.6" ></path> <g id="Group_98" data-name="Group 98"> <rect id="Rectangle_36" data-name="Rectangle 36" width="4.156" height="12.401" transform="translate(157.7 262.706) rotate(-45)" fill="#1e40af"></rect> <path id="Path_253" data-name="Path 253" d="M165.421,252.721a14.7,14.7,0,1,1-14.7-14.7A14.7,14.7,0,0,1,165.421,252.721Z" fill="#1e40af"></path> <path id="Path_254" data-name="Path 254" d="M161.682,252.721a10.964,10.964,0,1,1-10.964-10.965A10.965,10.965,0,0,1,161.682,252.721Z" fill="#8c93a1"></path> <path id="Path_255" data-name="Path 255" d="M150.718,262.616a9.895,9.895,0,1,1,9.894-9.9A9.9,9.9,0,0,1,150.718,262.616Z" fill="#4ade80" opacity="0.6"></path> <path id="Path_256" data-name="Path 256" d="M141.833,253.735a9.895,9.895,0,0,1,16.368-7.484A9.892,9.892,0,1,0,144.247,260.2,9.843,9.843,0,0,1,141.833,253.735Z" fill="#4ade80" opacity="0.6"></path> <path id="Path_257" data-name="Path 257" d="M150.718,257.606a4.885,4.885,0,1,1,4.885-4.885A4.888,4.888,0,0,1,150.718,257.606Z" fill="#4ade80"></path> <path id="Path_258" data-name="Path 258" d="M147.01,258.946a1.9,1.9,0,1,1,1.9-1.9A1.9,1.9,0,0,1,147.01,258.946Z" fill="#f3f3f3" opacity="0.5"></path> <path id="Path_259" data-name="Path 259" d="M157.45,251.192c-.937.937-2.879.517-4.336-.94s-1.879-3.4-.942-4.335,2.879-.516,4.337.941S158.385,250.256,157.45,251.192Z" fill="#f3f3f3" opacity="0.5"></path> <path id="Path_260" data-name="Path 260" d="M160.6,267.028l7.219,7.22a3.055,3.055,0,0,0,4.3-4.3l-7.219-7.219Z" fill="#4ade80"></path> </g> </g> </g></svg>
+                <h1 className="title text-xl">Result for - {searchData && searchData.client_name}</h1><span className="inline-flex ml-3 items-center rounded-full bg-green-400 px-2 py-1 text-xs font-medium text-gray-600 ring-1 ring-inset ring-gray-500/10">{responseData.length}</span>
+              </div>
+              <div className="relative mt-2">
+                <input id="combobox" type="text" onClick={()=>setShowOptions(option=> !option)} value={selectedOrder} onChange={(e) => { searchOrder(e.target.value) }} className="w-full rounded-md border-0 bg-white py-1.5 pl-3 pr-12 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" role="combobox" aria-controls="options" aria-expanded="false" />
+                <button type="button" className="absolute inset-y-0 right-0 flex items-center rounded-r-md px-2 focus:outline-none">
+                  <svg className="h-5 w-5 text-gray-400" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                    <path fillRule="evenodd" d="M10 3a.75.75 0 01.55.24l3.25 3.5a.75.75 0 11-1.1 1.02L10 4.852 7.3 7.76a.75.75 0 01-1.1-1.02l3.25-3.5A.75.75 0 0110 3zm-3.76 9.2a.75.75 0 011.06.04l2.7 2.908 2.7-2.908a.75.75 0 111.1 1.02l-3.25 3.5a.75.75 0 01-1.1 0l-3.25-3.5a.75.75 0 01.04-1.06z" clipRule="evenodd" />
+                  </svg>
+                </button>
+
+                {showOptions && <ul className="absolute z-10 mt-1 max-h-60 w-full overflow-auto rounded-md bg-white py-1 text-base shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none sm:text-sm" id="options" role="listbox">
+
+                  {searchOptions && searchOptions.map((option, index) =>
+                    <li key={index} onClick={() =>{ updateOrder(option)} } className="cursor-pointer relative select-none py-2 pl-3 pr-9 text-gray-900" id="option-0" role="option" tabIndex="-1">
+                      <span className="block truncate">{option}</span>
+                      {selectedOrder == option && <span className="absolute inset-y-0 right-0 flex items-center pr-4 text-indigo-600">
+                        <svg className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                          <path fillRule="evenodd" d="M16.704 4.153a.75.75 0 01.143 1.052l-8 10.5a.75.75 0 01-1.127.075l-4.5-4.5a.75.75 0 011.06-1.06l3.894 3.893 7.48-9.817a.75.75 0 011.05-.143z" clipRule="evenodd" />
+                        </svg>
+                      </span>}
+                    </li>
+                  )}
+
+                </ul>}
+              </div>
+            </div>
                 {responseData.length == 0 && <div className="flex justify-center items-center py-5 text-gray-600">Result not found. Please try with other search</div>}
                 {responseData.length > 0 && responseData.map((client, index) => <>
-                  <div key={index} className="rounded-md bg-gray-50 mx-4 mb-4  px-6 py-5 sm:flex sm:flex-col">
+                  <div key={index} className="rounded-md bg-gray-50 mx-4 mt-4 mb-4  px-6 py-5 sm:flex sm:flex-col">
                     <div className="sm:flex sm:items-start sm:justify-between">
                       <div className="text-sm mt-3  sm:mt-0 font-medium text-gray-900 uppercase  underline cursor-pointer" onClick={() => OpenCasesModal(client)}>{client.client_info.client_name}</div>
                       <div className="text-sm font-medium text-gray-900 mt-4 sm:mt-0 sm:flex-shrink-0">{client.court_info.court_house_name}</div>
@@ -252,7 +304,7 @@ export default function NewClient() {
                         <div className="mt-3  sm:mt-0">
                           <div className="mt-1 text-sm text-gray-600 sm:flex sm:flex-col sm:items-start">
                             <div ><span className="capitalize">{`${client.client_info.client_age} year old `}</span> from <span className="capitalize">{`${client.client_info.client_birth_place}`}</span></div>
-                            {client.violations.map((v) => v.split('/')[0]).length > 0 && client.violations.map((v) => v.split('/')[0]).map((violationString, index) => <div className="mt-1 sm:mt-0" key={index}>{violationString}</div>)}
+                            {client.violations.map((v) => v.split('/')[0]).length > 0 &&<div className="mt-1 sm:mt-0">{client.violations.map((v) => v.split('/')[0]).join(' ,')}</div>}
                             <div className="mt-1 sm:mt-0">{client.client_info.violation_date}</div>
                           </div>
                         </div>
@@ -265,7 +317,7 @@ export default function NewClient() {
                   </div></>)}
 
                 {/* pagination */}
-                {responseData.length > 10 && <Pagination
+                { responseData.length>10 && <Pagination
                   className="pagination-bar justify-center py-5"
                   currentPage={currentPage}
                   totalCount={responseData.length}
