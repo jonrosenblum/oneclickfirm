@@ -46,7 +46,7 @@ export default function NewClient() {
     client_email: "",
     client_phone: "",
     client_fax: "",
-    incident_date: searchData.violation_date,
+    incident_date: responseData?.client_info?.violation_date ?? "",
     case_status: "OPEN",
     dwi_status: "No",
     credit_card_number: "",
@@ -56,17 +56,6 @@ export default function NewClient() {
     payment_type: "",
     credit_card_type: "",
   });
-
-  // const handleViolationDateChange = (e) => {
-  //   const { value } = e.target;
-  //   const selectedDate = new Date(value);
-
-  //   const options = { month: 'short', day: 'numeric', year: 'numeric' };
-  //   const formattedDate = selectedDate.toLocaleDateString('en-US', options);
-
-  //   setsearchData({ ...searchData, violation_date: value });
-  //   setnewClientForm({ ...newClientForm, incident_date: formattedDate });
-  // };
 
 
   const handleCreditCardNumberChange = (e) => {
@@ -96,6 +85,7 @@ export default function NewClient() {
         court_house_state: client.court_info.court_house_state ?? "",
         court_house_zip: client.court_info.court_house_zip ?? "",
         court_house_county: client.court_info.court_county ?? "",
+        incident_date: client.client_info.violation_date?? "",
         complaint_violation_ticket_numbers: client.violations
           .map((violation) => {
             const match = violation.match(/^([^-]+)/);
