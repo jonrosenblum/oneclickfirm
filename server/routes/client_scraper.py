@@ -77,7 +77,10 @@ def casedetailscontacts(driver: webdriver.Firefox):
     violation_date = driver.find_element(By.ID, 'ucCaseInformationControl1_lblTimeStamp').text
     parsed_date = parser.parse(violation_date)
     violation_date = parsed_date.strftime(DATE_FORMAT)
-    tables = driver.find_elements(By.CSS_SELECTOR, '.sup_perFirst.nobg')
+
+    tables = WebDriverWait(driver, 10).until(
+        EC.presence_of_all_elements_located((By.CSS_SELECTOR, '.sup_perFirst.nobg'))
+    )
 
     client_phone_number = ''
     phone_img = 'images/icons/caseDetails/mobile_14.png'
@@ -88,6 +91,15 @@ def casedetailscontacts(driver: webdriver.Firefox):
     email_img = 'images/icons/caseDetails/email_14.png'
     if image_exists(driver, email_img):
         client_email = get_image_by_src(driver, email_img).find_element(By.XPATH, '..').text
+
+    client_age = ''
+    age_img = 'images/icons/caseDetails/calender_14.png'
+    if image_exists(driver, age_img):
+        client_age = tables[0].find_elements(By.TAG_NAME, 'tr'
+            )[1].text.split(' Years Old)')[0].split('(')[1]
+        
+    client_birth_place = driver.find_element(By.CSS_SELECTOR, '.pAdd.wrapText').text.split('\n')[-1]
+    client_birth_place = ' '.join(client_birth_place.split(',')[:-1])
 
     court_info_table = tables[-1]
     court_data = court_info_table.find_elements(By.TAG_NAME, 'tr')
@@ -112,8 +124,12 @@ def casedetailscontacts(driver: webdriver.Firefox):
     for charge in charges:
         violation_info = charge.find_element(
             By.TAG_NAME, 'tr').find_element(By.TAG_NAME, 'td')
-        violation_number = violation_info.text.split('(')[0]
-        violation_numbers.append(violation_number)
+        violation_info = violation_info.text.split('\n')
+        violation_number = violation_info[0].split('|')[0]
+        violation_description = violation_info[1].split('   ')[0]
+        violation = f'{violation_number} {violation_description}'
+        print(violation)
+        violation_numbers.append(violation)
 
     context = {
         'phone_number': phone_number,
@@ -125,8 +141,10 @@ def casedetailscontacts(driver: webdriver.Firefox):
         'court_county': court_county,
         'client_name': client_name,
         'client_email': client_email,
+        'client_age': client_age,
+        'client_birth_place': client_birth_place,
         'client_phone_number': client_phone_number,
-        'violation_date': '',
+        'violation_date': violation_date,
         'violation_numbers': violation_numbers,
     }
     return context
@@ -143,7 +161,7 @@ def search():
         driver = None
                 
         data = request.json  # Get data from JSON request
-        # data = {'client_name': 'john smith', 'crime_type': 'NJ Traffic'}
+        # data = {'client_name': 'robert alfonso', 'crime_type': 'NJ Traffic'}
         client_name = data.get('client_name')
         crime_type = data.get('crime_type')
 
@@ -242,12 +260,11 @@ def search():
 
                 driver.get(match)
 
-                time.sleep(3)
+                time.sleep(1)
                 if 'casedetailscontacts' in driver.current_url:
                     context = casedetailscontacts(driver)
                 elif 'searchcasedetails' in driver.current_url:
                     context = searchcasedetails(driver)
-                
 
                 # Prepare data for JSON response
                 scraped_data = {
@@ -281,4 +298,3 @@ def search():
     finally:
         if driver is not None:
             driver.quit()
-

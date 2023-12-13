@@ -2,8 +2,6 @@ import { useEffect, useState } from "react";
 import axios from "./../axios";
 import { Link, useNavigate } from "react-router-dom";
 import AlertDocumentDownload from "../Components/Pieces/AlertDocumentDownload";
-import ActionsDropdown from "../Components/Pieces/ActionsDropdown";
-import { FaCloudDownloadAlt, FaDownload } from "react-icons/fa";
 import {
   MdOutlineCloudDownload,
   MdOutlineFeaturedPlayList,
@@ -15,7 +13,6 @@ export default function AllClients() {
   const [searchInput, setSearchInput] = useState(""); // State variable for search input
   const navigate = useNavigate();
   const [showAlert, setShowAlert] = useState(false); // State variable to control the alert visibility
-  const [ShowDropdown, setShowDropdown] = useState(false); // State variable to control the alert visibility
   const [loading, setLoading] = useState(true); // State variable for loading state
 
   useEffect(() => {
@@ -69,15 +66,6 @@ export default function AllClients() {
     }
   };
 
-  const doDownloadAction = (action, client) => {
-    // action menu click is download
-    if (action === "download") downloadDocuments(client);
-
-    // YOU CAN PERFORM REMAINING ACTIONS HERE
-    if (action === "dashboard") {
-      // any action
-    }
-  };
 
   if (loading) {
     return (
@@ -213,7 +201,7 @@ export default function AllClients() {
                               <div className="relative flex gap-5">
                                 <button
                                   className="flex flex-col justify-center items-center text-center"
-                                  onClick={(e) => downloadDocuments(client)}
+                                  onClick={() => downloadDocuments(client)}
                                 >
                                   <MdOutlineCloudDownload fontSize={25} />
                                   Download
@@ -228,31 +216,6 @@ export default function AllClients() {
                                   <MdOutlineFeaturedPlayList fontSize={25} />
                                   Notes
                                 </button>
-                                {/* <button
-                                  onClick={() => {
-                                    ShowDropdown == client.client_id
-                                      ? setShowDropdown(false)
-                                      : setShowDropdown(client.client_id);
-                                  }}
-                                  className="text-sm text-left inline-flex items-center font-medium relative text-blue-600 dark:text-blue-500 hover:underline"
-                                  type="button"
-                                >
-                                  View more
-                                </button> */}
-                                {/* <div
-                                  className={`z-10 ${
-                                    ShowDropdown === client.client_id
-                                      ? "block"
-                                      : "hidden"
-                                  } right-4 absolute bg-white divide-y divide-gray-100 rounded-lg shadow w-40`}
-                                >
-                                  <ActionsDropdown
-                                    client={client}
-                                    onClick={(action) =>
-                                      doDownloadAction(action, client)
-                                    }
-                                  />
-                                </div> */}
                               </div>
                             </td>
                           </tr>
