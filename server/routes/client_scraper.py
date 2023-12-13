@@ -144,7 +144,7 @@ def casedetailscontacts(driver: webdriver.Firefox):
         'client_age': client_age,
         'client_birth_place': client_birth_place,
         'client_phone_number': client_phone_number,
-        'violation_date': '',
+        'violation_date': violation_date,
         'violation_numbers': violation_numbers,
     }
     return context
