@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import axios from "./../axios";
-import { Link, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
+
 
 export default function EditClient() {
   const [clientsList, setClientsList] = useState([]);
@@ -16,6 +17,7 @@ export default function EditClient() {
   }, [selectedClient]);
 
   const params = useParams();
+  const navigate = useNavigate();
 
   function formatDate(dateString) {
     const options = { year: "numeric", month: "long", day: "numeric" };
@@ -49,19 +51,6 @@ export default function EditClient() {
     }
   }
 
-  const fetchSelectedClientInfo = async () => {
-    try {
-      const response = await axios.get("/clients");
-      setClientsList(response.data);
-    } catch (error) {
-      console.error("Error fetching client data", error);
-    }
-  };
-
-  const handleClientClick = (client) => {
-    setSelectedClient(client);
-    fetchSelectedClientInfo();
-  };
 
   const refreshSelectedClientInfo = (selectedClient, clientsList) => {
     const foundClient = clientsList.find(
@@ -221,6 +210,8 @@ export default function EditClient() {
           // Client deleted successfully, you can perform any additional actions here
           console.log("Client deleted successfully");
           setSelectedClient(null);
+          navigate("/clients");
+          
         })
         .catch((error) => {
           console.error("Error deleting client", error);
@@ -229,14 +220,6 @@ export default function EditClient() {
     }
   };
 
-  function formatPhoneNumber(phoneNumberString) {
-    const cleaned = ("" + phoneNumberString).replace(/\D/g, "");
-    const match = cleaned.match(/^(\d{3})(\d{3})(\d{4})$/);
-    if (match) {
-      return "(" + match[1] + ") " + match[2] + "-" + match[3];
-    }
-    return null;
-  }
 
   return (
     <div className="bg-white w-full p-4 min-h-screen flex">
