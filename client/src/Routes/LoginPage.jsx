@@ -52,7 +52,7 @@ export default function LoginPage() {
                     <div className="flex gap-4 justify-center">
                       <GiInjustice className="text-3xl" />
                       <h4 className="mb-6 text-3xl font-semibold">
-                        <span className="font-extrabold">One-Click</span> Law
+                        <span className="font-extrabold">One-Click</span> Firm
                       </h4>
                     </div>
                     <p className="text-sm w-full sm:w-[85%] md:w-[75%] lg:w-[60%] mx-auto">
