@@ -27,7 +27,7 @@ services:
     profiles:
       - "prod"
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@pgsql:5432/stl
+      - DATABASE_URL=postgres://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/stl
     env_file:
       - .env
   
@@ -55,7 +55,7 @@ services:
     profiles:
       - "prod"
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@pgsql:5432/stl
+      - DATABASE_URL=postgres://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/stl
     env_file:
       - .env
    
@@ -82,7 +82,7 @@ services:
       timeout: 10s
       retries: 3
     environment:
-      - DATABASE_URL=postgres://postgres:postgres@pgsql:5432/stl
+      - DATABASE_URL=postgres://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/stl
     env_file:
       - .env
     profiles:
@@ -96,9 +96,11 @@ services:
     ports:
       - "5432:5432"
     environment:
-      - POSTGRES_USER=postgres
-      - POSTGRES_PASSWORD=postgres
-      - POSTGRES_DB=stl
+      - DB_HOST=${{ secrets.DB_HOST }}
+      - DB_PORT=${{ secrets.DB_PORT }}
+      - DB_USERNAME=${{ secrets.DB_USERNAME }}
+      - DB_PASSWORD=${{ secrets.DB_PASSWORD }}
+      - DATABASE_URL=postgres://${{ secrets.DB_USERNAME }}:${{ secrets.DB_PASSWORD }}@${{ secrets.DB_HOST }}:${{ secrets.DB_PORT }}/stl
     volumes:
       - ./data:/var/lib/postgresql/data
 
